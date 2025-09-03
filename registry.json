@@ -1,0 +1,19 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "requestnetwork",
+  "homepage": "https://request.network",
+  "items": [
+    {
+      "name": "payment-widget",
+      "type": "registry:component",
+      "title": "Payment Widget",
+      "description": "A simple payment widget for Request Network",
+      "files": [
+        {
+          "path": "registry/default/payment-widget/payment-widget.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

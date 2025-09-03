@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "payment-widget",
+  "type": "registry:component",
+  "title": "Payment Widget",
+  "description": "A simple payment widget for Request Network",
+  "files": [
+    {
+      "path": "registry/default/payment-widget/payment-widget.tsx",
+      "content": "export function PaymentWidget() {\n  return (\n    <div className=\"p-4 border rounded\">\n      <div>Pay with RN</div>\n    </div>\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}
