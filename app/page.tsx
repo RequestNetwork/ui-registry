@@ -1,13 +1,15 @@
 import { PaymentWidget } from "@/registry/default/payment-widget/payment-widget";
 
 export default function Home() {
+  const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || "";
+
   return (
     <main className="container mx-auto py-8 px-4">
       <h1 className="text-2xl font-bold mb-6">RequestNetwork UI Registry</h1>
 
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-4">Payment Widget Preview:</h2>
-        <PaymentWidget />
+        <PaymentWidget walletConnectProjectId={projectId} />
       </div>
 
       <div className="bg-primary p-4 rounded">

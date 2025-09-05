@@ -3,12 +3,52 @@
   "name": "payment-widget",
   "type": "registry:component",
   "title": "Payment Widget",
-  "description": "A simple payment widget for Request Network",
+  "description": "A wallet-connected payment widget for Request Network using pure wagmi",
+  "dependencies": [
+    "wagmi@^2.12.29",
+    "viem@^2.21.53",
+    "@tanstack/react-query@^5.64.1"
+  ],
+  "registryDependencies": [
+    "button",
+    "dialog"
+  ],
   "files": [
     {
       "path": "registry/default/payment-widget/payment-widget.tsx",
-      "content": "export function PaymentWidget() {\n  return (\n    <div className=\"p-4 border rounded\">\n      <div>Pay with RN</div>\n    </div>\n  );\n}\n",
-      "type": "registry:component"
+      "content": "\"use client\";\n\nimport { useState } from \"react\";\nimport { Button } from \"@/components/ui/button\";\nimport { ConnectionHandler } from \"./components/connection-handler\";\nimport { Web3Provider } from \"@/components/providers/web3-provider\";\n\nexport function PaymentWidget() {\n  const [isModalOpen, setIsModalOpen] = useState(false);\n  const handleModalOpenChange = (open: boolean) => {\n    setIsModalOpen(open);\n  };\n\n  return (\n    <Web3Provider>\n      <Button onClick={() => setIsModalOpen(true)}>\n        Pay with Request Network\n      </Button>\n      <ConnectionHandler\n        isOpen={isModalOpen}\n        handleModalOpenChange={handleModalOpenChange}\n      />\n    </Web3Provider>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "components/payment-widget/payment-widget.tsx"
+    },
+    {
+      "path": "registry/default/payment-widget/components/connection-handler.tsx",
+      "content": "\"use client\";\n\nimport { useAccount } from \"wagmi\";\nimport { PaymentModal } from \"./payment-modal\";\nimport { WalletConnectModal } from \"./wallet-connect-modal\";\n\ninterface ConnectionHandlerProps {\n  isOpen: boolean;\n  handleModalOpenChange: (open: boolean) => void;\n}\n\nexport function ConnectionHandler({\n  isOpen,\n  handleModalOpenChange,\n}: ConnectionHandlerProps) {\n  const { isConnected } = useAccount();\n\n  if (!isConnected) {\n    return (\n      <WalletConnectModal\n        isOpen={isOpen}\n        handleModalOpenChange={handleModalOpenChange}\n      />\n    );\n  }\n\n  return (\n    <PaymentModal\n      isOpen={isOpen}\n      handleModalOpenChange={handleModalOpenChange}\n    />\n  );\n}\n",
+      "type": "registry:component",
+      "target": "components/payment-widget/components/connection-handler.tsx"
+    },
+    {
+      "path": "registry/default/payment-widget/components/wallet-connect-modal.tsx",
+      "content": "\"use client\";\n\nimport { useConnect } from \"wagmi\";\nimport { Button } from \"@/components/ui/button\";\nimport {\n  Dialog,\n  DialogContent,\n  DialogDescription,\n  DialogHeader,\n  DialogTitle,\n} from \"@/components/ui/dialog\";\n\ninterface WalletConnectModalProps {\n  isOpen: boolean;\n  handleModalOpenChange: (open: boolean) => void;\n}\n\nexport function WalletConnectModal({\n  isOpen,\n  handleModalOpenChange,\n}: WalletConnectModalProps) {\n  const { connectors, connect, isPending } = useConnect();\n\n  const handleConnect = (connector: any) => {\n    connect({ connector });\n  };\n\n  const getWalletIcon = (connectorName: string) => {\n    switch (connectorName.toLowerCase()) {\n      case \"metamask\":\n        return \"🦊\";\n      case \"walletconnect\":\n        return \"🔗\";\n      case \"coinbase wallet\":\n      case \"coinbase\":\n        return \"🔵\";\n      case \"injected\":\n        return \"💳\";\n      default:\n        return \"👛\";\n    }\n  };\n\n  return (\n    <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>\n      <DialogContent className=\"sm:max-w-md\">\n        <DialogHeader className=\"text-center\">\n          <DialogTitle>Connect Wallet</DialogTitle>\n          <DialogDescription>\n            Choose a wallet to connect and make your payment\n          </DialogDescription>\n        </DialogHeader>\n\n        <div className=\"space-y-3 py-4\">\n          {connectors.map((connector) => (\n            <Button\n              key={connector.uid}\n              onClick={() => handleConnect(connector)}\n              disabled={isPending}\n              variant=\"outline\"\n              className=\"w-full justify-start h-14\"\n            >\n              <div className=\"flex items-center space-x-3\">\n                <span className=\"text-2xl\">\n                  {getWalletIcon(connector.name)}\n                </span>\n                <div className=\"text-left\">\n                  <div className=\"font-medium\">{connector.name}</div>\n                  <div className=\"text-xs text-muted-foreground\">\n                    Connect using {connector.name}\n                  </div>\n                </div>\n              </div>\n            </Button>\n          ))}\n\n          {isPending && (\n            <div className=\"text-center text-sm text-muted-foreground py-2\">\n              Connecting to wallet...\n            </div>\n          )}\n        </div>\n      </DialogContent>\n    </Dialog>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "components/payment-widget/components/wallet-connect-modal.tsx"
+    },
+    {
+      "path": "registry/default/payment-widget/components/payment-modal.tsx",
+      "content": "\"use client\";\n\nimport { useAccount, useDisconnect } from \"wagmi\";\nimport { Button } from \"@/components/ui/button\";\nimport {\n  Dialog,\n  DialogContent,\n  DialogDescription,\n  DialogHeader,\n  DialogTitle,\n} from \"@/components/ui/dialog\";\n\ninterface PaymentModalProps {\n  isOpen: boolean;\n  handleModalOpenChange: (open: boolean) => void;\n}\n\nexport function PaymentModal({\n  isOpen,\n  handleModalOpenChange,\n}: PaymentModalProps) {\n  const { address } = useAccount();\n  const { disconnect } = useDisconnect();\n\n  const handleDisconnect = () => {\n    disconnect();\n    handleModalOpenChange(false);\n  };\n\n  return (\n    <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>\n      <DialogContent className=\"sm:max-w-md\">\n        <DialogHeader>\n          <DialogTitle>Payment</DialogTitle>\n          <DialogDescription>\n            Pay with cryptocurrency using Request Network\n          </DialogDescription>\n        </DialogHeader>\n        <div className=\"p-4 space-y-4\">\n          <div className=\"text-center\">\n            <p className=\"text-2xl font-bold mb-4\">$25.00</p>\n            <p className=\"text-muted-foreground mb-4\">\n              Payment form coming soon...\n            </p>\n          </div>\n          <div className=\"border-t pt-4\">\n            <div className=\"flex items-center justify-between mb-2\">\n              <span className=\"text-sm text-muted-foreground\">Connected:</span>\n              <span className=\"text-sm font-mono\">\n                {address?.slice(0, 6)}...{address?.slice(-4)}\n              </span>\n            </div>\n            <Button\n              variant=\"outline\"\n              onClick={handleDisconnect}\n              className=\"w-full\"\n            >\n              Disconnect\n            </Button>\n          </div>\n        </div>\n      </DialogContent>\n    </Dialog>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "components/payment-widget/components/payment-modal.tsx"
+    },
+    {
+      "path": "components/providers/web3-provider.tsx",
+      "content": "\"use client\";\n\nimport { QueryClient, QueryClientProvider } from \"@tanstack/react-query\";\nimport { WagmiProvider } from \"wagmi\";\nimport { config } from \"@/lib/wagmi\";\n\nconst queryClient = new QueryClient();\n\nexport function Web3Provider({ children }: { children: React.ReactNode }) {\n  return (\n    <WagmiProvider config={config}>\n      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>\n    </WagmiProvider>\n  );\n}\n",
+      "type": "registry:component",
+      "target": "components/providers/web3-provider.tsx"
+    },
+    {
+      "path": "lib/wagmi.ts",
+      "content": "import { createConfig, http } from \"wagmi\";\nimport { mainnet, sepolia } from \"wagmi/chains\";\nimport {\n  injected,\n  walletConnect,\n  coinbaseWallet,\n  metaMask,\n  safe,\n} from \"wagmi/connectors\";\n\nconst projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || \"\";\n\nexport const config = createConfig({\n  chains: [mainnet, sepolia],\n  connectors: [\n    injected(),\n    walletConnect({\n      projectId,\n      metadata: {\n        name: \"Request Network Payment\",\n        description: \"Pay with cryptocurrency using Request Network\",\n        url: \"https://request.network\",\n        icons: [],\n      },\n    }),\n    coinbaseWallet({\n      appName: \"Request Network Payment\",\n    }),\n    metaMask(),\n    safe(),\n  ],\n  transports: {\n    [mainnet.id]: http(),\n    [sepolia.id]: http(),\n  },\n});\n",
+      "type": "registry:lib",
+      "target": "lib/wagmi.ts"
     }
   ]
 }
