@@ -10,23 +10,39 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import { Currency } from "lucide-react";
 import { CurrencySelect } from "./currency-select";
-import { type BuyerInfo, BuyerInfoForm } from "./buyer-info-form";
+import { BuyerInfoForm } from "./buyer-info-form";
+import { type FeeInfo, type PaymentError, type BuyerInfo } from "../types";
+import { PaymentConfirmation } from "./payment-confirmation";
+import { set } from "react-hook-form";
 
 interface PaymentModalProps {
   isOpen: boolean;
   handleModalOpenChange: (open: boolean) => void;
   amountInUsd: string;
+  rnApiKey: string;
+  recipientWallet: string;
+  feeInfo?: FeeInfo;
+
+  onSuccess: () => void;
+  onError: (error: PaymentError) => void;
 }
 
 export function PaymentModal({
   isOpen,
   handleModalOpenChange,
   amountInUsd,
+  rnApiKey,
+  recipientWallet,
+  feeInfo,
+  onSuccess,
+  onError,
 }: PaymentModalProps) {
   const [activeStep, setActiveStep] = useState<
-    "currency-select" | "buyer-info" | "payment-confirmation"
+    | "currency-select"
+    | "buyer-info"
+    | "payment-confirmation"
+    | "payment-success"
   >("currency-select");
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
   const [buyerInfo, setBuyerInfo] = useState<BuyerInfo | null>(null);
@@ -79,6 +95,24 @@ export function PaymentModal({
             onSubmit={handleBuyerInfoSubmit}
           />
         )}
+        {activeStep === "payment-confirmation" &&
+          selectedCurrency &&
+          buyerInfo && (
+            <PaymentConfirmation
+              rnApiKey={rnApiKey}
+              recipientWallet={recipientWallet}
+              feeInfo={feeInfo}
+              buyerInfo={buyerInfo}
+              amountInUsd={amountInUsd}
+              paymentCurrency={selectedCurrency}
+              onBack={() => setActiveStep("buyer-info")}
+              onSuccess={() => {
+                setActiveStep("payment-success");
+                onSuccess();
+              }}
+              onError={onError}
+            />
+          )}
       </DialogContent>
     </Dialog>
   );

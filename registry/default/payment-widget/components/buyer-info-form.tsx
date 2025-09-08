@@ -4,19 +4,7 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
-export interface BuyerInfo {
-  email: string;
-  firstName: string;
-  lastName: string;
-  businessName?: string;
-  phone?: string;
-  streetAddress?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  postalCode?: string;
-}
+import { type BuyerInfo } from "../types";
 
 interface BuyerInfoProps {
   onBack: () => void;

@@ -1,7 +1,9 @@
-import { PaymentWidget } from "@/registry/default/payment-widget/payment-widget";
+import { PaymentWidgetWrapper } from "./components/payment-widget-wrapper";
 
 export default function Home() {
   const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || "";
+  const rnApiKey = process.env.REQUEST_API_KEY || "";
+  const recipientWallet = process.env.RECIPIENT_WALLET || "";
 
   return (
     <main className="container mx-auto py-8 px-4">
@@ -9,7 +11,11 @@ export default function Home() {
 
       <div className="mb-8">
         <h2 className="text-lg font-semibold mb-4">Payment Widget Preview:</h2>
-        <PaymentWidget walletConnectProjectId={projectId} />
+        <PaymentWidgetWrapper
+          walletConnectProjectId={projectId}
+          rnApiKey={rnApiKey}
+          recipientWallet={recipientWallet}
+        />
       </div>
 
       <div className="bg-primary p-4 rounded">
