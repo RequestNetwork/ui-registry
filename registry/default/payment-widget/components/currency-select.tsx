@@ -11,9 +11,9 @@ interface Currency {
 }
 
 const currencies: Currency[] = [
-  { id: "eth-sepolia", name: "Ethereum", symbol: "ETH" },
-  { id: "fau-sepolia", name: "Faucet Token", symbol: "FAU" },
-  { id: "usdc-sepolia", name: "USD Coin", symbol: "USDC" },
+  { id: "ETH-sepolia-sepolia", name: "Ethereum", symbol: "ETH" },
+  { id: "FAU-sepolia", name: "Faucet Token", symbol: "FAU" },
+  { id: "fUSDC-sepolia", name: "USD Coin", symbol: "USDC" },
 ];
 
 interface CurrencySelectProps {

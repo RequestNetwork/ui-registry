@@ -12,8 +12,9 @@ import {
 import { useState } from "react";
 import { CurrencySelect } from "./currency-select";
 import { BuyerInfoForm } from "./buyer-info-form";
-import { type PaymentWidgetProps, type BuyerInfo } from "../types";
 import { PaymentConfirmation } from "./payment-confirmation";
+import { PaymentSuccess } from "./payment-success";
+import { PaymentWidgetProps, type BuyerInfo } from "../types";
 
 interface PaymentModalProps
   extends Omit<PaymentWidgetProps, "walletConnectProjectId"> {
@@ -39,6 +40,7 @@ export function PaymentModal({
   >("currency-select");
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
   const [buyerInfo, setBuyerInfo] = useState<BuyerInfo | null>(null);
+  const [requestId, setRequestId] = useState<string>("");
 
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
@@ -58,6 +60,12 @@ export function PaymentModal({
     setActiveStep("payment-confirmation");
   };
 
+  const handlePaymentSuccess = (txHash: string) => {
+    setRequestId(`req_${txHash.slice(-8)}`);
+    setActiveStep("payment-success");
+    onSuccess(txHash);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
       <DialogContent className="sm:max-w-md">
@@ -67,27 +75,33 @@ export function PaymentModal({
             Pay with crypto using Request Network
           </DialogDescription>
         </DialogHeader>
-        <div className="p-2 space-y-4">
-          <div className="border-t pt-4">
-            <div className="flex flex-row items-center justify-between mb-2">
-              <span className="text-sm font-mono">
-                {address?.slice(0, 6)}...{address?.slice(-4)}
-              </span>
-              <Button variant="ghost" onClick={handleDisconnect}>
-                Disconnect
-              </Button>
+
+        {activeStep !== "payment-success" && (
+          <div className="p-2 space-y-4">
+            <div className="border-t pt-4">
+              <div className="flex flex-row items-center justify-between mb-2">
+                <span className="text-sm font-mono">
+                  {address?.slice(0, 6)}...{address?.slice(-4)}
+                </span>
+                <Button variant="ghost" onClick={handleDisconnect}>
+                  Disconnect
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
+
         {activeStep === "currency-select" && (
           <CurrencySelect onSubmit={handleCurrencySelect} />
         )}
+
         {activeStep === "buyer-info" && (
           <BuyerInfoForm
             onBack={() => setActiveStep("currency-select")}
             onSubmit={handleBuyerInfoSubmit}
           />
         )}
+
         {activeStep === "payment-confirmation" &&
           selectedCurrency &&
           buyerInfo && (
@@ -96,16 +110,22 @@ export function PaymentModal({
               rnApiKey={rnApiKey}
               recipientWallet={recipientWallet}
               feeInfo={feeInfo}
-              onSuccess={(txHash) => {
-                setActiveStep("payment-success");
-                onSuccess(txHash);
-              }}
+              onSuccess={handlePaymentSuccess}
               onError={onError}
               paymentCurrency={selectedCurrency}
               buyerInfo={buyerInfo}
               onBack={() => setActiveStep("buyer-info")}
             />
           )}
+
+        {activeStep === "payment-success" && selectedCurrency && (
+          <PaymentSuccess
+            requestId={requestId}
+            buyerInfo={{ email: "test@test.com" }}
+            amountInUsd={amountInUsd}
+            paymentCurrency={selectedCurrency}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

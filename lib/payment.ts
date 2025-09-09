@@ -1,8 +1,4 @@
-import {
-  type FeeInfo,
-  type PaymentError,
-  type Transaction,
-} from "@/types/payment";
+import { type FeeInfo, type PaymentError } from "@/types";
 import { RN_API_URL } from "@/registry/default/payment-widget/constants";
 
 export interface PaymentParams {
@@ -10,6 +6,23 @@ export interface PaymentParams {
   recipientWallet: string;
   paymentCurrency: string;
   feeInfo?: FeeInfo;
+}
+
+interface PayoutAPITransaction {
+  to: string;
+  data: string;
+  value: number | string | { type: string; hex: string };
+}
+export interface PayoutAPIResponse {
+  requestId: string;
+  paymentReference: string;
+  transactions: PayoutAPITransaction[];
+  metadata: {
+    stepsRequired: number;
+    needsApproval: boolean;
+    approvalTransactionIndex: number;
+    paymentTransactionIndex: number;
+  };
 }
 
 // Best to use the return value of useSendTransaction from wagmi directly
@@ -25,8 +38,29 @@ export const isPaymentError = (error: any): error is PaymentError => {
   );
 };
 
+export const normalizeValue = (
+  value: PayoutAPITransaction["value"],
+): bigint => {
+  // ERC20 tokens don't have a bignumber returned
+  if (typeof value === "number") {
+    return BigInt(value);
+  }
+
+  if (typeof value === "string") {
+    return BigInt(value);
+  }
+
+  if (typeof value === "object" && value !== null && "hex" in value) {
+    return BigInt(value.hex);
+  }
+
+  // Fallback to 0 if we can't parse it
+  console.warn("Unknown value format, defaulting to 0:", value);
+  return BigInt(0);
+};
+
 export const executeTransactions = async (
-  transactions: Transaction[],
+  transactions: PayoutAPITransaction[],
   sendTransaction: SendTransactionFunction,
 ): Promise<string> => {
   let lastTxHash = "";
@@ -36,7 +70,7 @@ export const executeTransactions = async (
       lastTxHash = await sendTransaction({
         to: tx.to as `0x${string}`,
         data: tx.data as `0x${string}`,
-        value: BigInt(tx.value.hex),
+        value: normalizeValue(tx.value),
       });
     }
 
@@ -99,13 +133,10 @@ export const executePayment = async ({
       throw { type: "api", error } as PaymentError;
     }
 
-    const data = await response.json();
+    const data: PayoutAPIResponse = await response.json();
 
-    if (data?.calldata?.transactions) {
-      return await executeTransactions(
-        data.calldata.transactions,
-        sendTransaction,
-      );
+    if (data?.transactions) {
+      return await executeTransactions(data.transactions, sendTransaction);
     } else {
       const error = new Error("No transaction data received from backend");
       throw { type: "api", error } as PaymentError;

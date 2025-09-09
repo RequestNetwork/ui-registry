@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAccount, useSendTransaction } from "wagmi";
 import { executePayment, PaymentParams } from "@/lib/payment";
-import { type FeeInfo, type PaymentError } from "@/types/payment";
+import { type PaymentError } from "@/types";
 
 export const usePayment = () => {
   const [isExecuting, setIsExecuting] = useState(false);

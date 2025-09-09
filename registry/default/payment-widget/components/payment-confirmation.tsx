@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowDown } from "lucide-react";
-import { type FeeInfo, type PaymentError } from "@/types/payment";
+import { type PaymentError } from "@/types";
 import { type PaymentWidgetProps, type BuyerInfo } from "../types";
 import { usePayment } from "@/hooks/use-payment";
 

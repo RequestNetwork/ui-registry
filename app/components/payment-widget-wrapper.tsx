@@ -24,7 +24,7 @@ export function PaymentWidgetWrapper({
   return (
     <PaymentWidget
       walletConnectProjectId={walletConnectProjectId}
-      amountInUsd="25.00"
+      amountInUsd="1.00"
       rnApiKey={rnApiKey}
       recipientWallet={recipientWallet}
       onSuccess={handleSuccess}

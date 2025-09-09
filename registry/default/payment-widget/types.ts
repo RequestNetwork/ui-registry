@@ -1,4 +1,4 @@
-import { type FeeInfo, type PaymentError } from "@/types/payment";
+import { type FeeInfo, type PaymentError } from "@/types";
 
 export interface BuyerInfo {
   email: string;
