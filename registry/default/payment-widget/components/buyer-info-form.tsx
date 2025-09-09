@@ -27,7 +27,9 @@ export function BuyerInfoForm({ onBack, onSubmit }: BuyerInfoProps) {
       <h3 className="text-lg font-semibold">Buyer Information</h3>
       <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email">
+            Email <span className="text-red-500">*</span>
+          </Label>
           <Input
             id="email"
             type="email"
@@ -53,26 +55,12 @@ export function BuyerInfoForm({ onBack, onSubmit }: BuyerInfoProps) {
             <Input
               id="firstName"
               placeholder="John"
-              {...register("firstName", { required: "First name is required" })}
+              {...register("firstName")}
             />
-            {errors.firstName && (
-              <span className="text-sm text-destructive">
-                {errors.firstName.message}
-              </span>
-            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="lastName">Last Name</Label>
-            <Input
-              id="lastName"
-              placeholder="Doe"
-              {...register("lastName", { required: "Last name is required" })}
-            />
-            {errors.lastName && (
-              <span className="text-sm text-destructive">
-                {errors.lastName.message}
-              </span>
-            )}
+            <Input id="lastName" placeholder="Doe" {...register("lastName")} />
           </div>
         </div>
 

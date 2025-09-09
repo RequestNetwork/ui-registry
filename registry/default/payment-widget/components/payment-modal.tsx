@@ -12,20 +12,13 @@ import {
 import { useState } from "react";
 import { CurrencySelect } from "./currency-select";
 import { BuyerInfoForm } from "./buyer-info-form";
-import { type FeeInfo, type PaymentError, type BuyerInfo } from "../types";
+import { type PaymentWidgetProps, type BuyerInfo } from "../types";
 import { PaymentConfirmation } from "./payment-confirmation";
-import { set } from "react-hook-form";
 
-interface PaymentModalProps {
+interface PaymentModalProps
+  extends Omit<PaymentWidgetProps, "walletConnectProjectId"> {
   isOpen: boolean;
   handleModalOpenChange: (open: boolean) => void;
-  amountInUsd: string;
-  rnApiKey: string;
-  recipientWallet: string;
-  feeInfo?: FeeInfo;
-
-  onSuccess: () => void;
-  onError: (error: PaymentError) => void;
 }
 
 export function PaymentModal({
@@ -99,18 +92,18 @@ export function PaymentModal({
           selectedCurrency &&
           buyerInfo && (
             <PaymentConfirmation
+              amountInUsd={amountInUsd}
               rnApiKey={rnApiKey}
               recipientWallet={recipientWallet}
               feeInfo={feeInfo}
-              buyerInfo={buyerInfo}
-              amountInUsd={amountInUsd}
-              paymentCurrency={selectedCurrency}
-              onBack={() => setActiveStep("buyer-info")}
-              onSuccess={() => {
+              onSuccess={(txHash) => {
                 setActiveStep("payment-success");
-                onSuccess();
+                onSuccess(txHash);
               }}
               onError={onError}
+              paymentCurrency={selectedCurrency}
+              buyerInfo={buyerInfo}
+              onBack={() => setActiveStep("buyer-info")}
             />
           )}
       </DialogContent>

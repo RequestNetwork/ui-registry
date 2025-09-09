@@ -1,30 +1,17 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowDown } from "lucide-react";
-import { type FeeInfo, type PaymentError, type BuyerInfo } from "../types";
-import { useAccount, useSendTransaction } from "wagmi";
-import { RN_API_URL } from "../constants";
+import { type FeeInfo, type PaymentError } from "@/types/payment";
+import { type PaymentWidgetProps, type BuyerInfo } from "../types";
+import { usePayment } from "@/hooks/use-payment";
 
-interface PaymentConfirmationProps {
-  rnApiKey: string;
-  recipientWallet: string;
-  feeInfo?: FeeInfo;
-  buyerInfo: BuyerInfo;
-  amountInUsd: string;
+interface PaymentConfirmationProps
+  extends Omit<PaymentWidgetProps, "walletConnectProjectId"> {
   paymentCurrency: string;
-
+  buyerInfo: BuyerInfo;
   onBack: () => void;
-  onSuccess: (txHash: string) => void;
-  onError: (error: PaymentError) => void;
 }
-
-const isPaymentError = (error: any): error is PaymentError => {
-  return (
-    error && typeof error === "object" && "type" in error && "error" in error
-  );
-};
 
 export function PaymentConfirmation({
   amountInUsd,
@@ -32,83 +19,27 @@ export function PaymentConfirmation({
   rnApiKey,
   recipientWallet,
   feeInfo,
-  buyerInfo,
   onBack,
   onSuccess,
   onError,
 }: PaymentConfirmationProps) {
-  const [isExecuting, setIsExecuting] = useState(false);
-  const { isConnected } = useAccount();
-  const { sendTransactionAsync } = useSendTransaction();
-
-  const executeTransactions = async (
-    transactions: Array<{ to: string; data: string; value: { hex: string } }>,
-  ) => {
-    if (!isConnected) {
-      return;
-    }
-
-    try {
-      for (let i = 0; i < transactions.length; i++) {
-        const tx = transactions[i];
-
-        await sendTransactionAsync({
-          to: tx.to as `0x${string}`,
-          data: tx.data as `0x${string}`,
-          value: BigInt(tx.value.hex),
-        });
-      }
-    } catch (error) {
-      console.error("Transaction execution failed:", error);
-      throw { type: "transaction", error: error as Error };
-    }
-  };
+  const { isExecuting, executePayment } = usePayment();
 
   const handleExecutePayment = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setIsExecuting(true);
-
     try {
-      const response = await fetch(`${RN_API_URL}/v2/payouts`, {
-        method: "POST",
-        headers: {
-          "x-api-key": rnApiKey,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          amount: amountInUsd,
-          payee: recipientWallet,
-          invoiceCurrency: "USD",
-          paymentCurrency: paymentCurrency,
-          feePercentage: feeInfo?.feePercentage || undefined,
-          feeAddress: feeInfo?.feeAddress || undefined,
-        }),
+      const txHash = await executePayment(rnApiKey, {
+        amountInUsd,
+        recipientWallet,
+        paymentCurrency,
+        feeInfo,
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        const error = new Error(errorData.error || "Failed to create payment");
-        throw { type: "api", error };
-      }
-
-      const data = await response.json();
-
-      if (data?.calldata?.transactions) {
-        await executeTransactions(data.calldata.transactions);
-      } else {
-        const error = new Error("No transaction data received from backend");
-        throw { type: "api", error };
-      }
+      console.log("Payment completed with tx hash:", txHash);
+      onSuccess(txHash);
     } catch (error) {
-      console.error("Error in payment flow:", error);
-      if (isPaymentError(error)) {
-        onError(error);
-      } else {
-        onError({ type: "unknown", error: error as Error });
-      }
-    } finally {
-      setIsExecuting(false);
+      onError(error as PaymentError);
     }
   };
 
@@ -119,7 +50,7 @@ export function PaymentConfirmation({
       <div className="flex items-center justify-center space-x-4 p-6 bg-gray-50 rounded-lg">
         <div className="flex flex-col items-center">
           <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
-            {amountInUsd} USD
+            USD
           </div>
           <span className="text-sm text-gray-600 mt-2">From</span>
         </div>
@@ -160,7 +91,7 @@ export function PaymentConfirmation({
           type="button"
           onClick={handleExecutePayment}
           className="flex-1"
-          disabled={isExecuting || !isConnected}
+          disabled={isExecuting}
         >
           {isExecuting ? "Processing..." : "Pay"}
         </Button>

@@ -8,11 +8,12 @@
       "type": "registry:component",
       "title": "Payment Widget",
       "description": "A wallet-connected payment widget for Request Network using pure wagmi",
-      "registryDependencies": ["button", "dialog"],
+      "registryDependencies": ["button", "dialog", "input", "label"],
       "dependencies": [
         "wagmi@^2.12.29",
         "viem@^2.21.53",
-        "@tanstack/react-query@^5.64.1"
+        "@tanstack/react-query@^5.64.1",
+        "react-hook-form@^7.0.0"
       ],
       "files": [
         {
@@ -36,6 +37,31 @@
           "target": "components/payment-widget/components/payment-modal.tsx"
         },
         {
+          "path": "registry/default/payment-widget/components/currency-select.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/currency-select.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/buyer-info-form.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/buyer-info-form.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/payment-confirmation.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/payment-confirmation.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/types.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/types.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/constants.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/constants.ts"
+        },
+        {
           "path": "components/providers/web3-provider.tsx",
           "type": "registry:component",
           "target": "components/providers/web3-provider.tsx"
@@ -44,6 +70,16 @@
           "path": "lib/wagmi.ts",
           "type": "registry:lib",
           "target": "lib/wagmi.ts"
+        },
+        {
+          "path": "lib/payment.ts",
+          "type": "registry:lib",
+          "target": "lib/payment.ts"
+        },
+        {
+          "path": "hooks/use-payment.ts",
+          "type": "registry:lib",
+          "target": "hooks/use-payment.ts"
         }
       ]
     }
