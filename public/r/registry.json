@@ -1,0 +1,51 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "requestnetwork",
+  "homepage": "https://request.network",
+  "items": [
+    {
+      "name": "payment-widget",
+      "type": "registry:component",
+      "title": "Payment Widget",
+      "description": "A wallet-connected payment widget for Request Network using pure wagmi",
+      "registryDependencies": ["button", "dialog"],
+      "dependencies": [
+        "wagmi@^2.12.29",
+        "viem@^2.21.53",
+        "@tanstack/react-query@^5.64.1"
+      ],
+      "files": [
+        {
+          "path": "registry/default/payment-widget/payment-widget.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/payment-widget.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/connection-handler.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/connection-handler.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/wallet-connect-modal.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/wallet-connect-modal.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/payment-modal.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/payment-modal.tsx"
+        },
+        {
+          "path": "components/providers/web3-provider.tsx",
+          "type": "registry:component",
+          "target": "components/providers/web3-provider.tsx"
+        },
+        {
+          "path": "lib/wagmi.ts",
+          "type": "registry:lib",
+          "target": "lib/wagmi.ts"
+        }
+      ]
+    }
+  ]
+}

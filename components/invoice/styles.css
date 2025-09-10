@@ -1,0 +1,245 @@
+.invoice-container {
+  background-color: #ffffff;
+  padding: 32px;
+  max-width: 896px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #000502;
+}
+
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 32px;
+}
+
+.company-info {
+  flex: 1;
+  padding-right: 32px;
+}
+
+.company-name {
+  font-size: 30px;
+  font-weight: 700;
+  color: #00b591;
+  margin-bottom: 16px;
+}
+
+.company-wallet {
+  font-size: 12px;
+  color: #5e6561;
+  font-family: "Courier New", monospace;
+  margin-bottom: 8px;
+}
+
+.company-address > div {
+  margin-bottom: 4px;
+}
+
+.invoice-title-section {
+  text-align: right;
+}
+
+.invoice-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #00b591;
+  margin-bottom: 8px;
+}
+
+.invoice-number {
+  font-size: 20px;
+  font-weight: 700;
+  color: #00b591;
+}
+
+.invoice-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.invoice-details > div {
+  margin-bottom: 8px;
+}
+
+.invoice-details .label {
+  font-weight: 600;
+}
+
+.transaction-hash {
+  font-size: 12px;
+  color: #5e6561;
+}
+
+.bill-to-section {
+  background-color: #f4f5f5;
+  padding: 16px;
+  border-radius: 8px;
+  min-width: 288px;
+}
+
+.bill-to-header {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 12px;
+}
+
+.customer-name {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.customer-wallet {
+  font-size: 12px;
+  color: #5e6561;
+  font-family: "Courier New", monospace;
+  margin-bottom: 8px;
+}
+
+.customer-email {
+  margin-bottom: 8px;
+}
+
+.customer-address {
+  font-size: 14px;
+}
+
+.customer-address > div {
+  margin-bottom: 4px;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #dbdfdd;
+  margin-bottom: 32px;
+}
+
+.items-table th {
+  background-color: #ecefed;
+  border: 1px solid #dbdfdd;
+  padding: 12px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.items-table th.center {
+  text-align: center;
+}
+.items-table th.right {
+  text-align: right;
+}
+
+.items-table td {
+  border: 1px solid #dbdfdd;
+  padding: 12px;
+}
+
+.items-table td.center {
+  text-align: center;
+}
+.items-table td.right {
+  text-align: right;
+}
+
+.items-table .row-even {
+  background-color: #ffffff;
+}
+
+.items-table .row-odd {
+  background-color: #f4f5f5;
+}
+
+.price-amount {
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+}
+
+.price-amount.bold {
+  font-weight: 600;
+}
+
+.col-qty {
+  width: 64px;
+}
+.col-price {
+  width: 128px;
+}
+.col-discount {
+  width: 64px;
+}
+.col-tax {
+  width: 64px;
+}
+.col-amount {
+  width: 128px;
+}
+
+.totals-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 32px;
+}
+
+.totals-box {
+  background-color: #f4f5f5;
+  padding: 24px;
+  border-radius: 8px;
+  min-width: 320px;
+}
+
+.total-line {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.total-line.discount {
+  color: #00b591;
+}
+
+.total-line.final {
+  font-size: 18px;
+  font-weight: 700;
+  color: #00b591;
+  padding-top: 12px;
+  border-top: 1px solid #dbdfdd;
+}
+
+.total-line.usd {
+  font-size: 14px;
+  color: #5e6561;
+}
+
+.total-amount {
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+}
+
+.total-amount.large {
+  font-size: inherit;
+}
+
+.notes-section {
+  border-top: 1px solid #dbdfdd;
+  padding-top: 16px;
+}
+
+.notes-header {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.notes-content {
+  font-size: 14px;
+  color: #5e6561;
+  background-color: #f4f5f5;
+  padding: 12px;
+  border-radius: 6px;
+}
