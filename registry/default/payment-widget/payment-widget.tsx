@@ -9,12 +9,14 @@ import { PaymentWidgetProps } from "./types";
 
 function PaymentWidgetInner({
   amountInUsd,
-  rnApiKey,
   recipientWallet,
-  feeInfo,
+  config,
+  invoiceInfo,
   onSuccess,
   onError,
-}: Omit<PaymentWidgetProps, "walletConnectProjectId">) {
+}: Omit<PaymentWidgetProps, "config"> & {
+  config: Omit<PaymentWidgetProps["config"], "walletConnectProjectId">;
+}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleModalOpenChange = (open: boolean) => {
     setIsModalOpen(open);
@@ -33,9 +35,9 @@ function PaymentWidgetInner({
             isOpen={isModalOpen}
             handleModalOpenChange={handleModalOpenChange}
             amountInUsd={amountInUsd}
-            rnApiKey={rnApiKey}
             recipientWallet={recipientWallet}
-            feeInfo={feeInfo}
+            config={config}
+            invoiceInfo={invoiceInfo}
             onSuccess={onSuccess}
             onError={onError}
           />
@@ -47,21 +49,22 @@ function PaymentWidgetInner({
 
 export function PaymentWidget({
   amountInUsd,
-  walletConnectProjectId,
-  rnApiKey,
   recipientWallet,
-  feeInfo,
+  config,
+  invoiceInfo,
   onSuccess,
   onError,
 }: PaymentWidgetProps) {
-  // We need to wrap the widget in the Web3Provider to provide wagmi context and so it doesn't rerender every time the modal opens or closes
   return (
-    <Web3Provider walletConnectProjectId={walletConnectProjectId}>
+    <Web3Provider walletConnectProjectId={config.walletConnectProjectId}>
       <PaymentWidgetInner
         amountInUsd={amountInUsd}
-        rnApiKey={rnApiKey}
         recipientWallet={recipientWallet}
-        feeInfo={feeInfo}
+        config={{
+          rnApiKey: config.rnApiKey,
+          feeInfo: config.feeInfo,
+        }}
+        invoiceInfo={invoiceInfo}
         onSuccess={onSuccess}
         onError={onError}
       />

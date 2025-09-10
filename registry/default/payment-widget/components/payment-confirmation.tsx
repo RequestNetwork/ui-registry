@@ -2,15 +2,19 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ArrowDown } from "lucide-react";
-import { type PaymentError } from "@/types";
-import { type PaymentWidgetProps, type BuyerInfo } from "../types";
+import { FeeInfo, type PaymentError } from "@/types";
+import { type PaymentWidgetProps } from "../types";
 import { usePayment } from "@/hooks/use-payment";
 
-interface PaymentConfirmationProps
-  extends Omit<PaymentWidgetProps, "walletConnectProjectId"> {
+interface PaymentConfirmationProps {
+  feeInfo: FeeInfo | undefined;
+  rnApiKey: string;
+  amountInUsd: string;
+  recipientWallet: string;
   paymentCurrency: string;
-  buyerInfo: BuyerInfo;
   onBack: () => void;
+  onSuccess: (txHash: string) => void;
+  onError: (error: PaymentError) => void;
 }
 
 export function PaymentConfirmation({

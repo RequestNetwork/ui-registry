@@ -4,19 +4,26 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { type BuyerInfo } from "../types";
+import { type BuyerInfo } from "@/types";
 
 interface BuyerInfoProps {
+  initialData?: BuyerInfo;
   onBack: () => void;
   onSubmit: (data: BuyerInfo) => void;
 }
 
-export function BuyerInfoForm({ onBack, onSubmit }: BuyerInfoProps) {
+export function BuyerInfoForm({
+  initialData,
+  onBack,
+  onSubmit,
+}: BuyerInfoProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<BuyerInfo>();
+  } = useForm<BuyerInfo>({
+    defaultValues: initialData || {},
+  });
 
   const onFormSubmit = (data: BuyerInfo) => {
     onSubmit(data);
@@ -79,18 +86,8 @@ export function BuyerInfoForm({ onBack, onSubmit }: BuyerInfoProps) {
               id="phone"
               type="tel"
               placeholder="+1 (555) 123-4567"
-              {...register("phone", {
-                pattern: {
-                  value: /^\+?[1-9]\d{1,14}$/,
-                  message: "Please enter a valid phone number",
-                },
-              })}
+              {...register("phone")}
             />
-            {errors.phone && (
-              <span className="text-sm text-destructive">
-                {errors.phone.message}
-              </span>
-            )}
           </div>
         </div>
 

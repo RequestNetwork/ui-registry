@@ -1,29 +1,20 @@
-import { type FeeInfo, type PaymentError } from "@/types";
+import { type FeeInfo, type PaymentError, InvoiceInfo } from "@/types";
 
-export interface BuyerInfo {
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  businessName?: string;
-  phone?: string;
-  streetAddress?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  postalCode?: string;
+export interface PaymentConfig {
+  walletConnectProjectId?: string;
+  rnApiKey: string;
+  feeInfo?: FeeInfo;
 }
 
 export interface PaymentWidgetProps {
   // The amount to be paid in USD
   amountInUsd: string;
-  // Optional WalletConnect Project ID for connecting via WalletConnect
-  walletConnectProjectId?: string;
-  // RN API Key to use to access the Request Network API
-  rnApiKey: string;
   // The recipient wallet address for the payment
   recipientWallet: string;
-  // Optional fee info to include fees in the payment
-  feeInfo?: FeeInfo;
+  // Configuration for the payment widget
+  config: PaymentConfig;
+  // Invoice information
+  invoiceInfo: InvoiceInfo;
   // On success callback when the payment is completed
   onSuccess: (txHash: string) => void;
   // On error callback when the payment fails

@@ -14,10 +14,11 @@ import { CurrencySelect } from "./currency-select";
 import { BuyerInfoForm } from "./buyer-info-form";
 import { PaymentConfirmation } from "./payment-confirmation";
 import { PaymentSuccess } from "./payment-success";
-import { PaymentWidgetProps, type BuyerInfo } from "../types";
+import { type BuyerInfo } from "@/types";
+import { type PaymentWidgetProps } from "../types";
 
-interface PaymentModalProps
-  extends Omit<PaymentWidgetProps, "walletConnectProjectId"> {
+interface PaymentModalProps extends Omit<PaymentWidgetProps, "config"> {
+  config: Omit<PaymentWidgetProps["config"], "walletConnectProjectId">;
   isOpen: boolean;
   handleModalOpenChange: (open: boolean) => void;
 }
@@ -26,9 +27,9 @@ export function PaymentModal({
   isOpen,
   handleModalOpenChange,
   amountInUsd,
-  rnApiKey,
   recipientWallet,
-  feeInfo,
+  config,
+  invoiceInfo,
   onSuccess,
   onError,
 }: PaymentModalProps) {
@@ -39,7 +40,9 @@ export function PaymentModal({
     | "payment-success"
   >("currency-select");
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
-  const [buyerInfo, setBuyerInfo] = useState<BuyerInfo | null>(null);
+  const [buyerInfo, setBuyerInfo] = useState<BuyerInfo | undefined>(
+    invoiceInfo.buyerInfo || undefined,
+  );
   const [requestId, setRequestId] = useState<string>("");
 
   const { address } = useAccount();
@@ -97,6 +100,7 @@ export function PaymentModal({
 
         {activeStep === "buyer-info" && (
           <BuyerInfoForm
+            initialData={buyerInfo}
             onBack={() => setActiveStep("currency-select")}
             onSubmit={handleBuyerInfoSubmit}
           />
@@ -107,25 +111,29 @@ export function PaymentModal({
           buyerInfo && (
             <PaymentConfirmation
               amountInUsd={amountInUsd}
-              rnApiKey={rnApiKey}
               recipientWallet={recipientWallet}
-              feeInfo={feeInfo}
               onSuccess={handlePaymentSuccess}
               onError={onError}
               paymentCurrency={selectedCurrency}
-              buyerInfo={buyerInfo}
+              feeInfo={config.feeInfo}
+              rnApiKey={config.rnApiKey}
               onBack={() => setActiveStep("buyer-info")}
             />
           )}
 
-        {activeStep === "payment-success" && selectedCurrency && (
-          <PaymentSuccess
-            requestId={requestId}
-            buyerInfo={{ email: "test@test.com" }}
-            amountInUsd={amountInUsd}
-            paymentCurrency={selectedCurrency}
-          />
-        )}
+        {activeStep === "payment-success" &&
+          selectedCurrency &&
+          buyerInfo &&
+          address && (
+            <PaymentSuccess
+              requestId={requestId}
+              amountInUsd={amountInUsd}
+              paymentCurrency={selectedCurrency}
+              invoiceInfo={invoiceInfo}
+              finalBuyerInfo={buyerInfo}
+              connectedWalletAddress={address}
+            />
+          )}
       </DialogContent>
     </Dialog>
   );

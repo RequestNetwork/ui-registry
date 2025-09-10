@@ -3,75 +3,49 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ExternalLink, Download } from "lucide-react";
 import { createInvoice, type CreateInvoiceParams } from "@/lib/invoice";
-import { type BuyerInfo } from "../types";
 import Link from "next/link";
 import { useRef } from "react";
 import { InvoicePDFTemplate } from "@/components/invoice/invoice-template";
 import html2pdf from "html2pdf.js";
+import { type BuyerInfo, type InvoiceInfo } from "@/types";
 
 interface PaymentSuccessProps {
   requestId: string;
-  buyerInfo: BuyerInfo;
   amountInUsd: string;
   paymentCurrency: string;
+  invoiceInfo: InvoiceInfo;
+  finalBuyerInfo: BuyerInfo;
+  connectedWalletAddress: string;
 }
 
 export function PaymentSuccess({
   requestId,
-  buyerInfo,
   amountInUsd,
   paymentCurrency,
+  invoiceInfo,
+  finalBuyerInfo,
+  connectedWalletAddress,
 }: PaymentSuccessProps) {
   const invoiceRef = useRef<HTMLDivElement>(null);
 
   const invoiceParams: CreateInvoiceParams = {
-    company: {
-      name: "Request Network Inc.",
-      walletAddress: "0x742d35Cc6634C0532925a3b8D697Bf5e",
-      address: {
-        street: "123 Crypto Street",
-        city: "San Francisco",
-        state: "CA",
-        zipCode: "94105",
-        country: "USA",
-      },
-      taxId: "US123456789",
-      email: "hello@request.network",
-      phone: "+1 (555) 123-4567",
-      website: "https://request.network",
-    },
+    company: invoiceInfo.companyInfo,
     buyer: {
-      walletAddress: "0x" + "0".repeat(40), // Mock buyer wallet
-      email: buyerInfo.email,
-      firstName: buyerInfo.firstName,
-      lastName: buyerInfo.lastName,
-      address: buyerInfo.streetAddress
-        ? {
-            street: buyerInfo.streetAddress,
-            city: buyerInfo.city || "",
-            state: buyerInfo.state || "",
-            zipCode: buyerInfo.postalCode || "",
-            country: buyerInfo.country || "",
-          }
-        : undefined,
+      ...finalBuyerInfo,
+      walletAddress: connectedWalletAddress,
     },
     payment: {
       chain: "ethereum",
       currency: paymentCurrency,
-      exchangeRate: 1, // Mock exchange rate
-      transactionHash: "", // We don't have the tx hash in this context
+      exchangeRate: 1,
+      transactionHash: "",
     },
-    items: [
-      {
-        id: "1",
-        description: "Payment via Request Network",
-        quantity: 1,
-        unitPrice: parseFloat(amountInUsd),
-        discount: 0,
-        tax: 0,
-      },
-    ],
+    items: invoiceInfo.items,
+    totals: invoiceInfo.totals,
     metadata: {
+      ...(invoiceInfo.invoiceNumber && {
+        invoiceNumber: invoiceInfo.invoiceNumber,
+      }),
       notes: `Payment processed through Request Network for ${amountInUsd} USD`,
     },
   };
@@ -87,7 +61,7 @@ export function PaymentSuccess({
       html2pdf()
         .set({
           margin: 1,
-          filename: "invoice.pdf",
+          filename: `invoice-${invoiceParams.metadata?.invoiceNumber || "payment"}.pdf`,
           image: { type: "jpeg", quality: 0.98 },
           html2canvas: { scale: 2 },
           jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
@@ -129,6 +103,7 @@ export function PaymentSuccess({
           </Link>
         </Button>
       </div>
+
       <div
         style={{
           height: 0,

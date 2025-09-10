@@ -5,7 +5,6 @@ import {
   formatInvoiceDate,
   type InvoiceData,
 } from "@/lib/invoice";
-// Since we are using html2pdf, which doesn't work with tailwind, we need to import a separate CSS file
 import "./styles.css";
 
 export const InvoicePDFTemplate: React.FC<{ invoice: InvoiceData }> = ({
@@ -14,7 +13,6 @@ export const InvoicePDFTemplate: React.FC<{ invoice: InvoiceData }> = ({
   return (
     <div className="invoice-container">
       <div className="invoice-header">
-        {/* Company Info */}
         <div className="company-info">
           <h1 className="company-name">{invoice.company.name}</h1>
           <div className="company-wallet">{invoice.company.walletAddress}</div>
@@ -29,7 +27,6 @@ export const InvoicePDFTemplate: React.FC<{ invoice: InvoiceData }> = ({
           </div>
         </div>
 
-        {/* Invoice Title */}
         <div className="invoice-title-section">
           <h2 className="invoice-title">INVOICE</h2>
           <div className="invoice-number">
@@ -67,15 +64,13 @@ export const InvoicePDFTemplate: React.FC<{ invoice: InvoiceData }> = ({
           </div>
           <div className="customer-wallet">{invoice.buyer.walletAddress}</div>
           <div className="customer-email">{invoice.buyer.email}</div>
-          {invoice.buyer.address && (
-            <div className="customer-address">
-              <div>{invoice.buyer.address.street}</div>
-              <div>
-                {invoice.buyer.address.city}, {invoice.buyer.address.state}{" "}
-                {invoice.buyer.address.zipCode}
-              </div>
+          <div className="customer-address">
+            <div>{invoice.buyer.streetAddress}</div>
+            <div>
+              {invoice.buyer.city}, {invoice.buyer.state}{" "}
+              {invoice.buyer.postalCode}
             </div>
-          )}
+          </div>
         </div>
       </div>
 
@@ -87,7 +82,7 @@ export const InvoicePDFTemplate: React.FC<{ invoice: InvoiceData }> = ({
             <th className="right col-price">Unit Price</th>
             <th className="center col-discount">Disc%</th>
             <th className="center col-tax">Tax%</th>
-            <th className="right col-amount">Amount</th>
+            <th className="right col-amount">Total</th>
           </tr>
         </thead>
         <tbody>
@@ -101,17 +96,15 @@ export const InvoicePDFTemplate: React.FC<{ invoice: InvoiceData }> = ({
               <td className="right price-amount">
                 {formatCryptoAmount(
                   item.unitPrice,
-                  invoice.payment.currency,
-                  6,
+                  item.currency || invoice.payment.currency,
                 )}
               </td>
               <td className="center">{item.discount || 0}%</td>
               <td className="center">{item.tax || 0}%</td>
               <td className="right price-amount bold">
                 {formatCryptoAmount(
-                  item.finalAmount,
-                  invoice.payment.currency,
-                  6,
+                  item.total,
+                  item.currency || invoice.payment.currency,
                 )}
               </td>
             </tr>
@@ -119,20 +112,8 @@ export const InvoicePDFTemplate: React.FC<{ invoice: InvoiceData }> = ({
         </tbody>
       </table>
 
-      {/* Totals */}
       <div className="totals-section">
         <div className="totals-box">
-          <div className="total-line">
-            <span>Subtotal:</span>
-            <span className="total-amount">
-              {formatCryptoAmount(
-                invoice.totals.subtotal,
-                invoice.payment.currency,
-                6,
-              )}
-            </span>
-          </div>
-
           {invoice.totals.totalDiscount > 0 && (
             <div className="total-line discount">
               <span>Discount:</span>
@@ -141,7 +122,6 @@ export const InvoicePDFTemplate: React.FC<{ invoice: InvoiceData }> = ({
                 {formatCryptoAmount(
                   invoice.totals.totalDiscount,
                   invoice.payment.currency,
-                  6,
                 )}
               </span>
             </div>
@@ -154,7 +134,6 @@ export const InvoicePDFTemplate: React.FC<{ invoice: InvoiceData }> = ({
                 {formatCryptoAmount(
                   invoice.totals.totalTax,
                   invoice.payment.currency,
-                  6,
                 )}
               </span>
             </div>
@@ -166,7 +145,6 @@ export const InvoicePDFTemplate: React.FC<{ invoice: InvoiceData }> = ({
               {formatCryptoAmount(
                 invoice.totals.total,
                 invoice.payment.currency,
-                6,
               )}
             </span>
           </div>
@@ -178,7 +156,6 @@ export const InvoicePDFTemplate: React.FC<{ invoice: InvoiceData }> = ({
         </div>
       </div>
 
-      {/* Notes */}
       {invoice.metadata.notes && (
         <div className="notes-section">
           <h4 className="notes-header">Notes:</h4>
