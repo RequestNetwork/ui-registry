@@ -10,12 +10,16 @@ import { PaymentWidgetProps } from "./types";
 function PaymentWidgetInner({
   amountInUsd,
   recipientWallet,
-  config,
+  paymentConfig,
+  uiConfig,
   invoiceInfo,
   onSuccess,
   onError,
-}: Omit<PaymentWidgetProps, "config"> & {
-  config: Omit<PaymentWidgetProps["config"], "walletConnectProjectId">;
+}: Omit<PaymentWidgetProps, "paymentConfig"> & {
+  paymentConfig: Omit<
+    PaymentWidgetProps["paymentConfig"],
+    "walletConnectProjectId"
+  >;
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleModalOpenChange = (open: boolean) => {
@@ -36,7 +40,11 @@ function PaymentWidgetInner({
             handleModalOpenChange={handleModalOpenChange}
             amountInUsd={amountInUsd}
             recipientWallet={recipientWallet}
-            config={config}
+            paymentConfig={paymentConfig}
+            uiConfig={{
+              showInvoiceDownload: uiConfig?.showInvoiceDownload || true,
+              showRequestScanUrl: uiConfig?.showRequestScanUrl || true,
+            }}
             invoiceInfo={invoiceInfo}
             onSuccess={onSuccess}
             onError={onError}
@@ -50,20 +58,23 @@ function PaymentWidgetInner({
 export function PaymentWidget({
   amountInUsd,
   recipientWallet,
-  config,
+  paymentConfig,
   invoiceInfo,
   onSuccess,
   onError,
+  uiConfig,
 }: PaymentWidgetProps) {
   return (
-    <Web3Provider walletConnectProjectId={config.walletConnectProjectId}>
+    <Web3Provider walletConnectProjectId={paymentConfig.walletConnectProjectId}>
       <PaymentWidgetInner
         amountInUsd={amountInUsd}
         recipientWallet={recipientWallet}
-        config={{
-          rnApiKey: config.rnApiKey,
-          feeInfo: config.feeInfo,
-          network: config.network,
+        uiConfig={uiConfig}
+        paymentConfig={{
+          rnApiKey: paymentConfig.rnApiKey,
+          feeInfo: paymentConfig.feeInfo,
+          network: paymentConfig.network,
+          supportedCurrencies: paymentConfig.supportedCurrencies,
         }}
         invoiceInfo={invoiceInfo}
         onSuccess={onSuccess}

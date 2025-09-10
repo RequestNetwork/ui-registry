@@ -13,8 +13,8 @@ interface PaymentConfirmationProps {
   recipientWallet: string;
   paymentCurrency: string;
   onBack: () => void;
-  onSuccess: (txHash: string) => void;
-  onError: (error: PaymentError) => void;
+  handlePaymentSuccess: (requestId: string, txHash: string) => Promise<void>;
+  handlePaymentError?: (error: PaymentError) => Promise<void>;
 }
 
 export function PaymentConfirmation({
@@ -24,8 +24,8 @@ export function PaymentConfirmation({
   recipientWallet,
   feeInfo,
   onBack,
-  onSuccess,
-  onError,
+  handlePaymentSuccess,
+  handlePaymentError,
 }: PaymentConfirmationProps) {
   const { isExecuting, executePayment } = usePayment();
 
@@ -33,7 +33,7 @@ export function PaymentConfirmation({
     e.preventDefault();
 
     try {
-      const txHash = await executePayment(rnApiKey, {
+      const { requestId, txHash } = await executePayment(rnApiKey, {
         amountInUsd,
         recipientWallet,
         paymentCurrency,
@@ -41,9 +41,9 @@ export function PaymentConfirmation({
       });
 
       console.log("Payment completed with tx hash:", txHash);
-      onSuccess(txHash);
+      handlePaymentSuccess(requestId, txHash);
     } catch (error) {
-      onError(error as PaymentError);
+      handlePaymentError?.(error as PaymentError);
     }
   };
 

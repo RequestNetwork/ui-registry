@@ -5,7 +5,17 @@ export interface PaymentConfig {
   network: "arbitrum" | "base" | "mainnet" | "optimism" | "polygon" | "sepolia";
   rnApiKey: string;
   feeInfo?: FeeInfo;
+  supportedCurrencies?: string[]; // an array of ticker symbols, e.g. ['ETH', 'USDC', 'DAI']
 }
+
+export interface UiConfig {
+  showRequestScanUrl?: boolean;
+  showInvoiceDownload?: boolean;
+}
+
+/*
+5. send over the signer for overriding our wagmi
+*/
 
 export interface PaymentWidgetProps {
   // The amount to be paid in USD
@@ -13,11 +23,13 @@ export interface PaymentWidgetProps {
   // The recipient wallet address for the payment
   recipientWallet: string;
   // Configuration for the payment widget
-  config: PaymentConfig;
+  paymentConfig: PaymentConfig;
+  // UI specific config
+  uiConfig?: UiConfig;
   // Invoice information
   invoiceInfo: InvoiceInfo;
   // On success callback when the payment is completed
-  onSuccess: (txHash: string) => void;
+  onSuccess?: (requestId: string, txHash: string) => Promise<void>;
   // On error callback when the payment fails
-  onError: (error: PaymentError) => void;
+  onError?: (error: PaymentError) => Promise<void>;
 }

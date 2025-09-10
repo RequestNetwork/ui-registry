@@ -3,6 +3,7 @@ import { RN_API_URL } from "@/registry/default/payment-widget/constants";
 
 export interface PaymentParams {
   amountInUsd: string;
+  payerWallet: string;
   recipientWallet: string;
   paymentCurrency: string;
   feeInfo?: FeeInfo;
@@ -85,7 +86,13 @@ export const createPayout = async (
   rnApiKey: string,
   params: PaymentParams,
 ): Promise<Response> => {
-  const { amountInUsd, recipientWallet, paymentCurrency, feeInfo } = params;
+  const {
+    amountInUsd,
+    payerWallet,
+    recipientWallet,
+    paymentCurrency,
+    feeInfo,
+  } = params;
 
   const response = await fetch(`${RN_API_URL}/v2/payouts`, {
     method: "POST",
@@ -95,6 +102,7 @@ export const createPayout = async (
     },
     body: JSON.stringify({
       amount: amountInUsd,
+      payerWallet: payerWallet,
       payee: recipientWallet,
       invoiceCurrency: "USD",
       paymentCurrency: paymentCurrency,
@@ -106,6 +114,11 @@ export const createPayout = async (
   return response;
 };
 
+export interface PaymentResponse {
+  txHash: string;
+  requestId: string;
+}
+
 export const executePayment = async ({
   paymentParams,
   rnApiKey,
@@ -114,7 +127,7 @@ export const executePayment = async ({
   rnApiKey: string;
   paymentParams: PaymentParams;
   sendTransaction: SendTransactionFunction;
-}): Promise<string> => {
+}): Promise<PaymentResponse> => {
   try {
     const response = await createPayout(rnApiKey, paymentParams);
 
@@ -136,7 +149,12 @@ export const executePayment = async ({
     const data: PayoutAPIResponse = await response.json();
 
     if (data?.transactions) {
-      return await executeTransactions(data.transactions, sendTransaction);
+      const txHash = await executeTransactions(
+        data.transactions,
+        sendTransaction,
+      );
+
+      return { txHash, requestId: data.requestId };
     } else {
       const error = new Error("No transaction data received from backend");
       throw { type: "api", error } as PaymentError;

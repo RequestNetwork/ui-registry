@@ -6,7 +6,6 @@ import { createInvoice, type CreateInvoiceParams } from "@/lib/invoice";
 import Link from "next/link";
 import { useRef } from "react";
 import { InvoicePDFTemplate } from "@/components/invoice/invoice-template";
-import html2pdf from "html2pdf.js";
 import { type BuyerInfo, type InvoiceInfo } from "@/types";
 
 interface PaymentSuccessProps {
@@ -16,6 +15,8 @@ interface PaymentSuccessProps {
   invoiceInfo: InvoiceInfo;
   finalBuyerInfo: BuyerInfo;
   connectedWalletAddress: string;
+  shouldShowRequestScanUrl: boolean;
+  shouldShowInvoiceDownload: boolean;
 }
 
 export function PaymentSuccess({
@@ -25,6 +26,8 @@ export function PaymentSuccess({
   invoiceInfo,
   finalBuyerInfo,
   connectedWalletAddress,
+  shouldShowRequestScanUrl,
+  shouldShowInvoiceDownload,
 }: PaymentSuccessProps) {
   const invoiceRef = useRef<HTMLDivElement>(null);
 
@@ -57,6 +60,8 @@ export function PaymentSuccess({
         console.error("Invoice element not found");
         return;
       }
+
+      const html2pdf = (await import("html2pdf.js")).default;
 
       html2pdf()
         .set({
@@ -91,31 +96,39 @@ export function PaymentSuccess({
       </div>
 
       <div className="flex flex-col space-y-3 w-full">
-        <Button onClick={handleDownloadInvoice} className="w-full">
-          <Download className="w-4 h-4 mr-2" />
-          Download Invoice PDF
-        </Button>
-
-        <Button variant="outline" asChild className="w-full">
-          <Link href={requestScanUrl} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="w-4 h-4 mr-2" />
-            View on Request Scan
-          </Link>
-        </Button>
-      </div>
-
-      <div
-        style={{
-          height: 0,
-          width: 0,
-          overflow: "hidden",
-          opacity: 0,
-          pointerEvents: "none",
-        }}
-      >
-        <div ref={invoiceRef}>
-          <InvoicePDFTemplate invoice={createInvoice(invoiceParams)} />
-        </div>
+        {shouldShowInvoiceDownload && (
+          <>
+            <Button onClick={handleDownloadInvoice} className="w-full">
+              <Download className="w-4 h-4 mr-2" />
+              Download Invoice PDF
+            </Button>
+            <div
+              style={{
+                height: 0,
+                width: 0,
+                overflow: "hidden",
+                opacity: 0,
+                pointerEvents: "none",
+              }}
+            >
+              <div ref={invoiceRef}>
+                <InvoicePDFTemplate invoice={createInvoice(invoiceParams)} />
+              </div>
+            </div>
+          </>
+        )}
+        {shouldShowRequestScanUrl && (
+          <Button variant="outline" asChild className="w-full">
+            <Link
+              href={requestScanUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <ExternalLink className="w-4 h-4 mr-2" />
+              View on Request Scan
+            </Link>
+          </Button>
+        )}
       </div>
     </div>
   );

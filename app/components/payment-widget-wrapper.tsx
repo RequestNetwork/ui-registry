@@ -13,11 +13,11 @@ export function PaymentWidgetWrapper({
   rnApiKey,
   recipientWallet,
 }: PaymentWidgetWrapperProps) {
-  const handleSuccess = (txHash: string) => {
-    console.log("Payment successful:", txHash);
+  const handleSuccess = async (requestId: string, txHash: string) => {
+    console.log("Payment successful:", requestId, txHash);
   };
 
-  const handleError = (error: any) => {
+  const handleError = async (error: any) => {
     console.error("Payment failed:", error);
   };
 
@@ -25,12 +25,17 @@ export function PaymentWidgetWrapper({
     <PaymentWidget
       amountInUsd="10.00"
       recipientWallet={recipientWallet}
-      config={{
+      paymentConfig={{
         walletConnectProjectId,
         rnApiKey,
         network: "sepolia",
+        supportedCurrencies: ["ETH-sepolia", /*"fUSDT",*/ "FAU"],
       }}
       invoiceInfo={{
+        buyerInfo: {
+          firstName: "Testo",
+          email: "kerry@test.net",
+        },
         companyInfo: {
           name: "Request Network Inc.",
           walletAddress: recipientWallet,

@@ -7,12 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 import { getConversionCurrencies } from "@/lib/currencies";
 
 interface CurrencySelectProps {
+  supportedCurrencies?: string[];
   rnApiKey: string;
   network: string;
   onSubmit: (currency: string) => void;
 }
 
 export function CurrencySelect({
+  supportedCurrencies,
   onSubmit,
   network,
   rnApiKey,
@@ -52,12 +54,30 @@ export function CurrencySelect({
     return <div>No conversion currencies available.</div>;
   }
 
+  const lowerCaseSupportedCurrencies = supportedCurrencies?.map((currency) =>
+    currency.toLowerCase(),
+  );
+
+  const eligibleCurrencies = lowerCaseSupportedCurrencies
+    ? conversionCurrencies.filter((currency) =>
+        lowerCaseSupportedCurrencies.includes(currency.symbol.toLowerCase()),
+      )
+    : conversionCurrencies;
+
+  if (eligibleCurrencies.length === 0) {
+    console.warn(
+      "Your supportedCurrencies do not match available currencies.",
+      { supportedCurrencies, conversionCurrencies },
+    );
+    return <div>No supported currencies available.</div>;
+  }
+
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">Select a currency</h3>
       <RadioGroup value={selectedCurrency} onValueChange={setSelectedCurrency}>
         <div className="space-y-2 overflow-y-auto max-h-60">
-          {conversionCurrencies.map((currency) => (
+          {eligibleCurrencies.map((currency) => (
             <div key={currency.id} className="p-4">
               <label
                 htmlFor={currency.id}

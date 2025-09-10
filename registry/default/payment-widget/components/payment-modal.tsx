@@ -15,10 +15,13 @@ import { BuyerInfoForm } from "./buyer-info-form";
 import { PaymentConfirmation } from "./payment-confirmation";
 import { PaymentSuccess } from "./payment-success";
 import { type BuyerInfo } from "@/types";
-import { type PaymentWidgetProps } from "../types";
+import { UiConfig, type PaymentWidgetProps } from "../types";
 
-interface PaymentModalProps extends Omit<PaymentWidgetProps, "config"> {
-  config: Omit<PaymentWidgetProps["config"], "walletConnectProjectId">;
+interface PaymentModalProps extends Omit<PaymentWidgetProps, "paymentConfig"> {
+  paymentConfig: Omit<
+    PaymentWidgetProps["paymentConfig"],
+    "walletConnectProjectId"
+  >;
   isOpen: boolean;
   handleModalOpenChange: (open: boolean) => void;
 }
@@ -28,7 +31,8 @@ export function PaymentModal({
   handleModalOpenChange,
   amountInUsd,
   recipientWallet,
-  config,
+  paymentConfig,
+  uiConfig,
   invoiceInfo,
   onSuccess,
   onError,
@@ -63,10 +67,10 @@ export function PaymentModal({
     setActiveStep("payment-confirmation");
   };
 
-  const handlePaymentSuccess = (txHash: string) => {
-    setRequestId(`req_${txHash.slice(-8)}`);
+  const handlePaymentSuccess = async (requestId: string, txHash: string) => {
+    setRequestId(requestId);
     setActiveStep("payment-success");
-    onSuccess(txHash);
+    await onSuccess?.(requestId, txHash);
   };
 
   return (
@@ -97,8 +101,9 @@ export function PaymentModal({
         {activeStep === "currency-select" && (
           <CurrencySelect
             onSubmit={handleCurrencySelect}
-            rnApiKey={config.rnApiKey}
-            network={config.network}
+            rnApiKey={paymentConfig.rnApiKey}
+            network={paymentConfig.network}
+            supportedCurrencies={paymentConfig.supportedCurrencies}
           />
         )}
 
@@ -116,11 +121,11 @@ export function PaymentModal({
             <PaymentConfirmation
               amountInUsd={amountInUsd}
               recipientWallet={recipientWallet}
-              onSuccess={handlePaymentSuccess}
-              onError={onError}
+              handlePaymentSuccess={handlePaymentSuccess}
+              handlePaymentError={onError}
               paymentCurrency={selectedCurrency}
-              feeInfo={config.feeInfo}
-              rnApiKey={config.rnApiKey}
+              feeInfo={paymentConfig.feeInfo}
+              rnApiKey={paymentConfig.rnApiKey}
               onBack={() => setActiveStep("buyer-info")}
             />
           )}
@@ -136,6 +141,8 @@ export function PaymentModal({
               invoiceInfo={invoiceInfo}
               finalBuyerInfo={buyerInfo}
               connectedWalletAddress={address}
+              shouldShowInvoiceDownload={uiConfig?.showInvoiceDownload || true}
+              shouldShowRequestScanUrl={uiConfig?.showRequestScanUrl || true}
             />
           )}
       </DialogContent>
