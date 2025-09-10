@@ -9,6 +9,7 @@ import { PaymentWidgetProps } from "./types";
 
 function PaymentWidgetInner({
   amountInUsd,
+  walletAccount,
   recipientWallet,
   paymentConfig,
   uiConfig,
@@ -31,26 +32,45 @@ function PaymentWidgetInner({
       <Button onClick={() => setIsModalOpen(true)}>
         Pay with Request Network
       </Button>
-      <ConnectionHandler
-        isOpen={isModalOpen}
-        handleModalOpenChange={handleModalOpenChange}
-        paymentModal={
-          <PaymentModal
-            isOpen={isModalOpen}
-            handleModalOpenChange={handleModalOpenChange}
-            amountInUsd={amountInUsd}
-            recipientWallet={recipientWallet}
-            paymentConfig={paymentConfig}
-            uiConfig={{
-              showInvoiceDownload: uiConfig?.showInvoiceDownload || true,
-              showRequestScanUrl: uiConfig?.showRequestScanUrl || true,
-            }}
-            invoiceInfo={invoiceInfo}
-            onSuccess={onSuccess}
-            onError={onError}
-          />
-        }
-      />
+      {walletAccount !== undefined ? (
+        <PaymentModal
+          walletAccount={walletAccount}
+          isOpen={isModalOpen}
+          handleModalOpenChange={handleModalOpenChange}
+          amountInUsd={amountInUsd}
+          recipientWallet={recipientWallet}
+          paymentConfig={paymentConfig}
+          uiConfig={{
+            showInvoiceDownload: uiConfig?.showInvoiceDownload || true,
+            showRequestScanUrl: uiConfig?.showRequestScanUrl || true,
+          }}
+          invoiceInfo={invoiceInfo}
+          onSuccess={onSuccess}
+          onError={onError}
+        />
+      ) : (
+        <ConnectionHandler
+          isOpen={isModalOpen}
+          handleModalOpenChange={handleModalOpenChange}
+          paymentModal={
+            <PaymentModal
+              walletAccount={walletAccount}
+              isOpen={isModalOpen}
+              handleModalOpenChange={handleModalOpenChange}
+              amountInUsd={amountInUsd}
+              recipientWallet={recipientWallet}
+              paymentConfig={paymentConfig}
+              uiConfig={{
+                showInvoiceDownload: uiConfig?.showInvoiceDownload || true,
+                showRequestScanUrl: uiConfig?.showRequestScanUrl || true,
+              }}
+              invoiceInfo={invoiceInfo}
+              onSuccess={onSuccess}
+              onError={onError}
+            />
+          }
+        />
+      )}
     </>
   );
 }
@@ -63,11 +83,13 @@ export function PaymentWidget({
   onSuccess,
   onError,
   uiConfig,
+  walletAccount,
 }: PaymentWidgetProps) {
   return (
     <Web3Provider walletConnectProjectId={paymentConfig.walletConnectProjectId}>
       <PaymentWidgetInner
         amountInUsd={amountInUsd}
+        walletAccount={walletAccount}
         recipientWallet={recipientWallet}
         uiConfig={uiConfig}
         paymentConfig={{

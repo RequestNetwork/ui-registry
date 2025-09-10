@@ -3,14 +3,36 @@ import { useAccount, useSendTransaction } from "wagmi";
 import {
   executePayment,
   PaymentParams,
+  TxParams,
   type PaymentResponse,
 } from "@/lib/payment";
 import { type PaymentError } from "@/types";
+import { Account, WalletClient } from "viem";
 
-export const usePayment = () => {
+export const usePayment = (walletAccount?: WalletClient) => {
   const [isExecuting, setIsExecuting] = useState(false);
-  const { isConnected, address } = useAccount();
+  const { isConnected: wagmiConnected, address: wagmiAddress } = useAccount();
   const { sendTransactionAsync } = useSendTransaction();
+
+  const isConnected = walletAccount
+    ? Boolean(walletAccount.account)
+    : wagmiConnected;
+  const address = walletAccount ? walletAccount.account?.address : wagmiAddress;
+
+  const wrappedSendTransaction =
+    walletAccount?.account !== undefined
+      ? async (transaction: TxParams) => {
+          await walletAccount.sendTransaction({
+            account: walletAccount.account as Account, // we know it's defined here
+            chain: walletAccount.chain,
+            to: transaction.to,
+            data: transaction.data,
+            value: transaction.value,
+          });
+        }
+      : async (tx: TxParams) => {
+          await sendTransactionAsync(tx);
+        };
 
   const execute = async (
     rnApiKey: string,
@@ -24,7 +46,6 @@ export const usePayment = () => {
     }
 
     setIsExecuting(true);
-
     try {
       return await executePayment({
         rnApiKey,
@@ -35,9 +56,8 @@ export const usePayment = () => {
           paymentCurrency: params.paymentCurrency,
           feeInfo: params.feeInfo,
         },
-        sendTransaction: sendTransactionAsync,
+        sendTransaction: wrappedSendTransaction,
       });
-      // no need to catch and rethrow PaymentError, just let it propagate
     } finally {
       setIsExecuting(false);
     }
@@ -46,5 +66,7 @@ export const usePayment = () => {
   return {
     isExecuting,
     executePayment: execute,
+    isConnected,
+    address,
   };
 };

@@ -1,6 +1,9 @@
 "use client";
 
 import { PaymentWidget } from "@/registry/default/payment-widget/payment-widget";
+import { createWalletClient, http } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
+import { sepolia } from "viem/chains";
 
 interface PaymentWidgetWrapperProps {
   walletConnectProjectId: string;
@@ -13,18 +16,30 @@ export function PaymentWidgetWrapper({
   rnApiKey,
   recipientWallet,
 }: PaymentWidgetWrapperProps) {
-  const handleSuccess = async (requestId: string, txHash: string) => {
-    console.log("Payment successful:", requestId, txHash);
+  const handleSuccess = async (requestId: string) => {
+    console.log("Payment successful:", requestId);
   };
 
   const handleError = async (error: any) => {
     console.error("Payment failed:", error);
   };
 
+  /*
+  // Example of creating a test wallet client (not used in the component)
+  // It's probably better to just use wagmi, but it can be done this way too
+
+  const testWallet = createWalletClient({
+    account: privateKeyToAccount("some private key"),
+    chain: sepolia,
+    transport: http(),
+  });
+  */
+
   return (
     <PaymentWidget
       amountInUsd="10.00"
       recipientWallet={recipientWallet}
+      walletAccount={undefined}
       paymentConfig={{
         walletConnectProjectId,
         rnApiKey,

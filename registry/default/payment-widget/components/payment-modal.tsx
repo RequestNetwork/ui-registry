@@ -27,6 +27,7 @@ interface PaymentModalProps extends Omit<PaymentWidgetProps, "paymentConfig"> {
 }
 
 export function PaymentModal({
+  walletAccount,
   isOpen,
   handleModalOpenChange,
   amountInUsd,
@@ -67,11 +68,16 @@ export function PaymentModal({
     setActiveStep("payment-confirmation");
   };
 
-  const handlePaymentSuccess = async (requestId: string, txHash: string) => {
+  const handlePaymentSuccess = async (requestId: string) => {
     setRequestId(requestId);
     setActiveStep("payment-success");
-    await onSuccess?.(requestId, txHash);
+    await onSuccess?.(requestId);
   };
+
+  const isWalletOverride = walletAccount !== undefined;
+  const connectedWalletAddress = walletAccount
+    ? walletAccount.account?.address
+    : address;
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
@@ -83,7 +89,7 @@ export function PaymentModal({
           </DialogDescription>
         </DialogHeader>
 
-        {activeStep !== "payment-success" && (
+        {activeStep !== "payment-success" && !isWalletOverride && (
           <div className="p-2 space-y-4">
             <div className="border-t pt-4">
               <div className="flex flex-row items-center justify-between mb-2">
@@ -116,10 +122,13 @@ export function PaymentModal({
         )}
 
         {activeStep === "payment-confirmation" &&
+          connectedWalletAddress &&
           selectedCurrency &&
           buyerInfo && (
             <PaymentConfirmation
               amountInUsd={amountInUsd}
+              connectedWalletAddress={connectedWalletAddress}
+              walletAccount={walletAccount}
               recipientWallet={recipientWallet}
               handlePaymentSuccess={handlePaymentSuccess}
               handlePaymentError={onError}
@@ -133,14 +142,14 @@ export function PaymentModal({
         {activeStep === "payment-success" &&
           selectedCurrency &&
           buyerInfo &&
-          address && (
+          connectedWalletAddress && (
             <PaymentSuccess
               requestId={requestId}
               amountInUsd={amountInUsd}
               paymentCurrency={selectedCurrency}
               invoiceInfo={invoiceInfo}
               finalBuyerInfo={buyerInfo}
-              connectedWalletAddress={address}
+              connectedWalletAddress={connectedWalletAddress}
               shouldShowInvoiceDownload={uiConfig?.showInvoiceDownload || true}
               shouldShowRequestScanUrl={uiConfig?.showRequestScanUrl || true}
             />

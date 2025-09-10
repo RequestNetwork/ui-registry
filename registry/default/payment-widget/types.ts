@@ -1,4 +1,5 @@
 import { type FeeInfo, type PaymentError, InvoiceInfo } from "@/types";
+import { WalletClient } from "viem";
 
 export interface PaymentConfig {
   walletConnectProjectId?: string;
@@ -14,7 +15,11 @@ export interface UiConfig {
 }
 
 /*
-5. send over the signer for overriding our wagmi
+Still TODO:
+6. restyle everything
+7. Connect with new client id on our API instead of the API key
+8. Find out why wallet connect modal breaks
+9. Deploy to shad properly
 */
 
 export interface PaymentWidgetProps {
@@ -22,6 +27,8 @@ export interface PaymentWidgetProps {
   amountInUsd: string;
   // The recipient wallet address for the payment
   recipientWallet: string;
+  // Override for the buyer's wallet account if you already have an active session
+  walletAccount?: WalletClient;
   // Configuration for the payment widget
   paymentConfig: PaymentConfig;
   // UI specific config
@@ -29,7 +36,7 @@ export interface PaymentWidgetProps {
   // Invoice information
   invoiceInfo: InvoiceInfo;
   // On success callback when the payment is completed
-  onSuccess?: (requestId: string, txHash: string) => Promise<void>;
+  onSuccess?: (requestId: string) => Promise<void>;
   // On error callback when the payment fails
   onError?: (error: PaymentError) => Promise<void>;
 }

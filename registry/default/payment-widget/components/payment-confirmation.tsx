@@ -10,10 +10,12 @@ interface PaymentConfirmationProps {
   feeInfo: FeeInfo | undefined;
   rnApiKey: string;
   amountInUsd: string;
+  connectedWalletAddress: string;
+  walletAccount?: PaymentWidgetProps["walletAccount"];
   recipientWallet: string;
   paymentCurrency: string;
   onBack: () => void;
-  handlePaymentSuccess: (requestId: string, txHash: string) => Promise<void>;
+  handlePaymentSuccess: (requestId: string) => Promise<void>;
   handlePaymentError?: (error: PaymentError) => Promise<void>;
 }
 
@@ -21,6 +23,7 @@ export function PaymentConfirmation({
   amountInUsd,
   paymentCurrency,
   rnApiKey,
+  connectedWalletAddress,
   recipientWallet,
   feeInfo,
   onBack,
@@ -33,15 +36,15 @@ export function PaymentConfirmation({
     e.preventDefault();
 
     try {
-      const { requestId, txHash } = await executePayment(rnApiKey, {
+      const { requestId } = await executePayment(rnApiKey, {
+        payerWallet: connectedWalletAddress,
         amountInUsd,
         recipientWallet,
         paymentCurrency,
         feeInfo,
       });
 
-      console.log("Payment completed with tx hash:", txHash);
-      handlePaymentSuccess(requestId, txHash);
+      handlePaymentSuccess(requestId);
     } catch (error) {
       handlePaymentError?.(error as PaymentError);
     }

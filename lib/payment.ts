@@ -26,12 +26,13 @@ export interface PayoutAPIResponse {
   };
 }
 
-// Best to use the return value of useSendTransaction from wagmi directly
-type SendTransactionFunction = (tx: {
+export type TxParams = {
   to: `0x${string}`;
   data: `0x${string}`;
   value: bigint;
-}) => Promise<string>;
+};
+
+export type SendTransactionFunction = (tx: TxParams) => Promise<void>;
 
 export const isPaymentError = (error: any): error is PaymentError => {
   return (
@@ -63,19 +64,15 @@ export const normalizeValue = (
 export const executeTransactions = async (
   transactions: PayoutAPITransaction[],
   sendTransaction: SendTransactionFunction,
-): Promise<string> => {
-  let lastTxHash = "";
-
+): Promise<void> => {
   try {
     for (const tx of transactions) {
-      lastTxHash = await sendTransaction({
+      await sendTransaction({
         to: tx.to as `0x${string}`,
         data: tx.data as `0x${string}`,
         value: normalizeValue(tx.value),
       });
     }
-
-    return lastTxHash;
   } catch (error) {
     console.error("Transaction execution failed:", error);
     throw { type: "transaction", error: error as Error } as PaymentError;
@@ -115,7 +112,6 @@ export const createPayout = async (
 };
 
 export interface PaymentResponse {
-  txHash: string;
   requestId: string;
 }
 
@@ -149,12 +145,9 @@ export const executePayment = async ({
     const data: PayoutAPIResponse = await response.json();
 
     if (data?.transactions) {
-      const txHash = await executeTransactions(
-        data.transactions,
-        sendTransaction,
-      );
+      await executeTransactions(data.transactions, sendTransaction);
 
-      return { txHash, requestId: data.requestId };
+      return { requestId: data.requestId };
     } else {
       const error = new Error("No transaction data received from backend");
       throw { type: "api", error } as PaymentError;
