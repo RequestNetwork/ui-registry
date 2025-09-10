@@ -95,7 +95,11 @@ export function PaymentModal({
         )}
 
         {activeStep === "currency-select" && (
-          <CurrencySelect onSubmit={handleCurrencySelect} />
+          <CurrencySelect
+            onSubmit={handleCurrencySelect}
+            rnApiKey={config.rnApiKey}
+            network={config.network}
+          />
         )}
 
         {activeStep === "buyer-info" && (

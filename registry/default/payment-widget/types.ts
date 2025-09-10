@@ -2,6 +2,7 @@ import { type FeeInfo, type PaymentError, InvoiceInfo } from "@/types";
 
 export interface PaymentConfig {
   walletConnectProjectId?: string;
+  network: "arbitrum" | "base" | "mainnet" | "optimism" | "polygon" | "sepolia";
   rnApiKey: string;
   feeInfo?: FeeInfo;
 }

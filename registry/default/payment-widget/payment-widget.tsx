@@ -63,6 +63,7 @@ export function PaymentWidget({
         config={{
           rnApiKey: config.rnApiKey,
           feeInfo: config.feeInfo,
+          network: config.network,
         }}
         invoiceInfo={invoiceInfo}
         onSuccess={onSuccess}

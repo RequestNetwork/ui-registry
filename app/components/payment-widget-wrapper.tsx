@@ -28,6 +28,7 @@ export function PaymentWidgetWrapper({
       config={{
         walletConnectProjectId,
         rnApiKey,
+        network: "sepolia",
       }}
       invoiceInfo={{
         companyInfo: {
