@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import Image from "next/image";
 
 interface WalletConnectModalProps {
   isOpen: boolean;
@@ -26,20 +27,26 @@ export function WalletConnectModal({
   };
 
   const getWalletIcon = (connectorName: string) => {
-    switch (connectorName.toLowerCase()) {
-      case "metamask":
-        return "🦊";
-      case "walletconnect":
-        return "🔗";
-      case "coinbase wallet":
-      case "coinbase":
-        return "🔵";
-      case "injected":
-        return "💳";
+    const name = connectorName.toLowerCase();
+
+    switch (true) {
+      case name.includes("metamask"):
+        return "/assets/metamask.svg";
+      case name.includes("walletconnect"):
+        return "/assets/wallet-connect.webp";
+      case name.includes("coinbase"):
+        return "/assets/coinbase.webp";
+      case name.includes("safe"):
+        return "/assets/safe.webp";
       default:
-        return "👛";
+        return "/assets/wallet-icon.svg";
     }
   };
+
+  // Filter out the generic injected connector, which needs to be in wagmi config otherwise types start breaking
+  const displayConnectors = connectors.filter(
+    (connector) => !connector.name.toLowerCase().includes("injected"),
+  );
 
   return (
     <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
@@ -52,7 +59,7 @@ export function WalletConnectModal({
         </DialogHeader>
 
         <div className="space-y-3 py-4">
-          {connectors.map((connector) => (
+          {displayConnectors.map((connector) => (
             <Button
               key={connector.uid}
               onClick={() => handleConnect(connector)}
@@ -61,9 +68,13 @@ export function WalletConnectModal({
               className="w-full justify-start h-14"
             >
               <div className="flex items-center space-x-3">
-                <span className="text-2xl">
-                  {getWalletIcon(connector.name)}
-                </span>
+                <Image
+                  src={getWalletIcon(connector.name)}
+                  alt={`${connector.name} icon`}
+                  width={32}
+                  height={32}
+                  className="flex-shrink-0 rounded-md"
+                />
                 <div className="text-left">
                   <div className="font-medium">{connector.name}</div>
                   <div className="text-xs text-muted-foreground">
