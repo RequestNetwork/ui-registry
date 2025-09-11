@@ -6,6 +6,7 @@ import { ConnectionHandler } from "./components/connection-handler";
 import { Web3Provider } from "@/components/providers/web3-provider";
 import { PaymentModal } from "./components/payment-modal";
 import type { PaymentWidgetProps } from "./types";
+import { ICONS } from "./constants";
 
 function PaymentWidgetInner({
   children,
@@ -41,7 +42,7 @@ function PaymentWidgetInner({
       <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
         {/** biome-ignore lint/performance/noImgElement: This is a ShadCN library, we can't enforce next syntax on everybody */}
         <img
-          src="/assets/logo-sm.svg"
+          src={ICONS.requestNetwork}
           alt="Request Network"
           width={10}
           height={10}

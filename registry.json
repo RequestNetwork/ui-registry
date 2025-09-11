@@ -95,6 +95,11 @@
           "target": "components/invoice/styles.css"
         },
         {
+          "path": "lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
           "path": "lib/wagmi.ts",
           "type": "registry:lib",
           "target": "lib/wagmi.ts"

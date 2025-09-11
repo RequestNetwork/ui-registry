@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
+import { ICONS } from "../constants";
 
 interface WalletConnectModalProps {
   isOpen: boolean;
@@ -33,15 +34,15 @@ export function WalletConnectModal({
 
     switch (true) {
       case name.includes("metamask"):
-        return "/assets/metamask.svg";
+        return ICONS.metamask;
       case name.includes("walletconnect"):
-        return "/assets/wallet-connect.webp";
+        return ICONS.walletConnect;
       case name.includes("coinbase"):
-        return "/assets/coinbase.webp";
+        return ICONS.coinbase;
       case name.includes("safe"):
-        return "/assets/safe.webp";
+        return ICONS.safe;
       default:
-        return "/assets/wallet-icon.svg";
+        return ICONS.defaultWallet;
     }
   };
 

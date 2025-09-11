@@ -17,7 +17,6 @@ export interface UiConfig {
 
 /*
 Still TODO:
-10. Restyle invoice template
 11. switch all props to be stored in context
 */
 
