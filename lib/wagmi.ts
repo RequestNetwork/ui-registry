@@ -9,10 +9,10 @@ import {
 } from "wagmi/chains";
 import {
   injected,
-  walletConnect,
   coinbaseWallet,
   metaMask,
   safe,
+  walletConnect,
 } from "wagmi/connectors";
 
 export const getWagmiConfig = (walletConnectProjectId?: string) => {
@@ -25,19 +25,23 @@ export const getWagmiConfig = (walletConnectProjectId?: string) => {
     safe(),
   ];
 
-  if (walletConnectProjectId) {
-    connectors.push(
-      walletConnect({
+  if (walletConnectProjectId && walletConnectProjectId.length > 0) {
+    try {
+      const connector = walletConnect({
         projectId: walletConnectProjectId,
         metadata: {
           name: "Request Network Payment",
           description: "Pay with cryptocurrency using Request Network",
           url: "https://request.network",
-          icons: [],
+          icons: ["https://request.network/favicon.ico"],
         },
         showQrModal: true,
-      }) as any, // @TODO fix connector type
-    );
+      });
+
+      connectors.push(connector as any);
+    } catch (error) {
+      console.error("WalletConnect creation failed:", error);
+    }
   }
 
   const config = createConfig({
@@ -51,7 +55,6 @@ export const getWagmiConfig = (walletConnectProjectId?: string) => {
       [polygon.id]: http(),
       [base.id]: http(),
     },
-    ssr: true,
   });
 
   return config;

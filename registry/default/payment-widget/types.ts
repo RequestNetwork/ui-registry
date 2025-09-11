@@ -19,7 +19,6 @@ export interface UiConfig {
 Still TODO:
 6. restyle everything
 9. Deploy to shad properly
-10. check out the wagmi config error
 */
 
 export interface PaymentWidgetProps extends PropsWithChildren {
