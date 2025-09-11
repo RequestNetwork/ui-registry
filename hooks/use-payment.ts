@@ -35,7 +35,7 @@ export const usePayment = (walletAccount?: WalletClient) => {
         };
 
   const execute = async (
-    rnApiKey: string,
+    rnApiClientId: string,
     params: PaymentParams,
   ): Promise<PaymentResponse> => {
     if (!isConnected || !address) {
@@ -48,7 +48,7 @@ export const usePayment = (walletAccount?: WalletClient) => {
     setIsExecuting(true);
     try {
       return await executePayment({
-        rnApiKey,
+        rnApiClientId,
         paymentParams: {
           amountInUsd: params.amountInUsd,
           payerWallet: address,

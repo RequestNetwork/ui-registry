@@ -112,7 +112,7 @@ export function PaymentWidget({
         recipientWallet={recipientWallet}
         uiConfig={uiConfig}
         paymentConfig={{
-          rnApiKey: paymentConfig.rnApiKey,
+          rnApiClientId: paymentConfig.rnApiClientId,
           feeInfo: paymentConfig.feeInfo,
           network: paymentConfig.network,
           supportedCurrencies: paymentConfig.supportedCurrencies,

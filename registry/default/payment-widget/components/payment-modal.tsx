@@ -107,7 +107,7 @@ export function PaymentModal({
         {activeStep === "currency-select" && (
           <CurrencySelect
             onSubmit={handleCurrencySelect}
-            rnApiKey={paymentConfig.rnApiKey}
+            rnApiClientId={paymentConfig.rnApiClientId}
             network={paymentConfig.network}
             supportedCurrencies={paymentConfig.supportedCurrencies}
           />
@@ -134,7 +134,7 @@ export function PaymentModal({
               handlePaymentError={onError}
               paymentCurrency={selectedCurrency}
               feeInfo={paymentConfig.feeInfo}
-              rnApiKey={paymentConfig.rnApiKey}
+              rnApiClientId={paymentConfig.rnApiClientId}
               onBack={() => setActiveStep("buyer-info")}
             />
           )}

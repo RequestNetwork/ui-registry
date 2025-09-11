@@ -7,13 +7,13 @@ import { sepolia } from "viem/chains";
 
 interface PaymentWidgetWrapperProps {
   walletConnectProjectId: string;
-  rnApiKey: string;
+  rnApiClientId: string;
   recipientWallet: string;
 }
 
 export function PaymentWidgetWrapper({
   walletConnectProjectId,
-  rnApiKey,
+  rnApiClientId,
   recipientWallet,
 }: PaymentWidgetWrapperProps) {
   const handleSuccess = async (requestId: string) => {
@@ -42,7 +42,7 @@ export function PaymentWidgetWrapper({
       walletAccount={undefined}
       paymentConfig={{
         walletConnectProjectId,
-        rnApiKey,
+        rnApiClientId,
         network: "sepolia",
         supportedCurrencies: ["ETH-sepolia", /*"fUSDT",*/ "FAU"],
       }}
@@ -86,7 +86,7 @@ export function PaymentWidgetWrapper({
       onSuccess={handleSuccess}
       onError={handleError}
     >
-      <div className="flex p-3 bg-blue-500 items-center rounded-2xl">
+      <div className="flex p-3 bg-blue-500 items-center rounded-2xl text-white">
         Pay using crypto
       </div>
     </PaymentWidget>

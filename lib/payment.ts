@@ -80,7 +80,7 @@ export const executeTransactions = async (
 };
 
 export const createPayout = async (
-  rnApiKey: string,
+  rnApiClientId: string,
   params: PaymentParams,
 ): Promise<Response> => {
   const {
@@ -94,7 +94,7 @@ export const createPayout = async (
   const response = await fetch(`${RN_API_URL}/v2/payouts`, {
     method: "POST",
     headers: {
-      "x-api-key": rnApiKey,
+      "x-client-id": rnApiClientId,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
@@ -117,15 +117,15 @@ export interface PaymentResponse {
 
 export const executePayment = async ({
   paymentParams,
-  rnApiKey,
+  rnApiClientId,
   sendTransaction,
 }: {
-  rnApiKey: string;
+  rnApiClientId: string;
   paymentParams: PaymentParams;
   sendTransaction: SendTransactionFunction;
 }): Promise<PaymentResponse> => {
   try {
-    const response = await createPayout(rnApiKey, paymentParams);
+    const response = await createPayout(rnApiClientId, paymentParams);
 
     if (!response.ok) {
       let errorMessage = "Failed to create payment";

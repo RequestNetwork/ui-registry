@@ -8,7 +8,7 @@ import { usePayment } from "@/hooks/use-payment";
 
 interface PaymentConfirmationProps {
   feeInfo: FeeInfo | undefined;
-  rnApiKey: string;
+  rnApiClientId: string;
   amountInUsd: string;
   connectedWalletAddress: string;
   walletAccount?: PaymentWidgetProps["walletAccount"];
@@ -22,7 +22,7 @@ interface PaymentConfirmationProps {
 export function PaymentConfirmation({
   amountInUsd,
   paymentCurrency,
-  rnApiKey,
+  rnApiClientId,
   connectedWalletAddress,
   recipientWallet,
   feeInfo,
@@ -36,7 +36,7 @@ export function PaymentConfirmation({
     e.preventDefault();
 
     try {
-      const { requestId } = await executePayment(rnApiKey, {
+      const { requestId } = await executePayment(rnApiClientId, {
         payerWallet: connectedWalletAddress,
         amountInUsd,
         recipientWallet,

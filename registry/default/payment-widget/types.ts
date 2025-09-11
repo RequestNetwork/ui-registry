@@ -5,7 +5,7 @@ import { WalletClient } from "viem";
 export interface PaymentConfig {
   walletConnectProjectId?: string;
   network: "arbitrum" | "base" | "mainnet" | "optimism" | "polygon" | "sepolia";
-  rnApiKey: string;
+  rnApiClientId: string;
   feeInfo?: FeeInfo;
   supportedCurrencies?: string[]; // an array of ticker symbols, e.g. ['ETH', 'USDC', 'DAI']
 }
@@ -18,9 +18,8 @@ export interface UiConfig {
 /*
 Still TODO:
 6. restyle everything
-7. Connect with new client id on our API instead of the API key
-8. Find out why wallet connect modal breaks
 9. Deploy to shad properly
+10. check out the wagmi config error
 */
 
 export interface PaymentWidgetProps extends PropsWithChildren {

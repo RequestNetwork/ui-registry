@@ -8,7 +8,7 @@ import { getConversionCurrencies } from "@/lib/currencies";
 
 interface CurrencySelectProps {
   supportedCurrencies?: string[];
-  rnApiKey: string;
+  rnApiClientId: string;
   network: string;
   onSubmit: (currency: string) => void;
 }
@@ -17,7 +17,7 @@ export function CurrencySelect({
   supportedCurrencies,
   onSubmit,
   network,
-  rnApiKey,
+  rnApiClientId,
 }: CurrencySelectProps) {
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
   const {
@@ -27,7 +27,7 @@ export function CurrencySelect({
     refetch,
   } = useQuery({
     queryKey: ["conversion-currencies"],
-    queryFn: async () => getConversionCurrencies(rnApiKey, network),
+    queryFn: async () => getConversionCurrencies(rnApiClientId, network),
   });
 
   const handleSubmit = () => {
