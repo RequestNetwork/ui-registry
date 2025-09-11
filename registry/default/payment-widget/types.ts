@@ -1,4 +1,5 @@
 import { type FeeInfo, type PaymentError, InvoiceInfo } from "@/types";
+import { PropsWithChildren } from "react";
 import { WalletClient } from "viem";
 
 export interface PaymentConfig {
@@ -22,7 +23,7 @@ Still TODO:
 9. Deploy to shad properly
 */
 
-export interface PaymentWidgetProps {
+export interface PaymentWidgetProps extends PropsWithChildren {
   // The amount to be paid in USD
   amountInUsd: string;
   // The recipient wallet address for the payment
