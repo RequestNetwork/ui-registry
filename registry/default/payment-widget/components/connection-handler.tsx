@@ -17,14 +17,10 @@ export function ConnectionHandler({
 }: ConnectionHandlerProps) {
   const { isConnected, isConnecting } = useAccount();
 
-  if (isConnecting) {
-    // TODO loader
-    return null;
-  }
-
   if (!isConnected) {
     return (
       <WalletConnectModal
+        isLoading={isConnecting}
         isOpen={isOpen}
         handleModalOpenChange={handleModalOpenChange}
       />

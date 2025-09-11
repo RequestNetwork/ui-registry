@@ -4,13 +4,18 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useQuery } from "@tanstack/react-query";
-import { getConversionCurrencies } from "@/lib/currencies";
+import {
+  ConversionCurrency,
+  getConversionCurrencies,
+  getSymbolOverride,
+} from "@/lib/currencies";
+import { Check } from "lucide-react";
 
 interface CurrencySelectProps {
   supportedCurrencies?: string[];
   rnApiClientId: string;
   network: string;
-  onSubmit: (currency: string) => void;
+  onSubmit: (currency: ConversionCurrency) => void;
 }
 
 export function CurrencySelect({
@@ -31,8 +36,19 @@ export function CurrencySelect({
   });
 
   const handleSubmit = () => {
-    if (selectedCurrency === null) return;
-    onSubmit(selectedCurrency);
+    if (selectedCurrency === null) {
+      return;
+    }
+
+    const currency = conversionCurrencies?.find(
+      (c) => c.id === selectedCurrency,
+    );
+
+    if (!currency) {
+      return;
+    }
+
+    onSubmit(currency);
   };
 
   if (isLoading) {
@@ -54,15 +70,16 @@ export function CurrencySelect({
     return <div>No conversion currencies available.</div>;
   }
 
-  const lowerCaseSupportedCurrencies = supportedCurrencies?.map((currency) =>
-    currency.toLowerCase(),
+  const lowerCaseSupportedCurrencies = (supportedCurrencies || []).map(
+    (currency) => currency.toLowerCase(),
   );
 
-  const eligibleCurrencies = lowerCaseSupportedCurrencies
-    ? conversionCurrencies.filter((currency) =>
-        lowerCaseSupportedCurrencies.includes(currency.symbol.toLowerCase()),
-      )
-    : conversionCurrencies;
+  const eligibleCurrencies =
+    lowerCaseSupportedCurrencies.length > 0
+      ? conversionCurrencies.filter((currency) =>
+          lowerCaseSupportedCurrencies.includes(currency.symbol.toLowerCase()),
+        )
+      : conversionCurrencies;
 
   if (eligibleCurrencies.length === 0) {
     console.warn(
@@ -76,24 +93,44 @@ export function CurrencySelect({
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">Select a currency</h3>
       <RadioGroup value={selectedCurrency} onValueChange={setSelectedCurrency}>
-        <div className="space-y-2 overflow-y-auto max-h-60">
-          {eligibleCurrencies.map((currency) => (
-            <div key={currency.id} className="p-4">
-              <label
-                htmlFor={currency.id}
-                className="flex items-center justify-between cursor-pointer w-full"
-              >
-                <div className="flex items-center space-x-3">
-                  <RadioGroupItem value={currency.id} id={currency.id} />
-                  <div>
-                    <div className="text-sm text-muted-foreground">
-                      {currency.symbol}
+        <div className="space-y-2 overflow-y-auto max-h-64">
+          {eligibleCurrencies.map((currency) => {
+            const isSelected = selectedCurrency === currency.id;
+
+            return (
+              <div key={currency.id}>
+                <label
+                  htmlFor={currency.id}
+                  className={`flex items-center justify-between cursor-pointer w-full p-4 rounded-lg border-2 transition-colors ${
+                    isSelected
+                      ? "bg-accent border-primary"
+                      : "bg-background border-border hover:bg-muted"
+                  }`}
+                >
+                  <div className="flex items-center space-x-4">
+                    <RadioGroupItem
+                      value={currency.id}
+                      id={currency.id}
+                      className="sr-only"
+                    />
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium ${
+                        isSelected
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {getSymbolOverride(currency.symbol)}
+                    </div>
+                    <div className="font-bold text-foreground">
+                      {currency.name}
                     </div>
                   </div>
-                </div>
-              </label>
-            </div>
-          ))}
+                  {isSelected && <Check className="w-5 h-5 text-primary" />}
+                </label>
+              </div>
+            );
+          })}
         </div>
       </RadioGroup>
       <Button

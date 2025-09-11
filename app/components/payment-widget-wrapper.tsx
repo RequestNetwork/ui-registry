@@ -44,7 +44,7 @@ export function PaymentWidgetWrapper({
         walletConnectProjectId,
         rnApiClientId,
         network: "sepolia",
-        supportedCurrencies: ["ETH-sepolia", /*"fUSDT",*/ "FAU"],
+        supportedCurrencies: [], //["ETH-sepolia", "fUSDT", "FAU"],
       }}
       invoiceInfo={{
         buyerInfo: {

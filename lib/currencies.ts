@@ -5,6 +5,7 @@ export type ConversionCurrency = {
   symbol: string;
   decimals: number;
   address: string;
+  name: string;
   type: "ERC20" | "ETH" | "ISO4217";
   network: string;
 };
@@ -38,4 +39,13 @@ export const getConversionCurrencies = async (
   const data: GetConversionCurrenciesResponse = await response.json();
 
   return data.conversionRoutes;
+};
+
+export const getSymbolOverride = (symbol: string) => {
+  switch (symbol.toLowerCase()) {
+    case "eth-sepolia":
+      return "ETH";
+    default:
+      return symbol;
+  }
 };

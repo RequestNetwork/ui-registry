@@ -1,7 +1,6 @@
 "use client";
 
-import { useAccount, useDisconnect } from "wagmi";
-import { Button } from "@/components/ui/button";
+import { useAccount } from "wagmi";
 import {
   Dialog,
   DialogContent,
@@ -15,7 +14,9 @@ import { BuyerInfoForm } from "./buyer-info-form";
 import { PaymentConfirmation } from "./payment-confirmation";
 import { PaymentSuccess } from "./payment-success";
 import { type BuyerInfo } from "@/types";
-import { UiConfig, type PaymentWidgetProps } from "../types";
+import { type PaymentWidgetProps } from "../types";
+import { DisconnectWallet } from "./disconnect-wallet";
+import { ConversionCurrency } from "@/lib/currencies";
 
 interface PaymentModalProps extends Omit<PaymentWidgetProps, "paymentConfig"> {
   paymentConfig: Omit<
@@ -44,21 +45,16 @@ export function PaymentModal({
     | "payment-confirmation"
     | "payment-success"
   >("currency-select");
-  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
+  const [selectedCurrency, setSelectedCurrency] =
+    useState<ConversionCurrency | null>(null);
   const [buyerInfo, setBuyerInfo] = useState<BuyerInfo | undefined>(
     invoiceInfo.buyerInfo || undefined,
   );
   const [requestId, setRequestId] = useState<string>("");
 
   const { address } = useAccount();
-  const { disconnect } = useDisconnect();
 
-  const handleDisconnect = () => {
-    disconnect();
-    handleModalOpenChange(false);
-  };
-
-  const handleCurrencySelect = (currency: string) => {
+  const handleCurrencySelect = (currency: ConversionCurrency) => {
     setSelectedCurrency(currency);
     setActiveStep("buyer-info");
   };
@@ -90,18 +86,7 @@ export function PaymentModal({
         </DialogHeader>
 
         {activeStep !== "payment-success" && !isWalletOverride && (
-          <div className="p-2 space-y-4">
-            <div className="border-t pt-4">
-              <div className="flex flex-row items-center justify-between mb-2">
-                <span className="text-sm font-mono">
-                  {address?.slice(0, 6)}...{address?.slice(-4)}
-                </span>
-                <Button variant="ghost" onClick={handleDisconnect}>
-                  Disconnect
-                </Button>
-              </div>
-            </div>
-          </div>
+          <DisconnectWallet />
         )}
 
         {activeStep === "currency-select" && (
@@ -146,7 +131,7 @@ export function PaymentModal({
             <PaymentSuccess
               requestId={requestId}
               amountInUsd={amountInUsd}
-              paymentCurrency={selectedCurrency}
+              paymentCurrency={selectedCurrency.id}
               invoiceInfo={invoiceInfo}
               finalBuyerInfo={buyerInfo}
               connectedWalletAddress={connectedWalletAddress}

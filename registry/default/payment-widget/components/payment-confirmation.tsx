@@ -1,10 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ArrowDown } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { FeeInfo, type PaymentError } from "@/types";
 import { type PaymentWidgetProps } from "../types";
 import { usePayment } from "@/hooks/use-payment";
+import { ConversionCurrency, getSymbolOverride } from "@/lib/currencies";
 
 interface PaymentConfirmationProps {
   feeInfo: FeeInfo | undefined;
@@ -13,7 +14,7 @@ interface PaymentConfirmationProps {
   connectedWalletAddress: string;
   walletAccount?: PaymentWidgetProps["walletAccount"];
   recipientWallet: string;
-  paymentCurrency: string;
+  paymentCurrency: ConversionCurrency;
   onBack: () => void;
   handlePaymentSuccess: (requestId: string) => Promise<void>;
   handlePaymentError?: (error: PaymentError) => Promise<void>;
@@ -40,7 +41,7 @@ export function PaymentConfirmation({
         payerWallet: connectedWalletAddress,
         amountInUsd,
         recipientWallet,
-        paymentCurrency,
+        paymentCurrency: paymentCurrency.id,
         feeInfo,
       });
 
@@ -54,31 +55,38 @@ export function PaymentConfirmation({
     <div className="space-y-6">
       <h3 className="text-lg font-semibold">Payment Confirmation</h3>
 
-      <div className="flex items-center justify-center space-x-4 p-6 bg-gray-50 rounded-lg">
-        <div className="flex flex-col items-center">
-          <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold">
-            USD
+      <div className="flex items-center justify-center space-x-6 p-6 bg-muted rounded-lg">
+        <div className="flex flex-col items-center space-y-2">
+          <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-lg">
+            {getSymbolOverride(paymentCurrency.symbol)}
           </div>
-          <span className="text-sm text-gray-600 mt-2">From</span>
+          <div className="text-center">
+            <div className="text-xs text-muted-foreground">From</div>
+            <div className="text-sm font-medium text-foreground">
+              {paymentCurrency.name}
+            </div>
+          </div>
         </div>
+
+        <ArrowRight className="w-6 h-6 text-muted-foreground" />
 
         <div className="flex flex-col items-center space-y-2">
-          <ArrowRight className="w-6 h-6 text-gray-400" />
-          <ArrowDown className="w-4 h-4 text-gray-400" />
-        </div>
-
-        <div className="flex flex-col items-center">
-          <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white font-semibold">
-            {paymentCurrency}
+          <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold text-lg">
+            USD
           </div>
-          <span className="text-sm text-gray-600 mt-2">To</span>
+          <div className="text-center">
+            <div className="text-xs text-muted-foreground">To</div>
+            <div className="text-sm font-medium text-foreground">
+              ${amountInUsd}
+            </div>
+          </div>
         </div>
       </div>
 
       <div className="space-y-2">
         <h4 className="font-medium">Payment Destination</h4>
-        <div className="p-3 bg-gray-50 rounded-lg">
-          <span className="text-sm font-mono text-gray-700">
+        <div className="p-3 bg-muted rounded-lg">
+          <span className="text-sm font-mono text-foreground">
             {recipientWallet}
           </span>
         </div>
