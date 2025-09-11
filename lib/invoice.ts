@@ -1,4 +1,4 @@
-import { BuyerInfo, CompanyInfo, InvoiceItem } from "@/types";
+import type { BuyerInfo, CompanyInfo, InvoiceItem } from "@/types";
 
 export interface PaymentInfo {
   chain: string;

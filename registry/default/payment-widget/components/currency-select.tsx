@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useQuery } from "@tanstack/react-query";
 import {
-  ConversionCurrency,
+  type ConversionCurrency,
   getConversionCurrencies,
   getSymbolOverride,
 } from "@/lib/currencies";

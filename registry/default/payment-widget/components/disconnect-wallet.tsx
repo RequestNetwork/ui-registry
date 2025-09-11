@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Circle, Wallet } from "lucide-react";
+import { Wallet } from "lucide-react";
 import { useAccount, useDisconnect } from "wagmi";
 
 export function DisconnectWallet() {

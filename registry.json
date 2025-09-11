@@ -8,12 +8,20 @@
       "type": "registry:component",
       "title": "Payment Widget",
       "description": "A wallet-connected payment widget for Request Network using pure wagmi",
-      "registryDependencies": ["button", "dialog", "input", "label"],
+      "registryDependencies": [
+        "button",
+        "dialog",
+        "input",
+        "label",
+        "radio-group"
+      ],
       "dependencies": [
         "wagmi@^2.12.29",
         "viem@^2.21.53",
         "@tanstack/react-query@^5.64.1",
-        "react-hook-form@^7.0.0"
+        "react-hook-form@^7.0.0",
+        "lucide-react@^0.542.0",
+        "html2pdf.js@^0.12.0"
       ],
       "files": [
         {
@@ -52,6 +60,16 @@
           "target": "components/payment-widget/components/payment-confirmation.tsx"
         },
         {
+          "path": "registry/default/payment-widget/components/disconnect-wallet.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/disconnect-wallet.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/payment-success.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/payment-success.tsx"
+        },
+        {
           "path": "registry/default/payment-widget/types.ts",
           "type": "registry:lib",
           "target": "components/payment-widget/types.ts"
@@ -67,6 +85,16 @@
           "target": "components/providers/web3-provider.tsx"
         },
         {
+          "path": "components/invoice/invoice-template.tsx",
+          "type": "registry:component",
+          "target": "components/invoice/invoice-template.tsx"
+        },
+        {
+          "path": "components/invoice/styles.css",
+          "type": "registry:component",
+          "target": "components/invoice/styles.css"
+        },
+        {
           "path": "lib/wagmi.ts",
           "type": "registry:lib",
           "target": "lib/wagmi.ts"
@@ -77,9 +105,24 @@
           "target": "lib/payment.ts"
         },
         {
+          "path": "lib/currencies.ts",
+          "type": "registry:lib",
+          "target": "lib/currencies.ts"
+        },
+        {
+          "path": "lib/invoice.ts",
+          "type": "registry:lib",
+          "target": "lib/invoice.ts"
+        },
+        {
           "path": "hooks/use-payment.ts",
           "type": "registry:lib",
           "target": "hooks/use-payment.ts"
+        },
+        {
+          "path": "types/index.ts",
+          "type": "registry:lib",
+          "target": "types/index.ts"
         }
       ]
     }

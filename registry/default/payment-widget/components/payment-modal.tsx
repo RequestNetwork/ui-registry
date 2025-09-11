@@ -13,10 +13,10 @@ import { CurrencySelect } from "./currency-select";
 import { BuyerInfoForm } from "./buyer-info-form";
 import { PaymentConfirmation } from "./payment-confirmation";
 import { PaymentSuccess } from "./payment-success";
-import { type BuyerInfo } from "@/types";
-import { type PaymentWidgetProps } from "../types";
+import type { BuyerInfo } from "@/types";
+import type { PaymentWidgetProps } from "../types";
 import { DisconnectWallet } from "./disconnect-wallet";
-import { ConversionCurrency } from "@/lib/currencies";
+import type { ConversionCurrency } from "@/lib/currencies";
 
 interface PaymentModalProps extends Omit<PaymentWidgetProps, "paymentConfig"> {
   paymentConfig: Omit<

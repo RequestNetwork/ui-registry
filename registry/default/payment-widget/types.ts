@@ -1,6 +1,6 @@
-import { type FeeInfo, type PaymentError, InvoiceInfo } from "@/types";
-import { PropsWithChildren } from "react";
-import { WalletClient } from "viem";
+import type { FeeInfo, PaymentError, InvoiceInfo } from "@/types";
+import type { PropsWithChildren } from "react";
+import type { WalletClient } from "viem";
 
 export interface PaymentConfig {
   walletConnectProjectId?: string;
@@ -17,8 +17,8 @@ export interface UiConfig {
 
 /*
 Still TODO:
-6. restyle everything
-9. Deploy to shad properly
+10. Restyle invoice template
+11. switch all props to be stored in context
 */
 
 export interface PaymentWidgetProps extends PropsWithChildren {
@@ -35,7 +35,7 @@ export interface PaymentWidgetProps extends PropsWithChildren {
   // Invoice information
   invoiceInfo: InvoiceInfo;
   // On success callback when the payment is completed
-  onSuccess?: (requestId: string) => Promise<void>;
+  onSuccess?: (requestId: string) => void | Promise<void>;
   // On error callback when the payment fails
-  onError?: (error: PaymentError) => Promise<void>;
+  onError?: (error: PaymentError) => void | Promise<void>;
 }

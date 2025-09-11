@@ -3,10 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ExternalLink, Download } from "lucide-react";
 import { createInvoice, type CreateInvoiceParams } from "@/lib/invoice";
-import Link from "next/link";
 import { useRef } from "react";
 import { InvoicePDFTemplate } from "@/components/invoice/invoice-template";
-import { type BuyerInfo, type InvoiceInfo } from "@/types";
+import type { BuyerInfo, InvoiceInfo } from "@/types";
 
 interface PaymentSuccessProps {
   requestId: string;
@@ -119,14 +118,15 @@ export function PaymentSuccess({
         )}
         {shouldShowRequestScanUrl && (
           <Button variant="outline" asChild className="w-full">
-            <Link
+            <a
               href={requestScanUrl}
               target="_blank"
               rel="noopener noreferrer"
+              className="inline-flex items-center justify-center"
             >
               <ExternalLink className="w-4 h-4 mr-2" />
               View on Request Scan
-            </Link>
+            </a>
           </Button>
         )}
       </div>

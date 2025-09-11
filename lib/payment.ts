@@ -1,4 +1,4 @@
-import { type FeeInfo, type PaymentError } from "@/types";
+import type { FeeInfo, PaymentError } from "@/types";
 import { RN_API_URL } from "@/registry/default/payment-widget/constants";
 
 export interface PaymentParams {

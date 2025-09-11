@@ -2,10 +2,10 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { FeeInfo, type PaymentError } from "@/types";
-import { type PaymentWidgetProps } from "../types";
+import type { FeeInfo, PaymentError } from "@/types";
+import type { PaymentWidgetProps } from "../types";
 import { usePayment } from "@/hooks/use-payment";
-import { ConversionCurrency, getSymbolOverride } from "@/lib/currencies";
+import { type ConversionCurrency, getSymbolOverride } from "@/lib/currencies";
 
 interface PaymentConfirmationProps {
   feeInfo: FeeInfo | undefined;
@@ -16,8 +16,8 @@ interface PaymentConfirmationProps {
   recipientWallet: string;
   paymentCurrency: ConversionCurrency;
   onBack: () => void;
-  handlePaymentSuccess: (requestId: string) => Promise<void>;
-  handlePaymentError?: (error: PaymentError) => Promise<void>;
+  handlePaymentSuccess: (requestId: string) => void | Promise<void>;
+  handlePaymentError?: (error: PaymentError) => void | Promise<void>;
 }
 
 export function PaymentConfirmation({
@@ -45,9 +45,9 @@ export function PaymentConfirmation({
         feeInfo,
       });
 
-      handlePaymentSuccess(requestId);
+      await handlePaymentSuccess(requestId);
     } catch (error) {
-      handlePaymentError?.(error as PaymentError);
+      await handlePaymentError?.(error as PaymentError);
     }
   };
 

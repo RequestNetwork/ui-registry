@@ -1,12 +1,11 @@
 "use client";
 
-import { useState, type PropsWithChildren } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ConnectionHandler } from "./components/connection-handler";
 import { Web3Provider } from "@/components/providers/web3-provider";
 import { PaymentModal } from "./components/payment-modal";
-import { PaymentWidgetProps } from "./types";
-import Image from "next/image";
+import type { PaymentWidgetProps } from "./types";
 
 function PaymentWidgetInner({
   children,
@@ -40,7 +39,8 @@ function PaymentWidgetInner({
       </Button>
 
       <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
-        <Image
+        {/** biome-ignore lint/performance/noImgElement: This is a ShadCN library, we can't enforce next syntax on everybody */}
+        <img
           src="/assets/logo-sm.svg"
           alt="Request Network"
           width={10}

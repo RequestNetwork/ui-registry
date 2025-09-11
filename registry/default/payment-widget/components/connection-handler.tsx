@@ -2,7 +2,7 @@
 
 import { useAccount } from "wagmi";
 import { WalletConnectModal } from "./wallet-connect-modal";
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 interface ConnectionHandlerProps {
   isOpen: boolean;
