@@ -128,6 +128,11 @@
           "path": "types/index.ts",
           "type": "registry:lib",
           "target": "types/index.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/context/payment-widget-context.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/context/payment-widget-context.tsx"
         }
       ]
     }

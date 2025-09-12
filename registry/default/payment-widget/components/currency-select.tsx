@@ -5,50 +5,40 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useQuery } from "@tanstack/react-query";
 import {
-  type ConversionCurrency,
   getConversionCurrencies,
   getSymbolOverride,
+  type ConversionCurrency,
 } from "@/lib/currencies";
 import { Check } from "lucide-react";
+import { usePaymentWidgetContext } from "../context/payment-widget-context";
 
 interface CurrencySelectProps {
-  supportedCurrencies?: string[];
-  rnApiClientId: string;
-  network: string;
   onSubmit: (currency: ConversionCurrency) => void;
 }
 
-export function CurrencySelect({
-  supportedCurrencies,
-  onSubmit,
-  network,
-  rnApiClientId,
-}: CurrencySelectProps) {
-  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null);
+export function CurrencySelect({ onSubmit }: CurrencySelectProps) {
+  const {
+    paymentConfig: { rnApiClientId, network, supportedCurrencies },
+  } = usePaymentWidgetContext();
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("");
+
   const {
     data: conversionCurrencies,
     isLoading,
     isError,
     refetch,
   } = useQuery({
-    queryKey: ["conversion-currencies"],
-    queryFn: async () => getConversionCurrencies(rnApiClientId, network),
+    queryKey: ["conversionCurrencies", rnApiClientId, network],
+    queryFn: () => getConversionCurrencies(rnApiClientId, network),
   });
 
   const handleSubmit = () => {
-    if (selectedCurrency === null) {
-      return;
-    }
-
     const currency = conversionCurrencies?.find(
       (c) => c.id === selectedCurrency,
     );
-
-    if (!currency) {
-      return;
+    if (currency) {
+      onSubmit(currency);
     }
-
-    onSubmit(currency);
   };
 
   if (isLoading) {
@@ -93,10 +83,9 @@ export function CurrencySelect({
     <div className="space-y-4">
       <h3 className="text-lg font-semibold">Select a currency</h3>
       <RadioGroup value={selectedCurrency} onValueChange={setSelectedCurrency}>
-        <div className="space-y-2 overflow-y-auto max-h-64">
+        <div className="space-y-2 overflow-y-auto max-h-60">
           {eligibleCurrencies.map((currency) => {
             const isSelected = selectedCurrency === currency.id;
-
             return (
               <div key={currency.id}>
                 <label

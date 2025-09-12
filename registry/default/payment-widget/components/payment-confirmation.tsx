@@ -2,52 +2,49 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import type { FeeInfo, PaymentError } from "@/types";
-import type { PaymentWidgetProps } from "../types";
 import { usePayment } from "@/hooks/use-payment";
-import { type ConversionCurrency, getSymbolOverride } from "@/lib/currencies";
+import { getSymbolOverride, type ConversionCurrency } from "@/lib/currencies";
+import { usePaymentWidgetContext } from "../context/payment-widget-context";
+import type { BuyerInfo, PaymentError } from "@/types";
 
 interface PaymentConfirmationProps {
-  feeInfo: FeeInfo | undefined;
-  rnApiClientId: string;
-  amountInUsd: string;
-  connectedWalletAddress: string;
-  walletAccount?: PaymentWidgetProps["walletAccount"];
-  recipientWallet: string;
-  paymentCurrency: ConversionCurrency;
+  selectedCurrency: ConversionCurrency;
+  buyerInfo: BuyerInfo;
   onBack: () => void;
-  handlePaymentSuccess: (requestId: string) => void | Promise<void>;
-  handlePaymentError?: (error: PaymentError) => void | Promise<void>;
+  handlePaymentSuccess: (requestId: string) => void;
 }
 
 export function PaymentConfirmation({
-  amountInUsd,
-  paymentCurrency,
-  rnApiClientId,
-  connectedWalletAddress,
-  recipientWallet,
-  feeInfo,
+  selectedCurrency,
   onBack,
   handlePaymentSuccess,
-  handlePaymentError,
 }: PaymentConfirmationProps) {
+  const {
+    amountInUsd,
+    recipientWallet,
+    connectedWalletAddress,
+    paymentConfig: { rnApiClientId, feeInfo },
+    onError,
+  } = usePaymentWidgetContext();
   const { isExecuting, executePayment } = usePayment();
 
   const handleExecutePayment = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!connectedWalletAddress) return;
 
     try {
       const { requestId } = await executePayment(rnApiClientId, {
         payerWallet: connectedWalletAddress,
         amountInUsd,
         recipientWallet,
-        paymentCurrency: paymentCurrency.id,
+        paymentCurrency: selectedCurrency.id,
         feeInfo,
       });
 
-      await handlePaymentSuccess(requestId);
+      handlePaymentSuccess(requestId);
     } catch (error) {
-      await handlePaymentError?.(error as PaymentError);
+      onError?.(error as PaymentError);
     }
   };
 
@@ -56,14 +53,15 @@ export function PaymentConfirmation({
       <h3 className="text-lg font-semibold">Payment Confirmation</h3>
 
       <div className="flex items-center justify-center space-x-6 p-6 bg-muted rounded-lg">
+        {/* Payment Currency (From) */}
         <div className="flex flex-col items-center space-y-2">
           <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-semibold text-lg">
-            {getSymbolOverride(paymentCurrency.symbol)}
+            {getSymbolOverride(selectedCurrency.symbol)}
           </div>
           <div className="text-center">
             <div className="text-xs text-muted-foreground">From</div>
             <div className="text-sm font-medium text-foreground">
-              {paymentCurrency.name}
+              {selectedCurrency.name}
             </div>
           </div>
         </div>

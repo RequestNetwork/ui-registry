@@ -1,6 +1,5 @@
 "use client";
 
-import { useAccount } from "wagmi";
 import {
   Dialog,
   DialogContent,
@@ -13,32 +12,23 @@ import { CurrencySelect } from "./currency-select";
 import { BuyerInfoForm } from "./buyer-info-form";
 import { PaymentConfirmation } from "./payment-confirmation";
 import { PaymentSuccess } from "./payment-success";
-import type { BuyerInfo } from "@/types";
-import type { PaymentWidgetProps } from "../types";
 import { DisconnectWallet } from "./disconnect-wallet";
+import { usePaymentWidgetContext } from "../context/payment-widget-context";
+import type { BuyerInfo } from "@/types";
 import type { ConversionCurrency } from "@/lib/currencies";
 
-interface PaymentModalProps extends Omit<PaymentWidgetProps, "paymentConfig"> {
-  paymentConfig: Omit<
-    PaymentWidgetProps["paymentConfig"],
-    "walletConnectProjectId"
-  >;
+interface PaymentModalProps {
   isOpen: boolean;
   handleModalOpenChange: (open: boolean) => void;
 }
 
 export function PaymentModal({
-  walletAccount,
   isOpen,
   handleModalOpenChange,
-  amountInUsd,
-  recipientWallet,
-  paymentConfig,
-  uiConfig,
-  invoiceInfo,
-  onSuccess,
-  onError,
 }: PaymentModalProps) {
+  const { isWalletOverride, invoiceInfo, onSuccess } =
+    usePaymentWidgetContext();
+
   const [activeStep, setActiveStep] = useState<
     | "currency-select"
     | "buyer-info"
@@ -51,8 +41,6 @@ export function PaymentModal({
     invoiceInfo.buyerInfo || undefined,
   );
   const [requestId, setRequestId] = useState<string>("");
-
-  const { address } = useAccount();
 
   const handleCurrencySelect = (currency: ConversionCurrency) => {
     setSelectedCurrency(currency);
@@ -70,11 +58,6 @@ export function PaymentModal({
     await onSuccess?.(requestId);
   };
 
-  const isWalletOverride = walletAccount !== undefined;
-  const connectedWalletAddress = walletAccount
-    ? walletAccount.account?.address
-    : address;
-
   return (
     <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
       <DialogContent className="sm:max-w-md">
@@ -90,12 +73,7 @@ export function PaymentModal({
         )}
 
         {activeStep === "currency-select" && (
-          <CurrencySelect
-            onSubmit={handleCurrencySelect}
-            rnApiClientId={paymentConfig.rnApiClientId}
-            network={paymentConfig.network}
-            supportedCurrencies={paymentConfig.supportedCurrencies}
-          />
+          <CurrencySelect onSubmit={handleCurrencySelect} />
         )}
 
         {activeStep === "buyer-info" && (
@@ -107,38 +85,23 @@ export function PaymentModal({
         )}
 
         {activeStep === "payment-confirmation" &&
-          connectedWalletAddress &&
           selectedCurrency &&
           buyerInfo && (
             <PaymentConfirmation
-              amountInUsd={amountInUsd}
-              connectedWalletAddress={connectedWalletAddress}
-              walletAccount={walletAccount}
-              recipientWallet={recipientWallet}
-              handlePaymentSuccess={handlePaymentSuccess}
-              handlePaymentError={onError}
-              paymentCurrency={selectedCurrency}
-              feeInfo={paymentConfig.feeInfo}
-              rnApiClientId={paymentConfig.rnApiClientId}
+              selectedCurrency={selectedCurrency}
+              buyerInfo={buyerInfo}
               onBack={() => setActiveStep("buyer-info")}
+              handlePaymentSuccess={handlePaymentSuccess}
             />
           )}
 
-        {activeStep === "payment-success" &&
-          selectedCurrency &&
-          buyerInfo &&
-          connectedWalletAddress && (
-            <PaymentSuccess
-              requestId={requestId}
-              amountInUsd={amountInUsd}
-              paymentCurrency={selectedCurrency.id}
-              invoiceInfo={invoiceInfo}
-              finalBuyerInfo={buyerInfo}
-              connectedWalletAddress={connectedWalletAddress}
-              shouldShowInvoiceDownload={uiConfig?.showInvoiceDownload || true}
-              shouldShowRequestScanUrl={uiConfig?.showRequestScanUrl || true}
-            />
-          )}
+        {activeStep === "payment-success" && selectedCurrency && buyerInfo && (
+          <PaymentSuccess
+            requestId={requestId}
+            selectedCurrency={selectedCurrency}
+            buyerInfo={buyerInfo}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

@@ -16,11 +16,6 @@ export interface UiConfig {
 }
 
 /*
-Still TODO:
-11. switch all props to be stored in context
-*/
-
-/*
 Example on which tailwind css variables we use and that you might want to override in your app
 @theme inline {
   --color-background: var(--background);

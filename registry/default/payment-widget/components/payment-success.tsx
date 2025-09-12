@@ -5,40 +5,34 @@ import { CheckCircle, ExternalLink, Download } from "lucide-react";
 import { createInvoice, type CreateInvoiceParams } from "@/lib/invoice";
 import { useRef } from "react";
 import { InvoicePDFTemplate } from "@/components/invoice/invoice-template";
-import type { BuyerInfo, InvoiceInfo } from "@/types";
+import { usePaymentWidgetContext } from "../context/payment-widget-context";
+import type { BuyerInfo } from "@/types";
+import type { ConversionCurrency } from "@/lib/currencies";
 
 interface PaymentSuccessProps {
   requestId: string;
-  amountInUsd: string;
-  paymentCurrency: string;
-  invoiceInfo: InvoiceInfo;
-  finalBuyerInfo: BuyerInfo;
-  connectedWalletAddress: string;
-  shouldShowRequestScanUrl: boolean;
-  shouldShowInvoiceDownload: boolean;
+  selectedCurrency: ConversionCurrency;
+  buyerInfo: BuyerInfo;
 }
 
 export function PaymentSuccess({
   requestId,
-  amountInUsd,
-  paymentCurrency,
-  invoiceInfo,
-  finalBuyerInfo,
-  connectedWalletAddress,
-  shouldShowRequestScanUrl,
-  shouldShowInvoiceDownload,
+  selectedCurrency,
+  buyerInfo,
 }: PaymentSuccessProps) {
+  const { amountInUsd, connectedWalletAddress, invoiceInfo, uiConfig } =
+    usePaymentWidgetContext();
   const invoiceRef = useRef<HTMLDivElement>(null);
 
   const invoiceParams: CreateInvoiceParams = {
     company: invoiceInfo.companyInfo,
     buyer: {
-      ...finalBuyerInfo,
-      walletAddress: connectedWalletAddress,
+      ...buyerInfo,
+      walletAddress: connectedWalletAddress || "",
     },
     payment: {
       chain: "ethereum",
-      currency: paymentCurrency,
+      currency: selectedCurrency.symbol,
       exchangeRate: 1,
       transactionHash: "",
     },
@@ -95,7 +89,7 @@ export function PaymentSuccess({
       </div>
 
       <div className="flex flex-col space-y-3 w-full">
-        {shouldShowInvoiceDownload && (
+        {uiConfig.showInvoiceDownload && (
           <>
             <Button onClick={handleDownloadInvoice} className="w-full">
               <Download className="w-4 h-4 mr-2" />
@@ -116,7 +110,7 @@ export function PaymentSuccess({
             </div>
           </>
         )}
-        {shouldShowRequestScanUrl && (
+        {uiConfig.showRequestScanUrl && (
           <Button variant="outline" asChild className="w-full">
             <a
               href={requestScanUrl}
