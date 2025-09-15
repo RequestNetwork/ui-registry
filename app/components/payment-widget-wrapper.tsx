@@ -1,7 +1,7 @@
 "use client";
 
 import { PaymentWidget } from "@/registry/default/payment-widget/payment-widget";
-import { createWalletClient, http } from "viem";
+import { createWalletClient, http, WalletClient } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
 import { sepolia } from "viem/chains";
 
@@ -9,12 +9,14 @@ interface PaymentWidgetWrapperProps {
   walletConnectProjectId: string;
   rnApiClientId: string;
   recipientWallet: string;
+  walletAccount?: WalletClient;
 }
 
 export function PaymentWidgetWrapper({
   walletConnectProjectId,
   rnApiClientId,
   recipientWallet,
+  walletAccount,
 }: PaymentWidgetWrapperProps) {
   const handleSuccess = async (requestId: string) => {
     console.log("Payment successful:", requestId);
@@ -39,12 +41,16 @@ export function PaymentWidgetWrapper({
     <PaymentWidget
       amountInUsd="10.00"
       recipientWallet={recipientWallet}
-      walletAccount={undefined}
+      walletAccount={walletAccount}
       paymentConfig={{
         walletConnectProjectId,
         rnApiClientId,
         network: "sepolia",
-        supportedCurrencies: [], //["ETH-sepolia", "fUSDT", "FAU"],
+        supportedCurrencies: [
+          "ETH-sepolia-sepolia",
+          "fUSDT-sepolia",
+          "FAU-sepolia",
+        ],
       }}
       invoiceInfo={{
         buyerInfo: {

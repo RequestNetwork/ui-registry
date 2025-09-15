@@ -25,6 +25,7 @@ export interface PaymentWidgetContextValue {
       | "sepolia";
     feeInfo?: FeeInfo;
     supportedCurrencies?: string[];
+    invoiceNumber?: string;
   };
 
   uiConfig: {
@@ -86,6 +87,7 @@ export function PaymentWidgetProvider({
       network: paymentConfig.network,
       feeInfo: paymentConfig.feeInfo,
       supportedCurrencies: paymentConfig.supportedCurrencies,
+      invoiceNumber: paymentConfig.invoiceNumber,
     },
     uiConfig: {
       showInvoiceDownload: uiConfig?.showInvoiceDownload || true,

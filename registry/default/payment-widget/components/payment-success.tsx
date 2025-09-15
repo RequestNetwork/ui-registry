@@ -39,9 +39,9 @@ export function PaymentSuccess({
     items: invoiceInfo.items,
     totals: invoiceInfo.totals,
     metadata: {
-      ...(invoiceInfo.invoiceNumber && {
-        invoiceNumber: invoiceInfo.invoiceNumber,
-      }),
+      invoiceNumber: invoiceInfo?.invoiceNumber
+        ? invoiceInfo.invoiceNumber
+        : undefined,
       notes: `Payment processed through Request Network for ${amountInUsd} USD`,
     },
   };
@@ -83,7 +83,7 @@ export function PaymentSuccess({
             Payment Completed!
           </h3>
           <p className="text-gray-600 mt-2">
-            Your payment of ${amountInUsd} has been processed successfully.
+            Your payment has been processed successfully.
           </p>
         </div>
       </div>

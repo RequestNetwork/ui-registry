@@ -79,7 +79,7 @@ export interface CreateInvoiceParams {
 
 export const createInvoice = (params: CreateInvoiceParams): InvoiceData => {
   const metadata: InvoiceMetadata = {
-    invoiceNumber: generateInvoiceNumber(),
+    invoiceNumber: params.metadata?.invoiceNumber || generateInvoiceNumber(),
     issueDate: new Date(),
     ...params.metadata,
   };

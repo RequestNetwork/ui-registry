@@ -130,6 +130,11 @@
           "target": "types/index.ts"
         },
         {
+          "path": "types/html2pdf.d.ts",
+          "type": "registry:lib",
+          "target": "types/html2pdf.d.ts"
+        },
+        {
           "path": "registry/default/payment-widget/context/payment-widget-context.tsx",
           "type": "registry:component",
           "target": "components/payment-widget/context/payment-widget-context.tsx"

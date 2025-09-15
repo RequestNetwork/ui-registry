@@ -67,7 +67,7 @@ export function CurrencySelect({ onSubmit }: CurrencySelectProps) {
   const eligibleCurrencies =
     lowerCaseSupportedCurrencies.length > 0
       ? conversionCurrencies.filter((currency) =>
-          lowerCaseSupportedCurrencies.includes(currency.symbol.toLowerCase()),
+          lowerCaseSupportedCurrencies.includes(currency.id.toLowerCase()),
         )
       : conversionCurrencies;
 

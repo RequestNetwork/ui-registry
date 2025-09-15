@@ -76,8 +76,8 @@ export const InvoicePDFTemplate: FC<{ invoice: InvoiceData }> = ({
 
       <div className="payment-info">
         <div>
-          <strong>Payment Method:</strong> {invoice.payment.currency} on{" "}
-          {invoice.payment.chain}
+          <strong>Payment Method:</strong>{" "}
+          <span>{`${invoice.payment.currency} on ${invoice.payment.chain}`}</span>
         </div>
         {invoice.payment.transactionHash && (
           <div className="transaction-hash">

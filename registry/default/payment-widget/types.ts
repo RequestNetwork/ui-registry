@@ -7,7 +7,7 @@ export interface PaymentConfig {
   network: "arbitrum" | "base" | "mainnet" | "optimism" | "polygon" | "sepolia";
   rnApiClientId: string;
   feeInfo?: FeeInfo;
-  supportedCurrencies?: string[]; // an array of ticker symbols, e.g. ['ETH', 'USDC', 'DAI']
+  supportedCurrencies?: string[]; // an array of currency  ids
 }
 
 export interface UiConfig {

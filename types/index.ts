@@ -1,5 +1,5 @@
 export interface FeeInfo {
-  feePercentage: number;
+  feePercentage: string;
   feeAddress: string;
 }
 
