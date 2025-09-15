@@ -30,6 +30,11 @@
           "target": "components/payment-widget/payment-widget.tsx"
         },
         {
+          "path": "registry/default/payment-widget/context/payment-widget-context.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/context/payment-widget-context.tsx"
+        },
+        {
           "path": "registry/default/payment-widget/components/connection-handler.tsx",
           "type": "registry:component",
           "target": "components/payment-widget/components/connection-handler.tsx"
@@ -70,9 +75,9 @@
           "target": "components/payment-widget/components/payment-success.tsx"
         },
         {
-          "path": "registry/default/payment-widget/types.ts",
+          "path": "registry/default/payment-widget/payment-widget.types.ts",
           "type": "registry:lib",
-          "target": "components/payment-widget/types.ts"
+          "target": "components/payment-widget/payment-widget.types.ts"
         },
         {
           "path": "registry/default/payment-widget/constants.ts",
@@ -80,64 +85,59 @@
           "target": "components/payment-widget/constants.ts"
         },
         {
-          "path": "components/providers/web3-provider.tsx",
-          "type": "registry:component",
-          "target": "components/providers/web3-provider.tsx"
+          "path": "registry/default/payment-widget/utils/wagmi.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/utils/wagmi.ts"
         },
         {
-          "path": "components/invoice/invoice-template.tsx",
-          "type": "registry:component",
-          "target": "components/invoice/invoice-template.tsx"
+          "path": "registry/default/payment-widget/utils/payment.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/utils/payment.ts"
         },
         {
-          "path": "components/invoice/styles.css",
+          "path": "registry/default/payment-widget/utils/currencies.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/utils/currencies.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/utils/invoice.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/utils/invoice.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/hooks/use-payment.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/hooks/use-payment.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/types/index.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/types/index.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/types/html2pdf.d.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/types/html2pdf.d.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/context/web3-context.tsx",
           "type": "registry:component",
-          "target": "components/invoice/styles.css"
+          "target": "components/payment-widget/context/web3-context.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/invoice/invoice-template.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/invoice/invoice-template.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/invoice/styles.css",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/invoice/styles.css"
         },
         {
           "path": "lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
-        },
-        {
-          "path": "lib/wagmi.ts",
-          "type": "registry:lib",
-          "target": "lib/wagmi.ts"
-        },
-        {
-          "path": "lib/payment.ts",
-          "type": "registry:lib",
-          "target": "lib/payment.ts"
-        },
-        {
-          "path": "lib/currencies.ts",
-          "type": "registry:lib",
-          "target": "lib/currencies.ts"
-        },
-        {
-          "path": "lib/invoice.ts",
-          "type": "registry:lib",
-          "target": "lib/invoice.ts"
-        },
-        {
-          "path": "hooks/use-payment.ts",
-          "type": "registry:lib",
-          "target": "hooks/use-payment.ts"
-        },
-        {
-          "path": "types/index.ts",
-          "type": "registry:lib",
-          "target": "types/index.ts"
-        },
-        {
-          "path": "types/html2pdf.d.ts",
-          "type": "registry:lib",
-          "target": "types/html2pdf.d.ts"
-        },
-        {
-          "path": "registry/default/payment-widget/context/payment-widget-context.tsx",
-          "type": "registry:component",
-          "target": "components/payment-widget/context/payment-widget-context.tsx"
         }
       ]
     }

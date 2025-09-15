@@ -1,4 +1,4 @@
-import type { BuyerInfo, CompanyInfo, InvoiceItem } from "@/types";
+import type { BuyerInfo, CompanyInfo, InvoiceItem } from "../types";
 
 export interface PaymentInfo {
   chain: string;
@@ -74,12 +74,11 @@ export interface CreateInvoiceParams {
     total: number;
     totalUSD: number;
   };
-  metadata?: Partial<InvoiceMetadata>;
+  metadata: Omit<InvoiceMetadata, "issueDate">;
 }
 
 export const createInvoice = (params: CreateInvoiceParams): InvoiceData => {
   const metadata: InvoiceMetadata = {
-    invoiceNumber: params.metadata?.invoiceNumber || generateInvoiceNumber(),
     issueDate: new Date(),
     ...params.metadata,
   };

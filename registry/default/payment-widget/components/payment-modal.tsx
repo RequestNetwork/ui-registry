@@ -14,8 +14,8 @@ import { PaymentConfirmation } from "./payment-confirmation";
 import { PaymentSuccess } from "./payment-success";
 import { DisconnectWallet } from "./disconnect-wallet";
 import { usePaymentWidgetContext } from "../context/payment-widget-context";
-import type { BuyerInfo } from "@/types";
-import type { ConversionCurrency } from "@/lib/currencies";
+import type { BuyerInfo } from "../types/index";
+import type { ConversionCurrency } from "../utils/currencies";
 
 interface PaymentModalProps {
   isOpen: boolean;

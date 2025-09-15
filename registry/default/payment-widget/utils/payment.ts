@@ -1,5 +1,5 @@
-import type { FeeInfo, PaymentError } from "@/types";
-import { RN_API_URL } from "@/registry/default/payment-widget/constants";
+import { RN_API_URL } from "../constants";
+import type { FeeInfo, PaymentError } from "../types";
 
 export interface PaymentParams {
   amountInUsd: string;

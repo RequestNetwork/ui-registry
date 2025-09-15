@@ -1,9 +1,7 @@
 "use client";
 
 import { PaymentWidget } from "@/registry/default/payment-widget/payment-widget";
-import { createWalletClient, http, WalletClient } from "viem";
-import { privateKeyToAccount } from "viem/accounts";
-import { sepolia } from "viem/chains";
+import { WalletClient } from "viem";
 
 interface PaymentWidgetWrapperProps {
   walletConnectProjectId: string;

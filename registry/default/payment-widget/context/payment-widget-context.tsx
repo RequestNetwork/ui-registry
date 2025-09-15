@@ -2,9 +2,9 @@
 
 import { createContext, useContext, type ReactNode } from "react";
 import { useAccount } from "wagmi";
-import type { InvoiceInfo, FeeInfo, PaymentError } from "@/types";
+import type { InvoiceInfo, FeeInfo, PaymentError } from "../types/index";
 import type { WalletClient } from "viem";
-import type { PaymentWidgetProps } from "../types";
+import type { PaymentWidgetProps } from "../payment-widget.types";
 
 export interface PaymentWidgetContextValue {
   amountInUsd: string;
@@ -25,7 +25,6 @@ export interface PaymentWidgetContextValue {
       | "sepolia";
     feeInfo?: FeeInfo;
     supportedCurrencies?: string[];
-    invoiceNumber?: string;
   };
 
   uiConfig: {
@@ -87,7 +86,6 @@ export function PaymentWidgetProvider({
       network: paymentConfig.network,
       feeInfo: paymentConfig.feeInfo,
       supportedCurrencies: paymentConfig.supportedCurrencies,
-      invoiceNumber: paymentConfig.invoiceNumber,
     },
     uiConfig: {
       showInvoiceDownload: uiConfig?.showInvoiceDownload || true,

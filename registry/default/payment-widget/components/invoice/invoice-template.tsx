@@ -4,7 +4,7 @@ import {
   formatUSDAmount,
   formatInvoiceDate,
   type InvoiceData,
-} from "@/lib/invoice";
+} from "../../utils/invoice";
 import "./styles.css";
 
 export const InvoicePDFTemplate: FC<{ invoice: InvoiceData }> = ({

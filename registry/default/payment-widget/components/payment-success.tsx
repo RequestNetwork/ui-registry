@@ -2,12 +2,16 @@
 
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ExternalLink, Download } from "lucide-react";
-import { createInvoice, type CreateInvoiceParams } from "@/lib/invoice";
+import {
+  createInvoice,
+  generateInvoiceNumber,
+  type CreateInvoiceParams,
+} from "../utils/invoice";
 import { useRef } from "react";
-import { InvoicePDFTemplate } from "@/components/invoice/invoice-template";
+import { InvoicePDFTemplate } from "../components/invoice/invoice-template";
 import { usePaymentWidgetContext } from "../context/payment-widget-context";
-import type { BuyerInfo } from "@/types";
-import type { ConversionCurrency } from "@/lib/currencies";
+import type { BuyerInfo } from "../types/index";
+import type { ConversionCurrency } from "../utils/currencies";
 
 interface PaymentSuccessProps {
   requestId: string;
@@ -41,7 +45,7 @@ export function PaymentSuccess({
     metadata: {
       invoiceNumber: invoiceInfo?.invoiceNumber
         ? invoiceInfo.invoiceNumber
-        : undefined,
+        : generateInvoiceNumber(),
       notes: `Payment processed through Request Network for ${amountInUsd} USD`,
     },
   };

@@ -1,6 +1,6 @@
-import type { FeeInfo, PaymentError, InvoiceInfo } from "@/types";
 import type { PropsWithChildren } from "react";
 import type { WalletClient } from "viem";
+import type { FeeInfo, InvoiceInfo, PaymentError } from "./types";
 
 export interface PaymentConfig {
   walletConnectProjectId?: string;

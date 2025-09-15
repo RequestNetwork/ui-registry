@@ -1,15 +1,15 @@
 "use client";
 
-import { PropsWithChildren, useState } from "react";
+import { type PropsWithChildren, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ConnectionHandler } from "./components/connection-handler";
-import { Web3Provider } from "@/components/providers/web3-provider";
+import { Web3Provider } from "./context/web3-context";
 import { PaymentModal } from "./components/payment-modal";
 import {
   PaymentWidgetProvider,
   usePaymentWidgetContext,
 } from "./context/payment-widget-context";
-import type { PaymentWidgetProps } from "./types";
+import type { PaymentWidgetProps } from "./payment-widget.types";
 import { ICONS } from "./constants";
 
 function PaymentWidgetInner({ children }: PropsWithChildren) {

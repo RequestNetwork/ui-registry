@@ -2,10 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { usePayment } from "@/hooks/use-payment";
-import { getSymbolOverride, type ConversionCurrency } from "@/lib/currencies";
+import { usePayment } from "../hooks/use-payment";
+import {
+  getSymbolOverride,
+  type ConversionCurrency,
+} from "../utils/currencies";
 import { usePaymentWidgetContext } from "../context/payment-widget-context";
-import type { BuyerInfo, PaymentError } from "@/types";
+import type { BuyerInfo, PaymentError } from "../types/index";
 
 interface PaymentConfirmationProps {
   selectedCurrency: ConversionCurrency;
