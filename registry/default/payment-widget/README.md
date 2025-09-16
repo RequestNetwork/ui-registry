@@ -52,7 +52,7 @@ function App() {
             street: "123 Main St",
             city: "New York",
             state: "NY",
-            zipCode: "10001",
+            postalCode: "10001",
           },
           email: "contact@yourcompany.com",
           taxId: "123-45-6789",
@@ -140,7 +140,7 @@ function App() {
     street: string;
     city: string;
     state: string;
-    zipCode: string;
+    postalCode: string;
   };
   email?: string;                  // Company email
   taxId: string;                   // Tax identification number

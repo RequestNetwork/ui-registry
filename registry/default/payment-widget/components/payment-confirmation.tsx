@@ -18,6 +18,7 @@ interface PaymentConfirmationProps {
 }
 
 export function PaymentConfirmation({
+  buyerInfo,
   selectedCurrency,
   onBack,
   handlePaymentSuccess,
@@ -44,6 +45,18 @@ export function PaymentConfirmation({
         recipientWallet,
         paymentCurrency: selectedCurrency.id,
         feeInfo,
+        customerInfo: {
+          email: buyerInfo.email,
+          firstName: buyerInfo.firstName,
+          lastName: buyerInfo.lastName,
+          address: {
+            street: buyerInfo.streetAddress,
+            city: buyerInfo.city,
+            state: buyerInfo.state,
+            postalCode: buyerInfo.postalCode,
+            country: buyerInfo.country,
+          },
+        },
       });
 
       handlePaymentSuccess(requestId);

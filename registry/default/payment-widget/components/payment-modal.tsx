@@ -58,8 +58,24 @@ export function PaymentModal({
     await onSuccess?.(requestId);
   };
 
+  const reset = () => {
+    setActiveStep("currency-select");
+    setSelectedCurrency(null);
+    setBuyerInfo(receiptInfo.buyerInfo || undefined);
+    setRequestId("");
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={handleModalOpenChange}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(isOpen) => {
+        // reset modal state when closing from success step
+        if (!isOpen && activeStep === "payment-success") {
+          reset();
+        }
+        handleModalOpenChange(isOpen);
+      }}
+    >
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Payment</DialogTitle>

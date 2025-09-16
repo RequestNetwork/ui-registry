@@ -22,7 +22,7 @@ export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
                 <div>
                   {receipt.company.address.city},{" "}
                   {receipt.company.address.state}{" "}
-                  {receipt.company.address.zipCode}{" "}
+                  {receipt.company.address.postalCode}{" "}
                   {receipt.company.address.country}
                 </div>
               </>
@@ -35,7 +35,7 @@ export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
         </div>
 
         <div className="receipt-title-section">
-          <h2 className="receipt-title">RECEIPT</h2>
+          <h2 className="receipt-title">REC</h2>
           <div className="receipt-number">
             #{receipt.metadata.receiptNumber}
           </div>
@@ -57,7 +57,7 @@ export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
                 <div>
                   {receipt.company.address.city},{" "}
                   {receipt.company.address.state}{" "}
-                  {receipt.company.address.zipCode}{" "}
+                  {receipt.company.address.postalCode}{" "}
                   {receipt.company.address.country}
                 </div>
               </>
@@ -81,7 +81,7 @@ export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
               <div>{receipt.buyer.streetAddress}</div>
               <div>
                 {receipt.buyer.city}, {receipt.buyer.state}{" "}
-                {receipt.buyer.postalCode}
+                {receipt.buyer.postalCode} {receipt.buyer.country}
               </div>
             </div>
           )}

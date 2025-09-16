@@ -121,8 +121,18 @@ export function BuyerInfoForm({
             <Input
               id="country"
               placeholder="United States"
-              {...register("country")}
+              {...register("country", {
+                maxLength: {
+                  value: 2,
+                  message: "Use a 2-letter ISO country code",
+                },
+              })}
             />
+            {errors.country && (
+              <span className="text-sm text-destructive">
+                {errors.country.message}
+              </span>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="postalCode">Postal Code</Label>

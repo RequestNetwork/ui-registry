@@ -61,7 +61,7 @@ export function PaymentWidgetWrapper({
             street: "123 Crypto Street",
             city: "San Francisco",
             state: "CA",
-            zipCode: "94105",
+            postalCode: "94105",
             country: "USA",
           },
           taxId: "US123456789",

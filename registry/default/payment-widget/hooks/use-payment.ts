@@ -55,6 +55,7 @@ export const usePayment = (walletAccount?: WalletClient) => {
           recipientWallet: params.recipientWallet,
           paymentCurrency: params.paymentCurrency,
           feeInfo: params.feeInfo,
+          customerInfo: params.customerInfo,
         },
         sendTransaction: wrappedSendTransaction,
       });

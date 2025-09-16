@@ -31,7 +31,7 @@ export interface CompanyInfo {
     street: string;
     city: string;
     state: string;
-    zipCode: string;
+    postalCode: string;
     country: string;
   };
   taxId?: string;
