@@ -32,6 +32,7 @@ export function PaymentConfirmation({
     onError,
   } = usePaymentWidgetContext();
   const { isExecuting, executePayment } = usePayment();
+  console.log(buyerInfo);
 
   const handleExecutePayment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,13 +50,15 @@ export function PaymentConfirmation({
           email: buyerInfo.email,
           firstName: buyerInfo.firstName,
           lastName: buyerInfo.lastName,
-          address: {
-            street: buyerInfo.streetAddress,
-            city: buyerInfo.city,
-            state: buyerInfo.state,
-            postalCode: buyerInfo.postalCode,
-            country: buyerInfo.country,
-          },
+          address: buyerInfo.address
+            ? {
+                street: buyerInfo.address.street,
+                city: buyerInfo.address.city,
+                state: buyerInfo.address.state,
+                postalCode: buyerInfo.address.postalCode,
+                country: buyerInfo.address.country,
+              }
+            : undefined,
         },
       });
 

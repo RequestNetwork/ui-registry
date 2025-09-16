@@ -76,12 +76,13 @@ export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
           {receipt.buyer.email && (
             <div className="email">{receipt.buyer.email}</div>
           )}
-          {receipt.buyer.streetAddress && (
+          {receipt.buyer.address && (
             <div className="address-info">
-              <div>{receipt.buyer.streetAddress}</div>
+              <div>{receipt.buyer.address.street}</div>
               <div>
-                {receipt.buyer.city}, {receipt.buyer.state}{" "}
-                {receipt.buyer.postalCode} {receipt.buyer.country}
+                {receipt.buyer.address.city}, {receipt.buyer.address.state}{" "}
+                {receipt.buyer.address.postalCode}{" "}
+                {receipt.buyer.address.country}
               </div>
             </div>
           )}

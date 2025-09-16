@@ -46,11 +46,13 @@ export interface BuyerInfo {
   lastName?: string;
   businessName?: string;
   phone?: string;
-  streetAddress?: string;
-  city?: string;
-  state?: string;
-  country?: string;
-  postalCode?: string;
+  address?: {
+    street: string;
+    city: string;
+    state: string;
+    country: string;
+    postalCode: string;
+  };
 }
 
 export interface ReceiptTotals {
