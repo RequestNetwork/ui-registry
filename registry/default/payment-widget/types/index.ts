@@ -14,7 +14,7 @@ export interface Transaction {
   value: { hex: string };
 }
 
-export interface InvoiceItem {
+export interface ReceiptItem {
   id: string;
   description: string;
   quantity: number;
@@ -27,15 +27,14 @@ export interface InvoiceItem {
 
 export interface CompanyInfo {
   name: string;
-  walletAddress: string;
-  address: {
+  address?: {
     street: string;
     city: string;
     state: string;
     zipCode: string;
-    country?: string;
+    country: string;
   };
-  taxId: string;
+  taxId?: string;
   email?: string;
   phone?: string;
   website?: string;
@@ -54,17 +53,17 @@ export interface BuyerInfo {
   postalCode?: string;
 }
 
-export interface InvoiceTotals {
+export interface ReceiptTotals {
   totalDiscount: number;
   totalTax: number;
   total: number;
   totalUSD: number;
 }
 
-export interface InvoiceInfo {
+export interface ReceiptInfo {
   buyerInfo?: BuyerInfo;
   companyInfo: CompanyInfo;
-  items: InvoiceItem[];
-  totals: InvoiceTotals;
-  invoiceNumber?: string;
+  items: ReceiptItem[];
+  totals: ReceiptTotals;
+  receiptNumber?: string;
 }

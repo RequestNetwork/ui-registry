@@ -10,7 +10,7 @@ The Payment Widget is a comprehensive solution for integrating cryptocurrency pa
 
 - **Multi-wallet support** - Compatible with MetaMask, WalletConnect, Coinbase Wallet, and Safe
 - **Currency flexibility** - Supports multiple cryptocurrencies with automatic conversion rates
-- **Invoice generation** - Built-in PDF invoice generation and download
+- **Receipt generation** - Built-in PDF receipt generation and download
 - **Network support** - Works across Ethereum mainnet, Arbitrum, Base, Optimism, Polygon, and Sepolia
 - **Customizable UI** - Configurable display options and Tailwind CSS theming
 - **TypeScript support** - Fully typed for enhanced developer experience
@@ -45,7 +45,7 @@ function App() {
         network: "mainnet",
         rnApiClientId: "your-rn-api-client-id",
       }}
-      invoiceInfo={{
+      receiptInfo={{
         companyInfo: {
           name: "Your Company",
           address: {
@@ -122,15 +122,15 @@ function App() {
 - **Description**: Array of cryptocurrency IDs to limit currency selection. If not provided, all available currencies for the network will be shown.
 - **Example**: `["ethereum-mainnet", "usdc-ethereum"]`
 
-#### `invoiceInfo` (required)
-- **Type**: `InvoiceInfo`
-- **Description**: Comprehensive invoice information for PDF generation and payment records.
+#### `receiptInfo` (required)
+- **Type**: `ReceiptInfo`
+- **Description**: Comprehensive receipt information for PDF generation and payment records.
 
-##### InvoiceInfo Properties
+##### ReceiptInfo Properties
 
 ###### `companyInfo` (required)
 - **Type**: `CompanyInfo`
-- **Description**: Your company's information for the invoice.
+- **Description**: Your company's information for the receipt.
 
 **CompanyInfo Structure:**
 ```typescript
@@ -149,10 +149,10 @@ function App() {
 ```
 
 ###### `items` (required)
-- **Type**: `InvoiceItem[]`
-- **Description**: Array of line items for the invoice.
+- **Type**: `ReceiptItem[]`
+- **Description**: Array of line items for the receipt.
 
-**InvoiceItem Structure:**
+**ReceiptItem Structure:**
 ```typescript
 {
   id: string;                      // Unique item identifier
@@ -167,10 +167,10 @@ function App() {
 ```
 
 ###### `totals` (required)
-- **Type**: `InvoiceTotals`
-- **Description**: Summary totals for the invoice.
+- **Type**: `ReceiptTotals`
+- **Description**: Summary totals for the receipt.
 
-**InvoiceTotals Structure:**
+**ReceiptTotals Structure:**
 ```typescript
 {
   total: string;                   // Total amount in base currency
@@ -184,9 +184,9 @@ function App() {
 - **Type**: `BuyerInfo`
 - **Description**: Pre-filled buyer information. If provided, the buyer info form will be pre-populated.
 
-###### `invoiceNumber` (optional)
+###### `receiptNumber` (optional)
 - **Type**: `string`
-- **Description**: Custom invoice number. If not provided, a default will be generated.
+- **Description**: Custom receipt number. If not provided, a default will be generated.
 
 ### Configuration Props
 
@@ -201,10 +201,10 @@ function App() {
 - **Default**: `true`
 - **Description**: Whether to show a link to view the payment on Request Scan after successful payment.
 
-###### `showInvoiceDownload` (optional)
+###### `showReceiptDownload` (optional)
 - **Type**: `boolean`
 - **Default**: `true`
-- **Description**: Whether to show the invoice PDF download button after successful payment.
+- **Description**: Whether to show the receipt PDF download button after successful payment.
 
 #### `walletAccount` (optional)
 - **Type**: `WalletClient`
@@ -277,8 +277,8 @@ function PaymentWithExistingWallet() {
         network: "mainnet",
         rnApiClientId: "your-rn-api-client-id",
       }}
-      invoiceInfo={{
-        // ... your invoice info
+      receiptInfo={{
+        // ... your receipt info
       }}
       onSuccess={(requestId) => console.log("Payment successful:", requestId)}
       onError={(error) => console.error("Payment failed:", error)}

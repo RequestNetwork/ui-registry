@@ -67,7 +67,7 @@ export function PaymentWidget({
   amountInUsd,
   recipientWallet,
   paymentConfig,
-  invoiceInfo,
+  receiptInfo,
   onSuccess,
   onError,
   uiConfig,
@@ -82,7 +82,7 @@ export function PaymentWidget({
         walletAccount={walletAccount}
         paymentConfig={paymentConfig}
         uiConfig={uiConfig}
-        invoiceInfo={invoiceInfo}
+        receiptInfo={receiptInfo}
         onSuccess={onSuccess}
         onError={onError}
       >

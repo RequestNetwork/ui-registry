@@ -26,7 +26,7 @@ export function PaymentModal({
   isOpen,
   handleModalOpenChange,
 }: PaymentModalProps) {
-  const { isWalletOverride, invoiceInfo, onSuccess } =
+  const { isWalletOverride, receiptInfo, onSuccess } =
     usePaymentWidgetContext();
 
   const [activeStep, setActiveStep] = useState<
@@ -38,7 +38,7 @@ export function PaymentModal({
   const [selectedCurrency, setSelectedCurrency] =
     useState<ConversionCurrency | null>(null);
   const [buyerInfo, setBuyerInfo] = useState<BuyerInfo | undefined>(
-    invoiceInfo.buyerInfo || undefined,
+    receiptInfo.buyerInfo || undefined,
   );
   const [requestId, setRequestId] = useState<string>("");
 

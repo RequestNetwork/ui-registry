@@ -3,12 +3,12 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ExternalLink, Download } from "lucide-react";
 import {
-  createInvoice,
-  generateInvoiceNumber,
-  type CreateInvoiceParams,
-} from "../utils/invoice";
+  createReceipt,
+  generateReceiptNumber,
+  type CreateReceiptParams,
+} from "../utils/receipt";
 import { useRef } from "react";
-import { InvoicePDFTemplate } from "../components/invoice/invoice-template";
+import { ReceiptPDFTemplate } from "../components/receipt/receipt-template";
 import { usePaymentWidgetContext } from "../context/payment-widget-context";
 import type { BuyerInfo } from "../types/index";
 import type { ConversionCurrency } from "../utils/currencies";
@@ -24,12 +24,20 @@ export function PaymentSuccess({
   selectedCurrency,
   buyerInfo,
 }: PaymentSuccessProps) {
-  const { amountInUsd, connectedWalletAddress, invoiceInfo, uiConfig } =
-    usePaymentWidgetContext();
-  const invoiceRef = useRef<HTMLDivElement>(null);
+  const {
+    amountInUsd,
+    recipientWallet,
+    connectedWalletAddress,
+    receiptInfo,
+    uiConfig,
+  } = usePaymentWidgetContext();
+  const receiptRef = useRef<HTMLDivElement>(null);
 
-  const invoiceParams: CreateInvoiceParams = {
-    company: invoiceInfo.companyInfo,
+  const receiptParams: CreateReceiptParams = {
+    company: {
+      ...receiptInfo.companyInfo,
+      walletAddress: recipientWallet,
+    },
     buyer: {
       ...buyerInfo,
       walletAddress: connectedWalletAddress || "",
@@ -40,21 +48,21 @@ export function PaymentSuccess({
       exchangeRate: 1,
       transactionHash: "",
     },
-    items: invoiceInfo.items,
-    totals: invoiceInfo.totals,
+    items: receiptInfo.items,
+    totals: receiptInfo.totals,
     metadata: {
-      invoiceNumber: invoiceInfo?.invoiceNumber
-        ? invoiceInfo.invoiceNumber
-        : generateInvoiceNumber(),
+      receiptNumber: receiptInfo?.receiptNumber
+        ? receiptInfo.receiptNumber
+        : generateReceiptNumber(),
       notes: `Payment processed through Request Network for ${amountInUsd} USD`,
     },
   };
 
-  const handleDownloadInvoice = async () => {
+  const handleDownloadReceipt = async () => {
     try {
-      const element = invoiceRef.current;
+      const element = receiptRef.current;
       if (!element) {
-        console.error("Invoice element not found");
+        console.error("Receipt element not found");
         return;
       }
 
@@ -63,7 +71,7 @@ export function PaymentSuccess({
       html2pdf()
         .set({
           margin: 1,
-          filename: `invoice-${invoiceParams.metadata?.invoiceNumber || "payment"}.pdf`,
+          filename: `receipt-${receiptParams.metadata?.receiptNumber || "payment"}.pdf`,
           image: { type: "jpeg", quality: 0.98 },
           html2canvas: { scale: 2 },
           jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
@@ -71,8 +79,8 @@ export function PaymentSuccess({
         .from(element)
         .save();
     } catch (error) {
-      console.error("Failed to download invoice:", error);
-      alert("Failed to download invoice. Please try again.");
+      console.error("Failed to download receipt:", error);
+      alert("Failed to download receipt. Please try again.");
     }
   };
 
@@ -93,11 +101,11 @@ export function PaymentSuccess({
       </div>
 
       <div className="flex flex-col space-y-3 w-full">
-        {uiConfig.showInvoiceDownload && (
+        {uiConfig.showReceiptDownload && (
           <>
-            <Button onClick={handleDownloadInvoice} className="w-full">
+            <Button onClick={handleDownloadReceipt} className="w-full">
               <Download className="w-4 h-4 mr-2" />
-              Download Invoice PDF
+              Download Receipt PDF
             </Button>
             <div
               style={{
@@ -108,8 +116,8 @@ export function PaymentSuccess({
                 pointerEvents: "none",
               }}
             >
-              <div ref={invoiceRef}>
-                <InvoicePDFTemplate invoice={createInvoice(invoiceParams)} />
+              <div ref={receiptRef}>
+                <ReceiptPDFTemplate receipt={createReceipt(receiptParams)} />
               </div>
             </div>
           </>

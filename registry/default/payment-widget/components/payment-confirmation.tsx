@@ -27,6 +27,7 @@ export function PaymentConfirmation({
     recipientWallet,
     connectedWalletAddress,
     paymentConfig: { rnApiClientId, feeInfo },
+    receiptInfo: { companyInfo: { name: companyName } = {} },
     onError,
   } = usePaymentWidgetContext();
   const { isExecuting, executePayment } = usePayment();
@@ -84,12 +85,20 @@ export function PaymentConfirmation({
         </div>
       </div>
 
-      <div className="space-y-2">
-        <h4 className="font-medium">Payment Destination</h4>
-        <div className="p-3 bg-muted rounded-lg">
-          <span className="text-sm font-mono text-foreground">
-            {recipientWallet}
-          </span>
+      <div className="space-y-3">
+        <h4 className="font-medium text-foreground">Payment To</h4>
+        <div className="p-4 bg-muted rounded-lg space-y-3">
+          <div className="text-base font-semibold text-foreground">
+            {companyName}
+          </div>
+          <div className="space-y-1">
+            <div className="text-xs text-muted-foreground uppercase tracking-wide">
+              Wallet Address
+            </div>
+            <div className="text-sm font-mono text-foreground break-all">
+              {recipientWallet}
+            </div>
+          </div>
         </div>
       </div>
 

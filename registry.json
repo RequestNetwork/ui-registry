@@ -100,9 +100,9 @@
           "target": "components/payment-widget/utils/currencies.ts"
         },
         {
-          "path": "registry/default/payment-widget/utils/invoice.ts",
+          "path": "registry/default/payment-widget/utils/receipt.ts",
           "type": "registry:lib",
-          "target": "components/payment-widget/utils/invoice.ts"
+          "target": "components/payment-widget/utils/receipt.ts"
         },
         {
           "path": "registry/default/payment-widget/hooks/use-payment.ts",
@@ -125,14 +125,14 @@
           "target": "components/payment-widget/context/web3-context.tsx"
         },
         {
-          "path": "registry/default/payment-widget/components/invoice/invoice-template.tsx",
+          "path": "registry/default/payment-widget/components/receipt/receipt-template.tsx",
           "type": "registry:component",
-          "target": "components/payment-widget/components/invoice/invoice-template.tsx"
+          "target": "components/payment-widget/components/receipt/receipt-template.tsx"
         },
         {
-          "path": "registry/default/payment-widget/components/invoice/styles.css",
+          "path": "registry/default/payment-widget/components/receipt/styles.css",
           "type": "registry:component",
-          "target": "components/payment-widget/components/invoice/styles.css"
+          "target": "components/payment-widget/components/receipt/styles.css"
         },
         {
           "path": "lib/utils.ts",

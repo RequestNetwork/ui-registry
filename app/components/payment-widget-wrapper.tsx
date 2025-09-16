@@ -50,14 +50,13 @@ export function PaymentWidgetWrapper({
           "FAU-sepolia",
         ],
       }}
-      invoiceInfo={{
+      receiptInfo={{
         buyerInfo: {
           firstName: "Testo",
           email: "kerry@test.net",
         },
         companyInfo: {
           name: "Request Network Inc.",
-          walletAddress: recipientWallet,
           address: {
             street: "123 Crypto Street",
             city: "San Francisco",

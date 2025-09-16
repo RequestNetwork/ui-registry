@@ -2,7 +2,7 @@
 
 import { createContext, useContext, type ReactNode } from "react";
 import { useAccount } from "wagmi";
-import type { InvoiceInfo, FeeInfo, PaymentError } from "../types/index";
+import type { ReceiptInfo, FeeInfo, PaymentError } from "../types/index";
 import type { WalletClient } from "viem";
 import type { PaymentWidgetProps } from "../payment-widget.types";
 
@@ -29,10 +29,10 @@ export interface PaymentWidgetContextValue {
 
   uiConfig: {
     showRequestScanUrl: boolean;
-    showInvoiceDownload: boolean;
+    showReceiptDownload: boolean;
   };
 
-  invoiceInfo: InvoiceInfo;
+  receiptInfo: ReceiptInfo;
 
   onSuccess?: (requestId: string) => void | Promise<void>;
   onError?: (error: PaymentError) => void | Promise<void>;
@@ -52,7 +52,7 @@ interface PaymentWidgetProviderProps {
     "walletConnectProjectId"
   >;
   uiConfig?: PaymentWidgetProps["uiConfig"];
-  invoiceInfo: InvoiceInfo;
+  receiptInfo: ReceiptInfo;
   onSuccess?: (requestId: string) => void | Promise<void>;
   onError?: (error: PaymentError) => void | Promise<void>;
 }
@@ -64,7 +64,7 @@ export function PaymentWidgetProvider({
   walletAccount,
   paymentConfig,
   uiConfig,
-  invoiceInfo,
+  receiptInfo,
   onSuccess,
   onError,
 }: PaymentWidgetProviderProps) {
@@ -88,10 +88,10 @@ export function PaymentWidgetProvider({
       supportedCurrencies: paymentConfig.supportedCurrencies,
     },
     uiConfig: {
-      showInvoiceDownload: uiConfig?.showInvoiceDownload || true,
+      showReceiptDownload: uiConfig?.showReceiptDownload || true,
       showRequestScanUrl: uiConfig?.showRequestScanUrl || true,
     },
-    invoiceInfo,
+    receiptInfo,
     onSuccess,
     onError,
   };
