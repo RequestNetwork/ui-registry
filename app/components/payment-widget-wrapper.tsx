@@ -36,7 +36,7 @@ export function PaymentWidgetWrapper({
           "ETH-sepolia-sepolia",
           "fUSDT-sepolia",
           "FAU-sepolia",
-          "USDCn-matic",
+          //"USDCn-matic",
         ],
         feeInfo: undefined /* {
           feeAddress: "0xEbe98659e162e8fF3520EC71e097C9e0a4F53829",
