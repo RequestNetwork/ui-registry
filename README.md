@@ -1,5 +1,10 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Notes
+
+Before you push changes to this repository, do not forget to run `npm run registry:build` to regenerate the component's `JSON` file!
+
+
 ## Getting Started
 
 First, run the development server:
