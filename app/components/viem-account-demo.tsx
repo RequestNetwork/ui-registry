@@ -19,8 +19,6 @@ import { useState } from "react";
 import { Wallet, LogOut } from "lucide-react";
 
 interface ViemAccountDemoProps {
-  walletConnectProjectId: string;
-  rnApiClientId: string;
   recipientWallet: string;
 }
 
@@ -36,11 +34,7 @@ const config = createConfig({
 // Create a query client
 const queryClient = new QueryClient();
 
-function ViemAccountDemoInner({
-  walletConnectProjectId,
-  rnApiClientId,
-  recipientWallet,
-}: ViemAccountDemoProps) {
+function ViemAccountDemoInner({ recipientWallet }: ViemAccountDemoProps) {
   const { address, isConnected } = useAccount();
   const { connectors, connect, isPending } = useConnect();
   const { disconnect } = useDisconnect();
@@ -127,8 +121,6 @@ function ViemAccountDemoInner({
 
         {isConnected && walletClient ? (
           <PaymentWidgetWrapper
-            walletConnectProjectId={walletConnectProjectId}
-            rnApiClientId={rnApiClientId}
             recipientWallet={recipientWallet}
             walletAccount={walletClient}
           />

@@ -1,21 +1,21 @@
 "use client";
 
 import { PaymentWidget } from "@/registry/default/payment-widget/payment-widget";
-import { WalletClient } from "viem";
+import type { WalletClient } from "viem";
 
 interface PaymentWidgetWrapperProps {
-  walletConnectProjectId: string;
-  rnApiClientId: string;
   recipientWallet: string;
   walletAccount?: WalletClient;
 }
 
 export function PaymentWidgetWrapper({
-  walletConnectProjectId,
-  rnApiClientId,
   recipientWallet,
   walletAccount,
 }: PaymentWidgetWrapperProps) {
+  const walletConnectProjectId =
+    process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || "";
+  const rnApiClientId = process.env.NEXT_PUBLIC_REQUEST_API_CLIENT_ID || "";
+
   const handleSuccess = async (requestId: string) => {
     console.log("Payment successful:", requestId);
   };
@@ -23,17 +23,6 @@ export function PaymentWidgetWrapper({
   const handleError = async (error: any) => {
     console.error("Payment failed:", error);
   };
-
-  /*
-  // Example of creating a test wallet client (not used in the component)
-  // It's probably better to just use wagmi, but it can be done this way too
-
-  const testWallet = createWalletClient({
-    account: privateKeyToAccount("some private key"),
-    chain: sepolia,
-    transport: http(),
-  });
-  */
 
   return (
     <PaymentWidget
@@ -49,10 +38,10 @@ export function PaymentWidgetWrapper({
           "fUSDT-sepolia",
           "FAU-sepolia",
         ],
-        feeInfo: {
+        feeInfo: undefined /* {
           feeAddress: "0xEbe98659e162e8fF3520EC71e097C9e0a4F53829",
           feePercentage: "10",
-        },
+        },*/,
       }}
       receiptInfo={{
         buyerInfo: {

@@ -5,7 +5,7 @@ import {
   formatReceiptDate,
   type ReceiptData,
 } from "../../utils/receipt";
-import "./styles.css";
+import "./styles.module.css";
 
 export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
   receipt,

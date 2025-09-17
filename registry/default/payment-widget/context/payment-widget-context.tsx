@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
 import { useAccount } from "wagmi";
 import type { ReceiptInfo, FeeInfo, PaymentError } from "../types/index";
 import type { TransactionReceipt, WalletClient } from "viem";
@@ -81,26 +81,44 @@ export function PaymentWidgetProvider({
     ? walletAccount.account?.address
     : address;
 
-  const contextValue: PaymentWidgetContextValue = {
-    amountInUsd,
-    recipientWallet,
-    walletAccount,
-    connectedWalletAddress,
-    isWalletOverride,
-    paymentConfig: {
-      rnApiClientId: paymentConfig.rnApiClientId,
-      network: paymentConfig.network,
-      feeInfo: paymentConfig.feeInfo,
-      supportedCurrencies: paymentConfig.supportedCurrencies,
-    },
-    uiConfig: {
-      showReceiptDownload: uiConfig?.showReceiptDownload ?? true,
-      showRequestScanUrl: uiConfig?.showRequestScanUrl ?? true,
-    },
-    receiptInfo,
-    onSuccess,
-    onError,
-  };
+  const contextValue: PaymentWidgetContextValue = useMemo(
+    () => ({
+      amountInUsd,
+      recipientWallet,
+      walletAccount,
+      connectedWalletAddress,
+      isWalletOverride,
+      paymentConfig: {
+        rnApiClientId: paymentConfig.rnApiClientId,
+        network: paymentConfig.network,
+        feeInfo: paymentConfig.feeInfo,
+        supportedCurrencies: paymentConfig.supportedCurrencies,
+      },
+      uiConfig: {
+        showReceiptDownload: uiConfig?.showReceiptDownload ?? true,
+        showRequestScanUrl: uiConfig?.showRequestScanUrl ?? true,
+      },
+      receiptInfo,
+      onSuccess,
+      onError,
+    }),
+    [
+      amountInUsd,
+      recipientWallet,
+      walletAccount,
+      connectedWalletAddress,
+      isWalletOverride,
+      paymentConfig.rnApiClientId,
+      paymentConfig.network,
+      paymentConfig.feeInfo,
+      paymentConfig.supportedCurrencies,
+      uiConfig?.showReceiptDownload,
+      uiConfig?.showRequestScanUrl,
+      receiptInfo,
+      onSuccess,
+      onError,
+    ],
+  );
 
   return (
     <PaymentWidgetContext.Provider value={contextValue}>

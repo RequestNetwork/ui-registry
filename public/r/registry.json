@@ -16,10 +16,10 @@
         "radio-group"
       ],
       "dependencies": [
-        "wagmi@^2.12.29",
-        "viem@^2.21.53",
-        "@tanstack/react-query@^5.64.1",
-        "react-hook-form@^7.0.0",
+        "wagmi@^2.16.9",
+        "viem@^2.37.3",
+        "@tanstack/react-query@^5.86.0",
+        "react-hook-form@^7.62.0",
         "lucide-react@^0.542.0",
         "html2pdf.js@^0.12.0"
       ],
@@ -130,14 +130,19 @@
           "target": "components/payment-widget/components/receipt/receipt-template.tsx"
         },
         {
-          "path": "registry/default/payment-widget/components/receipt/styles.css",
+          "path": "registry/default/payment-widget/components/receipt/styles.module.css",
           "type": "registry:component",
-          "target": "components/payment-widget/components/receipt/styles.css"
+          "target": "components/payment-widget/components/receipt/styles.module.css"
         },
         {
           "path": "lib/utils.ts",
           "type": "registry:lib",
           "target": "lib/utils.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/README.md",
+          "type": "registry:lib",
+          "target": "components/payment-widget/README.md"
         }
       ]
     }

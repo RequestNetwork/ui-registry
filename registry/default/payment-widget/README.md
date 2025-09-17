@@ -74,7 +74,7 @@ function App() {
           totalTax: 0.00,
         },
       }}
-      onSuccess={(requestId) => console.log("Payment successful:", requestId)}
+      onSuccess={(requestId, transactionReceipts) => console.log("Payment successful:", requestId, transactionReceipts)}
       onError={(error) => console.error("Payment failed:", error)}
     />
   );
@@ -346,13 +346,13 @@ All errors are passed to the `onError` callback with detailed error information 
 
 The Payment Widget requires these peer dependencies:
 
-- `react` ^18.0.0
-- `wagmi` ^2.12.29
-- `viem` ^2.21.53
-- `@tanstack/react-query` ^5.64.1
-- `react-hook-form` ^7.0.0
-- `lucide-react` ^0.263.1
-- `html2pdf.js` ^0.12.0
+- `react` 
+- `wagmi` 
+- `viem` 
+- `@tanstack/react-query` 
+- `react-hook-form` 
+- `lucide-react`
+- `html2pdf.js`
 
 ## Security Considerations
 

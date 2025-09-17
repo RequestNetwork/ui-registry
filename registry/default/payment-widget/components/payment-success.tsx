@@ -30,6 +30,7 @@ export function PaymentSuccess({
     connectedWalletAddress,
     receiptInfo,
     uiConfig,
+    paymentConfig: { network },
   } = usePaymentWidgetContext();
   const receiptRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +44,7 @@ export function PaymentSuccess({
       walletAddress: connectedWalletAddress || "",
     },
     payment: {
-      chain: "ethereum",
+      chain: network,
       currency: selectedCurrency.symbol,
       exchangeRate: 1,
       transactionHash: "",
