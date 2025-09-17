@@ -1,0 +1,155 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "requestnetwork",
+  "homepage": "https://request.network",
+  "items": [
+    {
+      "name": "payment-widget",
+      "type": "registry:component",
+      "title": "Payment Widget",
+      "description": "A wallet-connected payment widget for Request Network using pure wagmi",
+      "registryDependencies": [
+        "button",
+        "dialog",
+        "input",
+        "label",
+        "radio-group"
+      ],
+      "dependencies": [
+        "wagmi@^2.16.9",
+        "viem@^2.37.3",
+        "@tanstack/react-query@^5.86.0",
+        "react-hook-form@^7.62.0",
+        "lucide-react@^0.542.0",
+        "html2pdf.js@^0.12.0"
+      ],
+      "files": [
+        {
+          "path": "registry/default/payment-widget/payment-widget.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/payment-widget.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/context/payment-widget-context.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/context/payment-widget-context.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/connection-handler.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/connection-handler.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/wallet-connect-modal.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/wallet-connect-modal.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/payment-modal.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/payment-modal.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/currency-select.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/currency-select.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/buyer-info-form.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/buyer-info-form.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/payment-confirmation.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/payment-confirmation.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/disconnect-wallet.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/disconnect-wallet.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/payment-success.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/payment-success.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/payment-widget.types.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/payment-widget.types.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/constants.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/constants.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/utils/wagmi.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/utils/wagmi.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/utils/payment.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/utils/payment.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/utils/currencies.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/utils/currencies.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/utils/receipt.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/utils/receipt.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/utils/chains.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/utils/chains.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/hooks/use-payment.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/hooks/use-payment.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/types/index.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/types/index.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/types/html2pdf.d.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/types/html2pdf.d.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/context/web3-context.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/context/web3-context.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/receipt/receipt-template.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/receipt/receipt-template.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/components/receipt/styles.css",
+          "type": "registry:component",
+          "target": "components/payment-widget/components/receipt/styles.css"
+        },
+        {
+          "path": "lib/utils.ts",
+          "type": "registry:lib",
+          "target": "lib/utils.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/README.md",
+          "type": "registry:lib",
+          "target": "components/payment-widget/README.md"
+        }
+      ]
+    }
+  ]
+}
