@@ -3,7 +3,7 @@
 import { createContext, useContext, type ReactNode } from "react";
 import { useAccount } from "wagmi";
 import type { ReceiptInfo, FeeInfo, PaymentError } from "../types/index";
-import type { WalletClient } from "viem";
+import type { TransactionReceipt, WalletClient } from "viem";
 import type { PaymentWidgetProps } from "../payment-widget.types";
 
 export interface PaymentWidgetContextValue {
@@ -34,7 +34,10 @@ export interface PaymentWidgetContextValue {
 
   receiptInfo: ReceiptInfo;
 
-  onSuccess?: (requestId: string) => void | Promise<void>;
+  onSuccess?: (
+    requestId: string,
+    transactionReceipts: TransactionReceipt[],
+  ) => void | Promise<void>;
   onError?: (error: PaymentError) => void | Promise<void>;
 }
 
@@ -53,7 +56,10 @@ interface PaymentWidgetProviderProps {
   >;
   uiConfig?: PaymentWidgetProps["uiConfig"];
   receiptInfo: ReceiptInfo;
-  onSuccess?: (requestId: string) => void | Promise<void>;
+  onSuccess?: (
+    requestId: string,
+    transactionReceipts: TransactionReceipt[],
+  ) => void | Promise<void>;
   onError?: (error: PaymentError) => void | Promise<void>;
 }
 

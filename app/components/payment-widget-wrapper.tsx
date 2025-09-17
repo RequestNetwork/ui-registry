@@ -49,6 +49,10 @@ export function PaymentWidgetWrapper({
           "fUSDT-sepolia",
           "FAU-sepolia",
         ],
+        feeInfo: {
+          feeAddress: "0xEbe98659e162e8fF3520EC71e097C9e0a4F53829",
+          feePercentage: "10",
+        },
       }}
       receiptInfo={{
         buyerInfo: {

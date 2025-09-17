@@ -16,6 +16,7 @@ import { DisconnectWallet } from "./disconnect-wallet";
 import { usePaymentWidgetContext } from "../context/payment-widget-context";
 import type { BuyerInfo } from "../types/index";
 import type { ConversionCurrency } from "../utils/currencies";
+import { TransactionReceipt } from "viem";
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -52,10 +53,13 @@ export function PaymentModal({
     setActiveStep("payment-confirmation");
   };
 
-  const handlePaymentSuccess = async (requestId: string) => {
+  const handlePaymentSuccess = async (
+    requestId: string,
+    transactionReceipts: TransactionReceipt[],
+  ) => {
     setRequestId(requestId);
     setActiveStep("payment-success");
-    await onSuccess?.(requestId);
+    await onSuccess?.(requestId, transactionReceipts);
   };
 
   const reset = () => {
