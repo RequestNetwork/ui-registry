@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { useAccount, useSendTransaction, useConfig } from "wagmi";
+import {
+  useAccount,
+  useSendTransaction,
+  useConfig,
+  useSwitchChain,
+} from "wagmi";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { createPublicClient, http } from "viem";
 import {
@@ -12,16 +17,20 @@ import {
 } from "../utils/payment";
 import type { PaymentError } from "../types/index";
 import type { Account, WalletClient, TransactionReceipt } from "viem";
+import { getChainFromNetwork } from "../utils/chains";
 
-export const usePayment = (walletAccount?: WalletClient) => {
+export const usePayment = (network: string, walletAccount?: WalletClient) => {
   const [isExecuting, setIsExecuting] = useState(false);
   const { isConnected: wagmiConnected, address: wagmiAddress } = useAccount();
   const { sendTransactionAsync } = useSendTransaction();
+  const { switchChainAsync } = useSwitchChain();
   const config = useConfig();
 
+  const requiredChain = getChainFromNetwork(network);
   const isConnected = walletAccount
     ? Boolean(walletAccount.account)
     : wagmiConnected;
+
   const address = walletAccount ? walletAccount.account?.address : wagmiAddress;
   const isUsingCustomWallet = walletAccount?.account !== undefined;
 
@@ -39,14 +48,12 @@ export const usePayment = (walletAccount?: WalletClient) => {
       }
     : async (tx: TxParams): Promise<`0x${string}`> => {
         const hash = await sendTransactionAsync(tx);
-
         return hash;
       };
 
   const wrappedWaitForTransaction: WaitForTransactionFunction =
     isUsingCustomWallet
       ? async (hash: `0x${string}`): Promise<TransactionReceipt> => {
-          // Using viem we create a public read client
           if (!walletAccount.chain) {
             throw {
               type: "wallet",
@@ -55,7 +62,7 @@ export const usePayment = (walletAccount?: WalletClient) => {
           }
           const publicClient = createPublicClient({
             chain: walletAccount.chain,
-            transport: http(), // TODO: check why walletAccount.transport wouldn't work, for now http is fine
+            transport: http(),
           });
 
           const receipt = await publicClient.waitForTransactionReceipt({
@@ -84,6 +91,12 @@ export const usePayment = (walletAccount?: WalletClient) => {
 
     setIsExecuting(true);
     try {
+      if (isUsingCustomWallet) {
+        await walletAccount.switchChain({ id: requiredChain.id });
+      } else {
+        await switchChainAsync({ chainId: requiredChain.id });
+      }
+
       return await executePayment({
         rnApiClientId,
         paymentParams: {

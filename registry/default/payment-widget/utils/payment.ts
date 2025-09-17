@@ -63,6 +63,11 @@ export const normalizeValue = (
 ): bigint => {
   // ERC20 tokens don't have a bignumber returned
   if (typeof value === "number") {
+    if (!Number.isSafeInteger(value)) {
+      throw new Error(
+        "Unsafe numeric value for tx.value; expected string/hex BigInt.",
+      );
+    }
     return BigInt(value);
   }
 
@@ -74,9 +79,8 @@ export const normalizeValue = (
     return BigInt(value.hex);
   }
 
-  // Fallback to 0 if we can't parse it
   console.warn("Unknown value format, defaulting to 0:", value);
-  return BigInt(0);
+  throw new Error("Unknown value format");
 };
 
 export const executeTransactions = async (
@@ -95,6 +99,10 @@ export const executeTransactions = async (
       });
 
       const receipt = await waitForTransaction(hash);
+      if (receipt.status !== "success") {
+        throw new Error(`Transaction reverted: ${hash}`);
+      }
+
       receipts.push(receipt);
     }
 

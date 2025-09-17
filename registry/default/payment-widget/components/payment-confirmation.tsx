@@ -32,12 +32,12 @@ export function PaymentConfirmation({
     amountInUsd,
     recipientWallet,
     connectedWalletAddress,
-    paymentConfig: { rnApiClientId, feeInfo },
+    paymentConfig: { rnApiClientId, feeInfo, network },
     receiptInfo: { companyInfo: { name: companyName } = {} },
     onError,
     walletAccount,
   } = usePaymentWidgetContext();
-  const { isExecuting, executePayment } = usePayment(walletAccount);
+  const { isExecuting, executePayment } = usePayment(network, walletAccount);
   const [localError, setLocalError] = useState<string | null>(null);
 
   const handleExecutePayment = async (e: React.FormEvent) => {

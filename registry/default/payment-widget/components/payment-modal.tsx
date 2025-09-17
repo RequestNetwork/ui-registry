@@ -42,6 +42,7 @@ export function PaymentModal({
     receiptInfo.buyerInfo || undefined,
   );
   const [requestId, setRequestId] = useState<string>("");
+  const [txHash, setTxHash] = useState<string>("");
 
   const handleCurrencySelect = (currency: ConversionCurrency) => {
     setSelectedCurrency(currency);
@@ -58,6 +59,9 @@ export function PaymentModal({
     transactionReceipts: TransactionReceipt[],
   ) => {
     setRequestId(requestId);
+    setTxHash(
+      transactionReceipts[transactionReceipts.length - 1].transactionHash,
+    );
     setActiveStep("payment-success");
     await onSuccess?.(requestId, transactionReceipts);
   };
@@ -118,6 +122,7 @@ export function PaymentModal({
         {activeStep === "payment-success" && selectedCurrency && buyerInfo && (
           <PaymentSuccess
             requestId={requestId}
+            txHash={txHash}
             selectedCurrency={selectedCurrency}
             buyerInfo={buyerInfo}
           />

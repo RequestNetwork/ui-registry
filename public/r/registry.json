@@ -105,6 +105,11 @@
           "target": "components/payment-widget/utils/receipt.ts"
         },
         {
+          "path": "registry/default/payment-widget/utils/chains.ts",
+          "type": "registry:lib",
+          "target": "components/payment-widget/utils/chains.ts"
+        },
+        {
           "path": "registry/default/payment-widget/hooks/use-payment.ts",
           "type": "registry:lib",
           "target": "components/payment-widget/hooks/use-payment.ts"
@@ -130,9 +135,9 @@
           "target": "components/payment-widget/components/receipt/receipt-template.tsx"
         },
         {
-          "path": "registry/default/payment-widget/components/receipt/styles.module.css",
+          "path": "registry/default/payment-widget/components/receipt/styles.css",
           "type": "registry:component",
-          "target": "components/payment-widget/components/receipt/styles.module.css"
+          "target": "components/payment-widget/components/receipt/styles.css"
         },
         {
           "path": "lib/utils.ts",
