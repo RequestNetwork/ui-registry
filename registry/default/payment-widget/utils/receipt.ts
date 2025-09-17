@@ -2,6 +2,7 @@ import type { BuyerInfo, CompanyInfo, ReceiptItem } from "../types";
 
 export interface PaymentInfo {
   chain: string;
+  amount: string;
   currency: string;
   exchangeRate: number;
   transactionHash?: string;
@@ -53,7 +54,7 @@ export const formatUSDAmount = (amount: number): string => {
 };
 
 export const formatCryptoAmount = (
-  amount: number,
+  amount: string,
   currency: string,
 ): string => {
   return `${amount} ${currency}`;

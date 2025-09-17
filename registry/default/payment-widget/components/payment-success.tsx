@@ -46,6 +46,7 @@ export function PaymentSuccess({
       walletAddress: connectedWalletAddress || "",
     },
     payment: {
+      amount: amountInUsd, // TODO connect to actual payout and exchange rate
       chain: network,
       currency: selectedCurrency.symbol,
       exchangeRate: 1,

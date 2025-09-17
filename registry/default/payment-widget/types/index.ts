@@ -3,6 +3,8 @@ export interface FeeInfo {
   feeAddress: string;
 }
 
+// TODO check out if we want to rework all numbers to strings
+
 export interface PaymentError {
   type: "wallet" | "transaction" | "api" | "unknown";
   error: Error;

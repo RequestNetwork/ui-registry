@@ -123,7 +123,7 @@ export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
               <td className="center">{item.quantity}</td>
               <td className="right">
                 {formatCryptoAmount(
-                  item.unitPrice,
+                  item.unitPrice.toString(),
                   item.currency || receipt.payment.currency,
                 )}
               </td>
@@ -131,7 +131,7 @@ export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
               <td className="center">{item.tax || 0}%</td>
               <td className="right amount">
                 {formatCryptoAmount(
-                  item.total,
+                  item.total.toString(),
                   item.currency || receipt.payment.currency,
                 )}
               </td>
@@ -148,7 +148,7 @@ export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
               <span className="total-amount">
                 -
                 {formatCryptoAmount(
-                  receipt.totals.totalDiscount,
+                  receipt.totals.totalDiscount.toString(),
                   receipt.payment.currency,
                 )}
               </span>
@@ -160,7 +160,7 @@ export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
               <span>Tax:</span>
               <span className="total-amount">
                 {formatCryptoAmount(
-                  receipt.totals.totalTax,
+                  receipt.totals.totalTax.toString(),
                   receipt.payment.currency,
                 )}
               </span>
@@ -171,7 +171,7 @@ export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
             <span>Subtotal:</span>
             <span className="total-amount">
               {formatCryptoAmount(
-                receipt.totals.total,
+                receipt.payment.amount,
                 receipt.payment.currency,
               )}
             </span>

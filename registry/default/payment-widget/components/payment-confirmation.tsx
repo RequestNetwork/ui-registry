@@ -168,7 +168,7 @@ export function PaymentConfirmation({
           variant="outline"
           onClick={onBack}
           className="flex-1"
-          disabled={isExecuting}
+          disabled={isExecuting || !connectedWalletAddress}
         >
           Back
         </Button>
