@@ -26,7 +26,7 @@ export function PaymentWidgetWrapper({
 
   return (
     <PaymentWidget
-      amountInUsd="10.00"
+      amountInUsd="1.00"
       recipientWallet={recipientWallet}
       walletAccount={walletAccount}
       paymentConfig={{
