@@ -142,7 +142,7 @@ export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
 
       <div className="totals-section">
         <div className="totals-box">
-          {receipt.totals.totalDiscount > 0 && (
+          {receipt.totals.totalDiscount.length > 0 && (
             <div className="total-line">
               <span>Discount:</span>
               <span className="total-amount">
@@ -155,7 +155,7 @@ export const ReceiptPDFTemplate: FC<{ receipt: ReceiptData }> = ({
             </div>
           )}
 
-          {receipt.totals.totalTax > 0 && (
+          {receipt.totals.totalTax.length > 0 && (
             <div className="total-line">
               <span>Tax:</span>
               <span className="total-amount">

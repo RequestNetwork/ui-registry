@@ -67,16 +67,16 @@ export function PaymentWidgetWrapper({
             id: "1",
             description: "Payment via Request Network",
             quantity: 1,
-            unitPrice: 10.0,
-            total: 10.0,
+            unitPrice: "10.0",
+            total: "10.0",
             currency: "USD",
           },
         ],
         totals: {
-          totalDiscount: 0,
-          totalTax: 0,
-          total: 10.0,
-          totalUSD: 10.0,
+          totalDiscount: "0",
+          totalTax: "0",
+          total: "10.0",
+          totalUSD: "10.0",
         },
       }}
       onSuccess={handleSuccess}

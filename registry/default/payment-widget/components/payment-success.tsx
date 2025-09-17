@@ -48,7 +48,7 @@ export function PaymentSuccess({
       amount: amountInUsd, // TODO connect to actual payout and exchange rate
       chain: selectedCurrency.network,
       currency: selectedCurrency.symbol,
-      exchangeRate: 1,
+      exchangeRate: "1",
       transactionHash: txHash,
     },
     items: receiptInfo.items,
