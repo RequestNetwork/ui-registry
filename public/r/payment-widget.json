@@ -118,7 +118,7 @@
     },
     {
       "path": "registry/default/payment-widget/utils/chains.ts",
-      "content": "import {\n  mainnet,\n  arbitrum,\n  base,\n  optimism,\n  polygon,\n  sepolia,\n} from \"viem/chains\";\n\nexport const getChainFromNetwork = (network: string) => {\n  switch (network.toLowerCase()) {\n    case \"mainnet\":\n      return mainnet;\n    case \"arbitrum\":\n      return arbitrum;\n    case \"base\":\n      return base;\n    case \"optimism\":\n      return optimism;\n    case \"matic\":\n      return polygon;\n    case \"sepolia\":\n      return sepolia;\n    default:\n      throw new Error(`Unsupported network: ${network}`);\n  }\n};\n",
+      "content": "import {\n  mainnet,\n  arbitrum,\n  base,\n  optimism,\n  polygon,\n  sepolia,\n} from \"viem/chains\";\n\nexport const getChainFromNetwork = (network: string) => {\n  switch (network.toLowerCase()) {\n    case \"mainnet\":\n      return mainnet;\n    case \"arbitrum\":\n      return arbitrum;\n    case \"base\":\n      return base;\n    case \"optimism\":\n      return optimism;\n    // our currencies API uses matic for polygon for the moment\n    case \"polygon\":\n    case \"matic\":\n      return polygon;\n    case \"sepolia\":\n      return sepolia;\n    default:\n      throw new Error(`Unsupported network: ${network}`);\n  }\n};\n",
       "type": "registry:lib",
       "target": "components/payment-widget/utils/chains.ts"
     },
