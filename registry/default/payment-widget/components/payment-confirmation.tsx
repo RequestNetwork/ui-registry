@@ -35,8 +35,9 @@ export function PaymentConfirmation({
     paymentConfig: { rnApiClientId, feeInfo },
     receiptInfo: { companyInfo: { name: companyName } = {} },
     onError,
+    walletAccount,
   } = usePaymentWidgetContext();
-  const { isExecuting, executePayment } = usePayment();
+  const { isExecuting, executePayment } = usePayment(walletAccount);
   const [localError, setLocalError] = useState<string | null>(null);
 
   const handleExecutePayment = async (e: React.FormEvent) => {

@@ -47,6 +47,12 @@ export const usePayment = (walletAccount?: WalletClient) => {
     isUsingCustomWallet
       ? async (hash: `0x${string}`): Promise<TransactionReceipt> => {
           // Using viem we create a public read client
+          if (!walletAccount.chain) {
+            throw {
+              type: "wallet",
+              error: new Error("Wallet isn't connected to any chain"),
+            } as PaymentError;
+          }
           const publicClient = createPublicClient({
             chain: walletAccount.chain,
             transport: http(), // TODO: check why walletAccount.transport wouldn't work, for now http is fine

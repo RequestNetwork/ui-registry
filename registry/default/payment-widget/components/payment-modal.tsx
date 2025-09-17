@@ -16,7 +16,7 @@ import { DisconnectWallet } from "./disconnect-wallet";
 import { usePaymentWidgetContext } from "../context/payment-widget-context";
 import type { BuyerInfo } from "../types/index";
 import type { ConversionCurrency } from "../utils/currencies";
-import { TransactionReceipt } from "viem";
+import type { TransactionReceipt } from "viem";
 
 interface PaymentModalProps {
   isOpen: boolean;

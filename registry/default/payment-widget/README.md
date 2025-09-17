@@ -68,10 +68,10 @@ function App() {
           },
         ],
         totals: {
-          total: "100.00",
-          totalUSD: "100.00",
-          totalDiscount: "0.00",
-          totalTax: "0.00",
+          total: 100,
+          totalUSD: 100.00,
+          totalDiscount: 0.00,
+          totalTax: 0.00,
         },
       }}
       onSuccess={(requestId) => console.log("Payment successful:", requestId)}

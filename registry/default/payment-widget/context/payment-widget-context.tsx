@@ -94,8 +94,8 @@ export function PaymentWidgetProvider({
       supportedCurrencies: paymentConfig.supportedCurrencies,
     },
     uiConfig: {
-      showReceiptDownload: uiConfig?.showReceiptDownload || true,
-      showRequestScanUrl: uiConfig?.showRequestScanUrl || true,
+      showReceiptDownload: uiConfig?.showReceiptDownload ?? true,
+      showRequestScanUrl: uiConfig?.showRequestScanUrl ?? true,
     },
     receiptInfo,
     onSuccess,

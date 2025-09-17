@@ -3,7 +3,7 @@ import { ViemAccountDemo } from "./components/viem-account-demo";
 
 export default function Home() {
   const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || "";
-  const rnApiClientId = process.env.REQUEST_API_CLIENT_ID || "";
+  const rnApiClientId = process.env.NEXT_PUBLIC_REQUEST_API_CLIENT_ID || "";
   const recipientWallet = process.env.RECIPIENT_WALLET || "";
 
   return (

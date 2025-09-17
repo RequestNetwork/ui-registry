@@ -174,7 +174,7 @@ export const executePayment = async ({
 
     const data: PayoutAPIResponse = await response.json();
 
-    if (data?.transactions) {
+    if (Array.isArray(data?.transactions) && data.transactions.length > 0) {
       const transactionReceipts = await executeTransactions(
         data.transactions,
         sendTransaction,
