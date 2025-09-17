@@ -17,7 +17,7 @@ export const getChainFromNetwork = (network: string) => {
       return base;
     case "optimism":
       return optimism;
-    case "polygon":
+    case "matic":
       return polygon;
     case "sepolia":
       return sepolia;

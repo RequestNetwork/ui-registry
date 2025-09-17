@@ -32,7 +32,6 @@ export function PaymentSuccess({
     connectedWalletAddress,
     receiptInfo,
     uiConfig,
-    paymentConfig: { network },
   } = usePaymentWidgetContext();
   const receiptRef = useRef<HTMLDivElement>(null);
 
@@ -47,7 +46,7 @@ export function PaymentSuccess({
     },
     payment: {
       amount: amountInUsd, // TODO connect to actual payout and exchange rate
-      chain: network,
+      chain: selectedCurrency.network,
       currency: selectedCurrency.symbol,
       exchangeRate: 1,
       transactionHash: txHash,

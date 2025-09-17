@@ -32,11 +32,11 @@ export function PaymentWidgetWrapper({
       paymentConfig={{
         walletConnectProjectId,
         rnApiClientId,
-        network: "sepolia",
         supportedCurrencies: [
           "ETH-sepolia-sepolia",
           "fUSDT-sepolia",
           "FAU-sepolia",
+          "USDCn-matic",
         ],
         feeInfo: undefined /* {
           feeAddress: "0xEbe98659e162e8fF3520EC71e097C9e0a4F53829",
