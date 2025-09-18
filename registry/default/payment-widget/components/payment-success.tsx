@@ -82,13 +82,21 @@ export function PaymentSuccess({
         windowHeight: element.scrollHeight,
       });
 
-      const imgWidth = 210;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
       const pdf = new jsPDF("p", "mm", "a4");
       const imgData = canvas.toDataURL("image/png");
 
-      pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+      const pageWidth = 210;
+      const pageHeight = 297;
+      const margin = 10;
+      let imgWidth = pageWidth - margin * 2;
+      let imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const maxHeight = pageHeight - margin * 2;
+      if (imgHeight > maxHeight) {
+        const ratio = maxHeight / imgHeight;
+        imgWidth = imgWidth * ratio;
+        imgHeight = imgHeight * ratio;
+      }
+      pdf.addImage(imgData, "PNG", margin, margin, imgWidth, imgHeight);
       pdf.save(
         `receipt-${receiptParams.metadata?.receiptNumber || "payment"}.pdf`,
       );
