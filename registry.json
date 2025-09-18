@@ -21,7 +21,8 @@
         "@tanstack/react-query@^5.86.0",
         "react-hook-form@^7.62.0",
         "lucide-react@^0.542.0",
-        "html2pdf.js@^0.12.0"
+        "html2canvas-pro@^1.5.11",
+        "jspdf@^3.0.3"
       ],
       "files": [
         {
@@ -30,9 +31,19 @@
           "target": "components/payment-widget/payment-widget.tsx"
         },
         {
-          "path": "registry/default/payment-widget/context/payment-widget-context.tsx",
+          "path": "registry/default/payment-widget/context/payment-widget-context/index.ts",
           "type": "registry:component",
-          "target": "components/payment-widget/context/payment-widget-context.tsx"
+          "target": "components/payment-widget/context/payment-widget-context/index.ts"
+        },
+        {
+          "path": "registry/default/payment-widget/context/payment-widget-context/payment-widget-provider.tsx",
+          "type": "registry:component",
+          "target": "components/payment-widget/context/payment-widget-context/payment-widget-provider.tsx"
+        },
+        {
+          "path": "registry/default/payment-widget/context/payment-widget-context/use-payment-widget-context.ts",
+          "type": "registry:component",
+          "target": "components/payment-widget/context/payment-widget-context/use-payment-widget-context.ts"
         },
         {
           "path": "registry/default/payment-widget/components/connection-handler.tsx",
@@ -118,11 +129,6 @@
           "path": "registry/default/payment-widget/types/index.ts",
           "type": "registry:lib",
           "target": "components/payment-widget/types/index.ts"
-        },
-        {
-          "path": "registry/default/payment-widget/types/html2pdf.d.ts",
-          "type": "registry:lib",
-          "target": "components/payment-widget/types/html2pdf.d.ts"
         },
         {
           "path": "registry/default/payment-widget/context/web3-context.tsx",
