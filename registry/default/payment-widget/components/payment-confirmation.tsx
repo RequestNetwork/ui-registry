@@ -7,10 +7,10 @@ import {
   getSymbolOverride,
   type ConversionCurrency,
 } from "../utils/currencies";
-import { usePaymentWidgetContext } from "../context/payment-widget-context";
 import type { BuyerInfo, PaymentError } from "../types/index";
 import { useState } from "react";
 import type { TransactionReceipt } from "viem";
+import { usePaymentWidgetContext } from "../context/payment-widget-context/use-payment-widget-context";
 
 interface PaymentConfirmationProps {
   selectedCurrency: ConversionCurrency;
