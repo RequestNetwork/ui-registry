@@ -14,12 +14,27 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronRight, Copy, ExternalLink } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  ChevronDown,
+  ChevronRight,
+  Copy,
+  ExternalLink,
+  FileText,
+  Code2,
+  Play,
+} from "lucide-react";
 import { PaymentWidgetWrapper } from "./payment-widget-wrapper";
 import { ViemAccountDemo } from "./viem-account-demo";
+import { MarkdownRenderer } from "@/components/markdown-renderer";
 
-export function HomePage({ recipientWallet }: { recipientWallet: string }) {
-  const [basicExampleOpen, setBasicExampleOpen] = useState(false);
+interface HomePageProps {
+  recipientWallet: string;
+  readmeContent: string;
+}
+
+export function HomePage({ recipientWallet, readmeContent }: HomePageProps) {
+  const [basicExampleOpen, setBasicExampleOpen] = useState(true);
   const [advancedExampleOpen, setAdvancedExampleOpen] = useState(false);
   const [copiedStep, setCopiedStep] = useState<number | null>(null);
 
@@ -202,198 +217,240 @@ export function PaymentWithWallet() {
           </p>
         </div>
 
-        <div className="space-y-6 mb-12">
-          <h2 className="text-2xl font-semibold text-foreground mb-6">
-            Examples
-          </h2>
-
-          <Card className="border-border">
-            <Collapsible
-              open={basicExampleOpen}
-              onOpenChange={setBasicExampleOpen}
+        <Tabs defaultValue="examples" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="examples" className="flex items-center gap-2">
+              <Play className="w-4 h-4" />
+              Examples
+            </TabsTrigger>
+            <TabsTrigger
+              value="installation"
+              className="flex items-center gap-2"
             >
-              <CollapsibleTrigger asChild>
-                <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="flex items-center gap-2">
-                        Without a user's wallet
-                      </CardTitle>
-                      <CardDescription>
-                        Simple payment widget that handles wallet connection
-                        internally
-                      </CardDescription>
-                    </div>
-                    {basicExampleOpen ? (
-                      <ChevronDown className="h-5 w-5 text-muted-foreground" />
-                    ) : (
-                      <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                    )}
-                  </div>
-                </CardHeader>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <CardContent className="pt-0">
-                  <div className="space-y-4">
-                    {/* Live Preview */}
-                    <div className="p-6 rounded-lg border bg-card">
-                      <h3 className="text-sm font-medium text-muted-foreground mb-4">
-                        Live Preview
-                      </h3>
-                      <PaymentWidgetWrapper recipientWallet={recipientWallet} />
-                    </div>
-
-                    {/* Code */}
-                    <div className="relative">
-                      <div className="bg-muted p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                        <pre>{basicCode}</pre>
-                      </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="absolute top-2 right-2"
-                        onClick={() => copyToClipboard(basicCode, 0)}
-                      >
-                        {copiedStep === 0 ? (
-                          <span className="text-xs">Copied!</span>
-                        ) : (
-                          <Copy className="h-4 w-4" />
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </CollapsibleContent>
-            </Collapsible>
-          </Card>
-
-          <Card className="border-border">
-            <Collapsible
-              open={advancedExampleOpen}
-              onOpenChange={setAdvancedExampleOpen}
+              <Code2 className="w-4 h-4" />
+              Installation
+            </TabsTrigger>
+            <TabsTrigger
+              value="documentation"
+              className="flex items-center gap-2"
             >
-              <CollapsibleTrigger asChild>
-                <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="flex items-center gap-2">
-                        With an existing wallet
-                      </CardTitle>
-                      <CardDescription>
-                        Payment widget that uses an existing wallet connection
-                        from your app
-                      </CardDescription>
-                    </div>
-                    {advancedExampleOpen ? (
-                      <ChevronDown className="h-5 w-5 text-muted-foreground" />
-                    ) : (
-                      <ChevronRight className="h-5 w-5 text-muted-foreground" />
-                    )}
-                  </div>
-                </CardHeader>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <CardContent className="pt-0">
-                  <div className="space-y-4">
-                    <div className="p-6 rounded-lg border bg-card">
-                      <h3 className="text-sm font-medium text-muted-foreground mb-4">
-                        Live Preview
-                      </h3>
-                      <ViemAccountDemo recipientWallet={recipientWallet} />
-                    </div>
+              <FileText className="w-4 h-4" />
+              Documentation
+            </TabsTrigger>
+          </TabsList>
 
-                    <div className="relative">
-                      <div className="bg-muted p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                        <pre>{advancedCode}</pre>
-                      </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="absolute top-2 right-2"
-                        onClick={() => copyToClipboard(advancedCode, 1)}
-                      >
-                        {copiedStep === 1 ? (
-                          <span className="text-xs">Copied!</span>
-                        ) : (
-                          <Copy className="h-4 w-4" />
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </CollapsibleContent>
-            </Collapsible>
-          </Card>
-        </div>
+          <TabsContent value="examples" className="space-y-6">
+            <h2 className="text-2xl font-semibold text-foreground mb-6">
+              Examples
+            </h2>
 
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-foreground">
-            Installation
-          </h2>
-
-          <div className="space-y-4">
-            {installationSteps.map((step, index) => (
-              <Card
-                key={`installation-step-${
-                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                  index
-                }`}
-                className="border-border"
+            <Card className="border-border">
+              <Collapsible
+                open={basicExampleOpen}
+                onOpenChange={setBasicExampleOpen}
               >
-                <CardHeader>
-                  <div className="flex items-start gap-4">
-                    <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-semibold text-sm">
-                      {index + 1}
-                    </div>
-                    <div className="flex-1">
-                      <CardTitle className="text-lg">{step.title}</CardTitle>
-                      <CardDescription className="mt-1">
-                        {step.description}
-                      </CardDescription>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  {step.link ? (
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="w-fit bg-transparent"
-                    >
-                      <a
-                        href={step.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                        {step.action}
-                      </a>
-                    </Button>
-                  ) : step.code ? (
-                    <div className="relative">
-                      <div className="bg-muted p-4 rounded-lg font-mono text-sm overflow-x-auto">
-                        <pre>{step.code}</pre>
+                <CollapsibleTrigger asChild>
+                  <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="flex items-center gap-2">
+                          Without a user wallet
+                        </CardTitle>
+                        <CardDescription>
+                          Simple payment widget that handles wallet connection
+                          internally
+                        </CardDescription>
                       </div>
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        className="absolute top-2 right-2"
-                        onClick={() => copyToClipboard(step.code!, index + 10)}
-                      >
-                        {copiedStep === index + 10 ? (
-                          <span className="text-xs">Copied!</span>
-                        ) : (
-                          <Copy className="h-4 w-4" />
-                        )}
-                      </Button>
+                      {basicExampleOpen ? (
+                        <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                      ) : (
+                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                      )}
                     </div>
-                  ) : null}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <CardContent className="pt-0">
+                    <div className="space-y-4">
+                      <div className="p-6 rounded-lg border bg-card">
+                        <h3 className="text-sm font-medium text-muted-foreground mb-4">
+                          Live Preview
+                        </h3>
+                        <PaymentWidgetWrapper
+                          recipientWallet={recipientWallet}
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <div className="bg-muted p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                          <pre>{basicCode}</pre>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="absolute top-2 right-2"
+                          onClick={() => copyToClipboard(basicCode, 0)}
+                        >
+                          {copiedStep === 0 ? (
+                            <span className="text-xs">Copied!</span>
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+
+            <Card className="border-border">
+              <Collapsible
+                open={advancedExampleOpen}
+                onOpenChange={setAdvancedExampleOpen}
+              >
+                <CollapsibleTrigger asChild>
+                  <CardHeader className="cursor-pointer hover:bg-muted/50 transition-colors">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="flex items-center gap-2">
+                          With an existing wallet
+                        </CardTitle>
+                        <CardDescription>
+                          Payment widget that uses an existing wallet connection
+                          from your app
+                        </CardDescription>
+                      </div>
+                      {advancedExampleOpen ? (
+                        <ChevronDown className="h-5 w-5 text-muted-foreground" />
+                      ) : (
+                        <ChevronRight className="h-5 w-5 text-muted-foreground" />
+                      )}
+                    </div>
+                  </CardHeader>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <CardContent className="pt-0">
+                    <div className="space-y-4">
+                      <div className="p-6 rounded-lg border bg-card">
+                        <h3 className="text-sm font-medium text-muted-foreground mb-4">
+                          Live Preview
+                        </h3>
+                        <ViemAccountDemo recipientWallet={recipientWallet} />
+                      </div>
+
+                      <div className="relative">
+                        <div className="bg-muted p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                          <pre>{advancedCode}</pre>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="absolute top-2 right-2"
+                          onClick={() => copyToClipboard(advancedCode, 1)}
+                        >
+                          {copiedStep === 1 ? (
+                            <span className="text-xs">Copied!</span>
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </CollapsibleContent>
+              </Collapsible>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="installation" className="space-y-6">
+            <h2 className="text-2xl font-semibold text-foreground mb-6">
+              Installation
+            </h2>
+
+            <div className="space-y-4">
+              {installationSteps.map((step, index) => (
+                <Card
+                  key={`installation-step-${
+                    // biome-ignore lint/suspicious/noArrayIndexKey: we prefix it so it's fine
+                    index
+                  }`}
+                  className="border-border"
+                >
+                  <CardHeader>
+                    <div className="flex items-start gap-4">
+                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-semibold text-sm">
+                        {index + 1}
+                      </div>
+                      <div className="flex-1">
+                        <CardTitle className="text-lg">{step.title}</CardTitle>
+                        <CardDescription className="mt-1">
+                          {step.description}
+                        </CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    {step.link ? (
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="w-fit bg-transparent"
+                      >
+                        <a
+                          href={step.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                          {step.action}
+                        </a>
+                      </Button>
+                    ) : step.code ? (
+                      <div className="relative">
+                        <div className="bg-muted p-4 rounded-lg font-mono text-sm overflow-x-auto">
+                          <pre>{step.code}</pre>
+                        </div>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="absolute top-2 right-2"
+                          onClick={() =>
+                            copyToClipboard(step.code!, index + 10)
+                          }
+                        >
+                          {copiedStep === index + 10 ? (
+                            <span className="text-xs">Copied!</span>
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
+                        </Button>
+                      </div>
+                    ) : null}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="documentation" className="space-y-6">
+            <Card className="border-border">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <FileText className="w-5 h-5" />
+                  Payment Widget Documentation
+                </CardTitle>
+                <CardDescription>
+                  Complete API reference and usage guide
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <MarkdownRenderer markdown={readmeContent} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

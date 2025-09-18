@@ -31,7 +31,6 @@ const config = createConfig({
   },
 });
 
-// Create a query client
 const queryClient = new QueryClient();
 
 function ViemAccountDemoInner({ recipientWallet }: ViemAccountDemoProps) {
