@@ -1,4 +1,5 @@
-// Type definitions for html2pdf.js
+/** biome-ignore-all lint/suspicious/noExplicitAny: These are just typedefs for html2pdf */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Project: https://github.com/eKoopmans/html2pdf.js
 
 declare module "html2pdf.js" {
