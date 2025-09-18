@@ -193,7 +193,7 @@ export function PaymentWithWallet() {
     {
       title: "Add the payment widget",
       description: "Use the shadcn CLI to install the payment widget",
-      code: "npx shadcn add @request-network/payment-widget",
+      code: "npx shadcn add @requestnetwork/payment-widget",
     },
     {
       title: "Use the widget",
