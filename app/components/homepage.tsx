@@ -34,7 +34,7 @@ interface HomePageProps {
 }
 
 export function HomePage({ recipientWallet, readmeContent }: HomePageProps) {
-  const [basicExampleOpen, setBasicExampleOpen] = useState(true);
+  const [basicExampleOpen, setBasicExampleOpen] = useState(false);
   const [advancedExampleOpen, setAdvancedExampleOpen] = useState(false);
   const [copiedStep, setCopiedStep] = useState<number | null>(null);
 
@@ -332,12 +332,19 @@ export function PaymentWithWallet() {
                 <CollapsibleContent>
                   <CardContent className="pt-0">
                     <div className="space-y-4">
-                      <div className="p-6 rounded-lg border bg-card">
-                        <h3 className="text-sm font-medium text-muted-foreground mb-4">
-                          Live Preview
-                        </h3>
-                        <ViemAccountDemo recipientWallet={recipientWallet} />
-                      </div>
+                      {/* It throws an error if it's always in */}
+                      {advancedExampleOpen && (
+                        <div className="p-6 rounded-lg border bg-card">
+                          <h3 className="text-sm font-medium text-muted-foreground mb-4">
+                            Live Preview
+                          </h3>
+                          {/* Use key to force re-mount when toggled */}
+                          <ViemAccountDemo
+                            key={`viem-demo-${advancedExampleOpen}`}
+                            recipientWallet={recipientWallet}
+                          />
+                        </div>
+                      )}
 
                       <div className="relative">
                         <div className="bg-muted p-4 rounded-lg font-mono text-sm overflow-x-auto">
