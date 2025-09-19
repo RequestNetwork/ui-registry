@@ -15,24 +15,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { PaymentWidgetWrapper } from "./payment-widget-wrapper";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Wallet, LogOut } from "lucide-react";
 
 interface ViemAccountDemoProps {
   recipientWallet: string;
 }
-
-const config = createConfig({
-  chains: [mainnet, sepolia],
-  connectors: [injected(), metaMask()],
-  transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
-  },
-});
-
-// Create a query client
-const queryClient = new QueryClient();
 
 function ViemAccountDemoInner({ recipientWallet }: ViemAccountDemoProps) {
   const { address, isConnected } = useAccount();
@@ -138,11 +126,35 @@ function ViemAccountDemoInner({ recipientWallet }: ViemAccountDemoProps) {
   );
 }
 
-export function ViemAccountDemo(props: ViemAccountDemoProps) {
+function createDemoWagmiConfig() {
+  return createConfig({
+    chains: [mainnet, sepolia],
+    connectors: [injected(), metaMask()],
+    transports: {
+      [mainnet.id]: http(),
+      [sepolia.id]: http(),
+    },
+  });
+}
+
+export function ViemAccountDemo({ recipientWallet }: ViemAccountDemoProps) {
+  const config = useMemo(() => createDemoWagmiConfig(), []);
+  const queryClient = useMemo(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 1000 * 60 * 5, // 5 minutes
+          },
+        },
+      }),
+    [],
+  );
+
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <ViemAccountDemoInner {...props} />
+        <ViemAccountDemoInner recipientWallet={recipientWallet} />
       </QueryClientProvider>
     </WagmiProvider>
   );
