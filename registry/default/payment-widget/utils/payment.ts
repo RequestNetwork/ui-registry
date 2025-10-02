@@ -127,6 +127,7 @@ export const createPayout = async (
     recipientWallet,
     paymentCurrency,
     feeInfo,
+    reference,
   } = params;
 
   const response = await fetch(`${RN_API_URL}/v2/payouts`, {
@@ -144,7 +145,7 @@ export const createPayout = async (
       feePercentage: feeInfo?.feePercentage || undefined,
       feeAddress: feeInfo?.feeAddress || undefined,
       customerInfo: params.customerInfo,
-      reference: params.reference,
+      reference,
     }),
   });
 
