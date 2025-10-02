@@ -18,11 +18,12 @@ interface PaymentWidgetProviderProps {
   >;
   uiConfig?: PaymentWidgetProps["uiConfig"];
   receiptInfo: ReceiptInfo;
-  onSuccess?: (
+  onPaymentSuccess?: (
     requestId: string,
     transactionReceipts: TransactionReceipt[],
   ) => void | Promise<void>;
-  onError?: (error: PaymentError) => void | Promise<void>;
+  onPaymentError?: (error: PaymentError) => void | Promise<void>;
+  onComplete?: () => void | Promise<void>;
 }
 
 export function PaymentWidgetProvider({
@@ -33,8 +34,9 @@ export function PaymentWidgetProvider({
   paymentConfig,
   uiConfig,
   receiptInfo,
-  onSuccess,
-  onError,
+  onPaymentSuccess,
+  onPaymentError,
+  onComplete,
 }: PaymentWidgetProviderProps) {
   const { address } = useAccount();
 
@@ -51,6 +53,7 @@ export function PaymentWidgetProvider({
       connectedWalletAddress,
       isWalletOverride,
       paymentConfig: {
+        reference: paymentConfig.reference,
         rnApiClientId: paymentConfig.rnApiClientId,
         feeInfo: paymentConfig.feeInfo,
         supportedCurrencies: paymentConfig.supportedCurrencies,
@@ -60,8 +63,9 @@ export function PaymentWidgetProvider({
         showRequestScanUrl: uiConfig?.showRequestScanUrl ?? true,
       },
       receiptInfo,
-      onSuccess,
-      onError,
+      onPaymentSuccess,
+      onPaymentError,
+      onComplete,
     }),
     [
       amountInUsd,
@@ -72,11 +76,13 @@ export function PaymentWidgetProvider({
       paymentConfig.rnApiClientId,
       paymentConfig.feeInfo,
       paymentConfig.supportedCurrencies,
+      paymentConfig.reference,
       uiConfig?.showReceiptDownload,
       uiConfig?.showRequestScanUrl,
       receiptInfo,
-      onSuccess,
-      onError,
+      onPaymentSuccess,
+      onPaymentError,
+      onComplete,
     ],
   );
 

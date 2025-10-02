@@ -89,8 +89,8 @@ export function PaymentWidget({
   recipientWallet,
   paymentConfig,
   receiptInfo,
-  onSuccess,
-  onError,
+  onPaymentSuccess,
+  onPaymentError,
   uiConfig,
   walletAccount,
   children,
@@ -104,8 +104,8 @@ export function PaymentWidget({
         paymentConfig={paymentConfig}
         uiConfig={uiConfig}
         receiptInfo={receiptInfo}
-        onSuccess={onSuccess}
-        onError={onError}
+        onPaymentSuccess={onPaymentSuccess}
+        onPaymentError={onPaymentError}
       >
         <PaymentWidgetInner>{children}</PaymentWidgetInner>
       </PaymentWidgetProvider>
