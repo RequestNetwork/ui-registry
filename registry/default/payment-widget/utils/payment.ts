@@ -7,6 +7,7 @@ export interface PaymentParams {
   payerWallet: string;
   recipientWallet: string;
   paymentCurrency: string;
+  reference?: string;
   feeInfo?: FeeInfo;
   customerInfo: {
     // This matches the API spec
@@ -143,6 +144,7 @@ export const createPayout = async (
       feePercentage: feeInfo?.feePercentage || undefined,
       feeAddress: feeInfo?.feeAddress || undefined,
       customerInfo: params.customerInfo,
+      reference: params.reference,
     }),
   });
 

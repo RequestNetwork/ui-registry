@@ -55,6 +55,7 @@ export function BasicPayment() {
       amountInUsd="25.00"
       recipientWallet="0x742d35Cc6639C0532c29e54F3D4B48E4d7d5f1E0"
       paymentConfig={{
+        reference: "your_payment_reference",
         rnApiClientId: <YOUR_CLIENT_ID>,
         supportedCurrencies: ["ETH-sepolia-sepolia", "FAU-sepolia", "USDC-mainnet"],
       }}
@@ -80,10 +81,10 @@ export function BasicPayment() {
           totalTax: "0.00",
         },
       }}
-      onSuccess={(requestId) => {
+      onPaymentSuccess={(requestId) => {
         console.log("Payment successful:", requestId);
       }}
-      onError={(error) => {
+      onPaymentError={(error) => {
         console.error("Payment failed:", error);
       }}
     >
@@ -104,7 +105,8 @@ export function PaymentWithWallet() {
       recipientWallet="0x742d35Cc6639C0532c29e54F3D4B48E4d7d5f1E0"
       walletAccount={walletClient} // Pass existing wallet
       paymentConfig={{
-         rnApiClientId: <YOUR_CLIENT_ID>,
+        reference: "your_payment_reference",
+        rnApiClientId: <YOUR_CLIENT_ID>,
         supportedCurrencies: ["ETH-sepolia-sepolia", "FAU-sepolia", "USDC-mainnet"],
       }}
       receiptInfo={{
@@ -133,10 +135,10 @@ export function PaymentWithWallet() {
         showRequestScanUrl: true,
         showReceiptDownload: true,
       }}
-      onSuccess={(requestId) => {
+      onPaymentSuccess={(requestId) => {
         console.log("Payment successful:", requestId);
       }}
-      onError={(error) => {
+      onPaymentError={(error) => {
         console.error("Payment failed:", error);
       }}
     >

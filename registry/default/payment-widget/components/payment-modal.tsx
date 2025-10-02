@@ -27,7 +27,7 @@ export function PaymentModal({
   isOpen,
   handleModalOpenChange,
 }: PaymentModalProps) {
-  const { isWalletOverride, receiptInfo, onSuccess } =
+  const { isWalletOverride, receiptInfo, onPaymentSuccess, onComplete } =
     usePaymentWidgetContext();
 
   const [activeStep, setActiveStep] = useState<
@@ -63,7 +63,7 @@ export function PaymentModal({
       transactionReceipts[transactionReceipts.length - 1].transactionHash,
     );
     setActiveStep("payment-success");
-    await onSuccess?.(requestId, transactionReceipts);
+    await onPaymentSuccess?.(requestId, transactionReceipts);
   };
 
   const reset = () => {
@@ -80,6 +80,7 @@ export function PaymentModal({
         // reset modal state when closing from success step
         if (!isOpen && activeStep === "payment-success") {
           reset();
+          onComplete?.();
         }
         handleModalOpenChange(isOpen);
       }}

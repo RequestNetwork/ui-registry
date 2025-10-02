@@ -32,9 +32,9 @@ export function PaymentConfirmation({
     amountInUsd,
     recipientWallet,
     connectedWalletAddress,
-    paymentConfig: { rnApiClientId, feeInfo },
+    paymentConfig: { rnApiClientId, feeInfo, reference },
     receiptInfo: { companyInfo: { name: companyName } = {} },
-    onError,
+    onPaymentError,
     walletAccount,
   } = usePaymentWidgetContext();
   const { isExecuting, executePayment } = usePayment(
@@ -58,6 +58,7 @@ export function PaymentConfirmation({
           amountInUsd,
           recipientWallet,
           paymentCurrency: selectedCurrency.id,
+          reference,
           feeInfo,
           customerInfo: {
             email: buyerInfo.email,
@@ -97,7 +98,7 @@ export function PaymentConfirmation({
       }
       setLocalError(errorMessage);
 
-      onError?.(paymentError);
+      onPaymentError?.(paymentError);
     }
   };
 

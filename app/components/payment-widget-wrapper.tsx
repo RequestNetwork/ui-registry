@@ -79,8 +79,8 @@ export function PaymentWidgetWrapper({
           totalUSD: "10.0",
         },
       }}
-      onSuccess={handleSuccess}
-      onError={handleError}
+      onPaymentSuccess={handleSuccess}
+      onPaymentError={handleError}
     >
       <div className="flex p-3 bg-blue-500 items-center rounded-2xl text-white">
         Pay using crypto
