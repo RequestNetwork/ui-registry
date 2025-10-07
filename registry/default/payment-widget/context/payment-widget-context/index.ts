@@ -11,6 +11,7 @@ export interface PaymentWidgetContextValue {
   isWalletOverride: boolean;
 
   paymentConfig: {
+    reference?: string;
     rnApiClientId: string;
     feeInfo?: FeeInfo;
     supportedCurrencies: string[];
@@ -23,11 +24,12 @@ export interface PaymentWidgetContextValue {
 
   receiptInfo: ReceiptInfo;
 
-  onSuccess?: (
+  onPaymentSuccess?: (
     requestId: string,
     transactionReceipts: TransactionReceipt[],
   ) => void | Promise<void>;
-  onError?: (error: PaymentError) => void | Promise<void>;
+  onPaymentError?: (error: PaymentError) => void | Promise<void>;
+  onComplete?: () => void | Promise<void>;
 }
 
 export const PaymentWidgetContext =
